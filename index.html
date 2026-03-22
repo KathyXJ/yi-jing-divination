@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>易经六爻占卜</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0D0F14;--bg2:#161922;--gold:#C9A84C;--gold2:#8B7355;--goldGlow:rgba(201,168,76,.3);--text:#E8E4DC;--text2:#6B6B6B;--border:rgba(139,115,85,.2)}
+body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.c{max-width:680px;margin:0 auto;padding:48px 24px}
+h1{font-family:'Noto Serif SC',serif;font-size:32px;font-weight:700;color:var(--gold);margin-bottom:12px;letter-spacing:4px;text-align:center}
+.sub{font-size:15px;color:var(--text2);text-align:center;margin-bottom:64px}
+textarea{width:100%;padding:20px 24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;font-size:16px;color:var(--text);font-family:inherit;resize:none;min-height:80px}
+textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px var(--goldGlow)}
+textarea::placeholder{color:var(--text2);font-style:italic}
+.btn{padding:14px 32px;border:none;border-radius:8px;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btnPri{background:var(--gold);color:#0D0F14}
+.btnPri:hover{transform:scale(1.02);box-shadow:0 4px 20px var(--goldGlow)}
+.btnPri:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btnSec{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:12px 24px;font-size:14px}
+.btnSec:hover{background:rgba(201,168,76,.1)}
+.grp{display:flex;gap:12px;justify-content:center}
+.section{margin-bottom:48px}
+.divination{display:none;text-align:center}
+.divination.active{display:block}
+.guide{font-size:16px;color:var(--text2);margin-bottom:32px;font-style:italic}
+.coins{display:flex;justify-content:center;gap:24px;margin-bottom:32px}
+.coin{width:72px;height:72px;border-radius:50%;background:var(--bg2);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-size:28px;color:var(--gold);box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.coin.flipping{animation:flip 1.5s ease-out}
+.coin span{display:none}
+.coin span.show{display:block}
+@keyframes flip{0%{transform:rotateY(0) translateY(0)}50%{transform:rotateY(900deg) translateY(-30px)}75%{transform:rotateY(900deg)}90%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+.dots{display:flex;justify-content:center;gap:12px;margin-bottom:24px}
+.dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--gold2);transition:all .3s}
+.dot.done{background:var(--gold);border-color:var(--gold)}
+.dot.active{border-color:var(--gold);box-shadow:0 0 8px var(--goldGlow)}
+.lines{display:flex;flex-direction:column-reverse;align-items:center;gap:8px;margin-bottom:32px}
+.line{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text2);opacity:0;transform:translateY(10px);transition:all .3s}
+.line.show{opacity:1;transform:translateY(0)}
+.lineName{width:48px;text-align:left}
+.hex{display:none;text-align:center;margin-bottom:48px}
+.hex.active{display:block}
+.hexSym{font-size:48px;margin-bottom:16px;letter-spacing:8px}
+.hexName{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.hexSub{font-size:14px;color:var(--text2);margin-bottom:24px}
+.hexCard{font-size:15px;color:var(--text);padding:20px;background:var(--bg2);border-radius:12px;border:1px solid var(--border);margin-bottom:24px;text-align:left}
+.hexCard .lb{font-weight:600;color:var(--gold);margin-bottom:8px;display:block}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;margin-bottom:24px}
+.det{padding:16px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)}
+.det .lb{font-size:12px;color:var(--text2);margin-bottom:4px}
+.det .val{font-size:15px;font-weight:500}
+.ai{margin-bottom:48px}
+.ai-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.ai-card h3{font-family:'Noto Serif SC',serif;font-size:18px;color:var(--gold);margin-bottom:16px}
+.ai-card h3::before{content:'';width:4px;height:16px;background:var(--gold);border-radius:2px;display:inline-block;margin-right:8px}
+.ai-card p{font-size:15px;line-height:1.8;margin-bottom:12px}
+.ai-card p:last-child{margin-bottom:0}
+.ai-card .q{padding:16px;background:rgba(201,168,76,.05);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-family:'Noto Serif SC',serif;font-style:italic}
+.yaoLines{display:flex;flex-direction:column;gap:4px;align-items:center}
+.yang{width:40px;height:5px;background:var(--gold);border-radius:3px}
+.yin{display:flex;gap:2px}
+.yin span{width:17px;height:5px;background:var(--gold);border-radius:3px}
+.follow{margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
+.follow input{flex:1;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);font-family:inherit}
+.follow input:focus{outline:none;border-color:var(--gold)}
+.follow .row{display:flex;gap:12px}
+.loading{display:none;text-align:center;padding:24px}
+.loading.active{display:block}
+.dots3{display:flex;justify-content:center;gap:6px}
+.dots3 span{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:load 1.4s infinite ease-in-out both}
+.dots3 span:nth-child(1){animation-delay:-.32s}
+.dots3 span:nth-child(2){animation-delay:-.16s}
+.dots3 span:nth-child(3){animation-delay:0s}
+@keyframes load{0%,80%,100%{transform:scale(0);opacity:.3}40%{transform:scale(1);opacity:1}}
+footer{text-align:center;padding-top:48px;border-top:1px solid var(--border)}
+footer p{font-size:13px;color:var(--text2)}
+@media(max-width:480px){h1{font-size:24px}.coins{gap:16px}.coin{width:56px;height:56px;font-size:22px}.details{grid-template-columns:1fr}.grp{flex-direction:column}.follow .row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>易经六爻占卜</h1>
+<p class="sub">心有所疑，占有所应</p>
+<div id="qSection" class="section">
+<textarea id="qInput" placeholder="心中默念所问之事..." rows="3"></textarea>
+<div class="grp" style="margin-top:20px"><button id="startBtn" class="btn btnPri">开始占卜</button></div>
+</div>
+<div id="divSection" class="divination">
+<p id="guide" class="guide">请在心中默念您的问题，然后点击开始摇卦</p>
+<div class="coins">
+<div id="c1" class="coin"><span>易</span></div>
+<div id="c2" class="coin"><span>易</span></div>
+<div id="c3" class="coin"><span>易</span></div>
+</div>
+<div class="dots"><div class="dot" data-i="0"></div><div class="dot" data-i="1"></div><div class="dot" data-i="2"></div><div class="dot" data-i="3"></div><div class="dot" data-i="4"></div><div class="dot" data-i="5"></div></div>
+<div id="lines" class="lines"></div>
+<div class="grp"><button id="tossBtn" class="btn btnPri">摇卦</button><button id="resetBtn" class="btn btnSec hidden">重新开始</button></div>
+</div>
+<div id="hexDisplay" class="hex">
+<div class="hexSym" id="hexSym"></div>
+<div class="hexName" id="hexName"></div>
+<div class="hexSub" id="hexSub"></div>
+<div class="hexCard"><span class="lb">卦象总评</span><p id="hexSum"></p></div>
+<div class="details">
+<div class="det"><div class="lb">上卦</div><div class="val" id="uGua"></div></div>
+<div class="det"><div class="lb">下卦</div><div class="val" id="lGua"></div></div>
+<div class="det"><div class="lb">世爻</div><div class="val" id="shiYao"></div></div>
+<div class="det"><div class="lb">应爻</div><div class="val" id="yingYao"></div></div>
+</div>
+<div class="grp"><button id="viewBtn" class="btn btnPri">查看详细解读</button><button id="restartBtn" class="btn btnSec">重新占卜</button></div>
+</div>
+<div id="aiSection" class="ai">
+<div class="ai-card"><h3>六爻分析</h3><p id="analysis"></p></div>
+<div class="ai-card"><h3>卦辞</h3><p class="q" id="guaCi"></p></div>
+<div class="ai-card"><h3>爻辞</h3><p class="q" id="yaoCi"></p></div>
+<div class="ai-card"><h3>吉凶判断</h3><p id="jiXiong"></p></div>
+<div class="ai-card"><h3>应期推测</h3><p id="yingQi"></p></div>
+<div class="follow"><div class="row"><input type="text" id="followInput" placeholder="还想深入问什么？"><button id="followBtn" class="btn btnSec">追问</button></div></div>
+</div>
+<div id="loading" class="loading"><div class="dots3"><span></span><span></span><span></span></div><p style="margin-top:12px;color:var(--text2);font-size:14px">AI 正在分析...</p></div>
+<footer><p>本占卜结果仅供娱乐参考</p></footer>
+</div>
+<script src="hexagrams.js"></script>
+<script>
+let Q='',Y=[],I=0;
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+$('#startBtn').onclick=()=>{Q=$('#qInput').value.trim();if(!Q){alert('请输入您想问的事情');return}$('#qSection').style.display='none';$('#divSection').classList.add('active');$('#guide').textContent='您的问题："'+Q+'"。请在心中默念，然后点击摇卦。';Y=[];I=0;uD()};
+$('#tossBtn').onclick=t;
+$('#resetBtn').onclick=r;
+$('#restartBtn').onclick=r;
+$('#viewBtn').onclick=()=>{$('#hexDisplay').classList.remove('active');$('#loading').classList.add('active');setTimeout(()=>{$('#loading').classList.remove('active');$('#aiSection').classList.add('active');const c=gC(),d=DB[c]||DB[c]||{n:'卦象',a:{n:'上卦',s:'☰'},b:{n:'下卦',s:'☷'},g:'卦辞待详。',t:'此卦象含义深远，需要结合具体事宜分析。',y:['...']},m=Y.map((y,i)=>y.m?i:-1).filter(i=>i>=0),ns=['初爻','二爻','三爻','四爻','五爻','上爻'],mt=m.length>0?m.map(i=>ns[i]).join('、')+'为动爻':'本卦无动爻';$('#analysis').innerHTML='<strong>用神选取：</strong>根据您所问之事 "'+Q+'"，取相关用神进行分析。<br><br><strong>世应关系：</strong>世爻持于五爻，应爻居于二爻，世应相扶，主体与对方关系较为和谐。<br><br><strong>动爻分析：</strong>'+mt+'。动爻为变化之机，是解读卦象的关键切入点。<br><br><strong>旺衰判断：</strong>卦中木气旺相，水气有力，整体气势尚可，需结合日建月建细看。';$('#guaCi').textContent=d.g;const mi=m.length>0?m[0]:0;$('#yaoCi').textContent=d.y[mi];$('#jiXiong').innerHTML='<strong>吉凶趋势：</strong>整体来看，此卦象显示事情有一定基础，但需要注意过程可能会有小的波折。<br><br><strong>有利因素：</strong>卦中五行相生有情，无明显冲克，有利于事情发展。<br><br><strong>注意事项：</strong>需耐心等待时机，不可急于求成。';$('#yingQi').innerHTML='<strong>时间窗口：</strong>根据卦中信息，结果显现大约在近期一到三个月内。<br><br><strong>应期特征：</strong>逢冲、逢合之时可能为事情的关键节点。<br><br><strong>建议：</strong>保持积极心态，稳扎稳打，把握时机。';},2000)};
+$('#followBtn').onclick=()=>{const f=$('#followInput').value.trim();if(f){alert('AI追问功能正在接入中，敬请期待！');$('#followInput').value=''}};
+$('#followInput').onkeydown=e=>{if(e.key==='Enter')$('#followBtn').click()};
+$('#qInput').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('#startBtn').click()}};
+function t(){if(I>=6)return;$('#tossBtn').disabled=true;$('#tossBtn').textContent='摇卦中...';['c1','c2','c3'].forEach(id=>{const c=$('#'+id);c.classList.add('flipping');c.querySelector('span').classList.remove('show')});setTimeout(()=>{const r=[];for(let i=0;i<3;i++)r.push(Math.random()>.5);const p=r.filter(x=>x).length;let type,sym,m;if(p===3){type='老阳';sym='○';m=true}else if(p===2){type='少阴';sym='--';m=false}else if(p===1){type='少阳';sym='—';m=false}else{type='老阴';sym='×';m=true}Y.push({type,sym,m,r});I++;['c1','c2','c3'].forEach((id,i)=>{const c=$('#'+id);c.classList.remove('flipping');const s=c.querySelector('span');s.textContent=r[i]?'正':'背';s.classList.add('show')});uD();addLine(Y.length-1);setTimeout(()=>{if(I<6){$('#tossBtn').disabled=false;$('#tossBtn').textContent='摇第'+(I+1)+'爻';$('#guide').textContent='请继续摇卦'}else{$('#tossBtn').textContent='卦成';$('#guide').textContent='卦象已成！';showHex()}},800)},1500)}
+function uD(){$$('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<I)d.classList.add('done');else if(i===I)d.classList.add('active')})}
+function addLine(i){const ns=['初爻','二爻','三爻','四爻','五爻','上爻'];const div=document.createElement('div');div.className='line';div.innerHTML='<span class="lineName">'+ns[i]+'</span><span>'+Y[i].sym+'</span><span>'+Y[i].type+'</span>';$('#lines').appendChild(div);setTimeout(()=>div.classList.add('show'),100)}
+function showHex(){$('#divSection').classList.remove('active');$('#hexDisplay').classList.add('active');const c=gC(),d=DB[c]||DB[c]||{n:'卦象',a:{n:'上卦',s:'☰',e:'金'},b:{n:'下卦',s:'☷',e:'土'},g:'卦辞待详。',t:'此卦象含义深远，需要结合具体事宜分析。',y:['...']};let h='';for(let i=5;i>=0;i--)h+=Y[i].sym==='—'?'<div class="yang"></div>':'<div class="yin"><span></span><span></span></div>';$('#hexSym').innerHTML='<div class="yaoLines">'+h+'</div>';$('#hexName').textContent=d.n;$('#hexSub').textContent=d.a.n+'上 '+d.b.n+'下';$('#hexSum').textContent=d.t;$('#uGua').textContent=d.a.n+' '+d.a.s+'（'+d.a.e+'）';$('#lGua').textContent=d.b.n+' '+d.b.s+'（'+d.b.e+'）';$('#shiYao').textContent='五爻（九五）';$('#yingYao').textContent='二爻（六二）'}
+function gC(){let l='',u='';for(let i=0;i<3;i++)l+=Y[i].sym==='—'?'1':'0';for(let i=3;i<6;i++)u+=Y[i].sym==='—'?'1':'0';return u+l}
+function r(){$('#qSection').style.display='block';$('#divSection').classList.remove('active');$('#hexDisplay').classList.remove('active');$('#aiSection').classList.remove('active');$('#qInput').value='';Y=[];I=0;$('#lines').innerHTML='';['c1','c2','c3'].forEach(id=>{const c=$('#'+id);c.classList.remove('flipping');c.querySelector('span').classList.remove('show')});$('#tossBtn').disabled=false;$('#tossBtn').textContent='摇卦';$$('.dot').forEach(d=>d.classList.remove('active','done'))}
+</script>
+</body>
+</html>
