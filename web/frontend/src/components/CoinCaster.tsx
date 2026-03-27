@@ -63,8 +63,6 @@ export default function CoinCaster({ onComplete }: Props) {
   function handleThrowClick() {
     if (phase === "animating") return;
 
-    if (phase === "calling") return;
-
     if (phase === "idle") {
       // 开始新一轮
       const nextRound = round === 0 ? 1 : round + 1;
@@ -82,13 +80,13 @@ export default function CoinCaster({ onComplete }: Props) {
 
     clearTimer();
 
-    // 记录结果
+    // 记录结果到历史
     if (currentFace) {
       setHistory((prev) => [...prev, currentFace]);
     }
 
     if (round >= 6) {
-      // 全部投完，调用 API
+      // 6轮已满，直接调用 API 显示结果
       setPhase("calling");
       castDivination()
         .then((data) => {
@@ -191,6 +189,7 @@ export default function CoinCaster({ onComplete }: Props) {
 
         {/* 按钮 */}
         <div className="text-center min-h-[56px] flex items-center justify-center">
+          {/* 初始状态 */}
           {phase === "idle" && round === 0 && (
             <button
               onClick={handleThrowClick}
@@ -200,12 +199,23 @@ export default function CoinCaster({ onComplete }: Props) {
             </button>
           )}
 
+          {/* 投掷按钮（1~5轮） */}
           {phase === "idle" && round > 0 && round < 6 && (
             <button
               onClick={doThrow}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
               投掷第 {round + 1} 次
+            </button>
+          )}
+
+          {/* 6轮投完，显示查看结果 */}
+          {phase === "idle" && round >= 6 && (
+            <button
+              onClick={handleNext}
+              className="px-10 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-lg hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
+            >
+              🔮 查看结果
             </button>
           )}
 
@@ -220,7 +230,7 @@ export default function CoinCaster({ onComplete }: Props) {
               onClick={handleNext}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              {round >= 6 ? "查看结果 →" : `确认第 ${round} 爻 →`}
+              {round >= 6 ? "🔮 查看结果" : `确认第 ${round} 爻 →`}
             </button>
           )}
 
