@@ -205,7 +205,7 @@ export default function CoinCaster({ onComplete }: Props) {
               onClick={doThrow}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              投掷第 {round + 1} 次
+              投掷第 {round} 次
             </button>
           )}
 
