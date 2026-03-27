@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { castDivination, type DivinationResult } from "@/lib/api";
 
 const COIN_FACES = [
-  { label: "三正", sub: "老阳 ☰（变）", color: "#d4a843", emoji: "☰", isChange: true },
-  { label: "二正一反", sub: "少阳 ☰", color: "#e8c060", emoji: "☰", isChange: false },
-  { label: "一正二反", sub: "少阴 ☱", color: "#8a8070", emoji: "☱", isChange: false },
-  { label: "三反", sub: "老阴 ☱（变）", color: "#5a5040", emoji: "☱", isChange: true },
+  { label: "三正", sub: "老阳（变爻）", color: "#d4a843", isChange: true },
+  { label: "二正一反", sub: "少阳", color: "#e8c060", isChange: false },
+  { label: "一正二反", sub: "少阴", color: "#8a8070", isChange: false },
+  { label: "三反", sub: "老阴（变爻）", color: "#5a5040", isChange: true },
 ];
 
 interface Props {
@@ -141,12 +141,12 @@ export default function CoinCaster({ onComplete }: Props) {
               <div key={i} className="flex flex-col items-center gap-1">
                 <div
                   className={`
-                    w-16 h-16 rounded-full flex items-center justify-center
-                    text-2xl font-bold border-2 transition-all duration-300
+                    w-16 h-16 rounded-full flex flex-col items-center justify-center
+                    border-2 transition-all duration-300
                     ${isAnim
                       ? "border-[var(--color-gold)]/60 bg-[var(--color-surface)] animate-coin"
                       : coin === true
-                      ? "border-[var(--color-gold)] bg-gradient-to-br from-[var(--color-gold)]/20 to-[var(--color-gold-dark)]/20 shadow-[0_0_18px_rgba(212,168,67,0.5)]"
+                      ? "border-[var(--color-gold)] bg-gradient-to-br from-[var(--color-gold)]/15 to-[var(--color-gold-dark)]/15 shadow-[0_0_18px_rgba(212,168,67,0.5)]"
                       : coin === false
                       ? "border-[var(--color-text-muted)] bg-[var(--color-surface)]"
                       : "border-[var(--color-border)] bg-[var(--color-surface)] opacity-30"
@@ -154,13 +154,16 @@ export default function CoinCaster({ onComplete }: Props) {
                   `}
                 >
                   {isAnim ? (
-                    <span className="text-[var(--color-text-muted)]">?</span>
+                    <span className="text-[var(--color-text-muted)] text-lg">?</span>
                   ) : coin === true ? (
-                    <span style={{ color: "#d4a843" }}>☰</span>
+                    <span style={{ color: "#d4a843" }} className="text-xs font-bold">正</span>
                   ) : coin === false ? (
-                    <span className="text-[var(--color-text-muted)]">☱</span>
+                    <span className="text-[var(--color-text-muted)] text-xs font-bold">反</span>
                   ) : null}
                 </div>
+                <span className="text-[10px] text-[var(--color-text-muted)]">
+                  {isAnim ? "?" : coin === true ? "正面" : coin === false ? "反面" : ""}
+                </span>
               </div>
             );
           })}
@@ -176,7 +179,6 @@ export default function CoinCaster({ onComplete }: Props) {
                 border: `1.5px solid ${currentFace.color}50`,
               }}
             >
-              <span className="text-2xl">{currentFace.emoji}</span>
               <div className="text-left">
                 <p className="text-sm font-semibold" style={{ color: currentFace.color }}>
                   {currentFace.label}
@@ -265,7 +267,6 @@ export default function CoinCaster({ onComplete }: Props) {
               >
                 <span className="text-[var(--color-text-muted)] w-16">第 {i + 1} 爻</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{face.emoji}</span>
                   <span
                     className="px-3 py-0.5 rounded text-xs"
                     style={{
@@ -274,8 +275,9 @@ export default function CoinCaster({ onComplete }: Props) {
                       border: `1px solid ${face.color}30`,
                     }}
                   >
-                    {face.label} · {face.sub}
+                    {face.label}
                   </span>
+                  <span className="text-[var(--color-text-muted)] text-xs">{face.sub}</span>
                 </div>
               </div>
             ))}
