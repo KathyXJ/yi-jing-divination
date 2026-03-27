@@ -102,7 +102,8 @@ export default function CoinCaster({ onComplete }: Props) {
 
   // 进度
   const progress = history.length;
-  const nextThrow = history.length + 1; // 下一次是第几次 (1~6)
+  // nextThrow = 下一个要投的次数（1~6），completed=已确认完成数
+  const nextThrow = completed + 1;
 
   return (
     <div className="animate-fade-in space-y-6">
@@ -191,18 +192,18 @@ export default function CoinCaster({ onComplete }: Props) {
             </button>
           )}
 
-          {/* 投掷按钮（还有投掷机会） */}
-          {phase === "idle" && completed > 0 && completed < 6 && (
+          {/* 投掷按钮 */}
+          {phase === "idle" && completed >= 1 && nextThrow <= 6 && (
             <button
               onClick={handleThrow}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              投掷第 {completed + 1} 次
+              投掷第 {nextThrow} 次
             </button>
           )}
 
-          {/* 6次全部投完（待确认） */}
-          {phase === "idle" && completed >= 6 && (
+          {/* 6次全部投完（idle 状态下的查看结果） */}
+          {phase === "idle" && nextThrow > 6 && (
             <button
               onClick={handleConfirm}
               className="px-10 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-lg hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
@@ -222,7 +223,7 @@ export default function CoinCaster({ onComplete }: Props) {
               onClick={handleConfirm}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              {completed >= 6 ? "🔮 查看结果" : `确认第 ${completed} 爻 →`}
+              {nextThrow > 6 ? "🔮 查看结果" : `确认第 ${nextThrow} 爻 →`}
             </button>
           )}
 
