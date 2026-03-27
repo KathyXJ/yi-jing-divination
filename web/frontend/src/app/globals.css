@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #0a0a0f;
+  --color-surface: #111118;
+  --color-border: #1e1e2e;
+  --color-gold: #d4a843;
+  --color-gold-light: #f0d078;
+  --color-gold-dark: #8b6914;
+  --color-text: #e8e0d0;
+  --color-text-muted: #8a8070;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(212, 168, 67, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(212, 168, 67, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* 金色渐变文字 */
+.text-gold {
+  color: var(--color-gold);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 卦象符号 */
+.gua-yang {
+  color: var(--color-gold);
+}
+
+.gua-yin {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* 动画 */
+@keyframes coin-flip {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(1080deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 10px rgba(212, 168, 67, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(212, 168, 67, 0.6); }
+}
+
+.animate-coin {
+  animation: coin-flip 0.8s ease-in-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+
+/* 爻的符号线条 */
+.line-yang {
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-dark));
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(212, 168, 67, 0.4);
+}
+
+.line-yin {
+  height: 4px;
+  background: transparent;
+  border-top: 2px solid var(--color-text-muted);
+  border-bottom: 2px solid var(--color-text-muted);
+  border-radius: 0;
+  margin-top: -3px;
+  margin-bottom: -3px;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold-dark);
+  border-radius: 3px;
+}
+
+/* 玻璃态 */
+.glass {
+  background: rgba(17, 17, 24, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 168, 67, 0.15);
+}
