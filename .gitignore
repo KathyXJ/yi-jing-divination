@@ -1,0 +1,36 @@
+# Dependencies
+web/frontend/node_modules/
+web/backend/__pycache__/
+web/backend/.venv/
+
+# Build outputs
+web/frontend/.next/
+web/frontend/out/
+
+# Python bytecode
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Environment files (contain secrets)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cloudflare
+.webpack/

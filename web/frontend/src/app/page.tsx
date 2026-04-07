@@ -14,6 +14,7 @@ export default function HomePage() {
   const [question, setQuestion] = useState("");
   const [interpretation, setInterpretation] = useState<string>("");
   const [error, setError] = useState("");
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
 
   async function handleCastingComplete(castResult: DivinationResult) {
     setResult(castResult);
@@ -24,11 +25,14 @@ export default function HomePage() {
     if (!result) return;
     setPhase("interpreting");
     setError("");
+    setIsLoadingAI(true);
     try {
       const text = await interpretWithAI(result, question);
       setInterpretation(text);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "AI 解读失败，请检查后端服务");
+    } finally {
+      setIsLoadingAI(false);
     }
   }
 
@@ -38,6 +42,7 @@ export default function HomePage() {
     setInterpretation("");
     setQuestion("");
     setError("");
+    setIsLoadingAI(false);
   }
 
   return (
@@ -79,6 +84,7 @@ export default function HomePage() {
             interpretation={interpretation}
             question={question}
             onReset={handleReset}
+            isLoading={isLoadingAI}
           />
         )}
       </div>
@@ -105,8 +111,8 @@ function IntroPanel({ onStart }: { onStart: () => void }) {
           </p>
           <ul className="list-none pl-4 space-y-1 text-[var(--color-text-muted)]">
             <li>🟡 三正为 <span className="text-gold">老阳</span> → 变爻</li>
-            <li>🔴 二正一反为 <span className="text-[var(--color-text)]">少阳</span></li>
-            <li>🔵 一正二反为 <span className="text-[var(--color-text)]">少阴</span></li>
+            <li>🔴 二正一反为 <span className="text-[var(--color-text)]">少阴</span></li>
+            <li>🔵 一正二反为 <span className="text-[var(--color-text)]">少阳</span></li>
             <li>⚫ 三反为 <span className="text-gold">老阴</span> → 变爻</li>
           </ul>
           <p>
@@ -148,7 +154,7 @@ function ResultPanel({
   onReset: () => void;
   error: string;
 }) {
-  const { ben_gua, zhi_gua, yaos } = result;
+  const { guaxiang, ben_gua, zhi_gua, yaos } = result;
 
   return (
     <div className="animate-fade-in space-y-6">
@@ -158,10 +164,10 @@ function ResultPanel({
           <div className="flex justify-center gap-8 items-start">
             <div>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">本卦</p>
-              <GuaDisplay gua={ben_gua} yaos={yaos} isZhi={false} />
-              <p className="text-2xl font-bold text-gold mt-2">{ben_gua.name}</p>
+              <GuaDisplay gua={guaxiang} yaos={yaos} isZhi={false} />
+              <p className="text-2xl font-bold text-gold mt-2">{guaxiang.name}</p>
               <p className="text-xs text-[var(--color-text-muted)] mt-1">
-                {ben_gua.lower_symbol}下 + {ben_gua.upper_symbol}上
+                {guaxiang.lower_symbol}下 + {guaxiang.upper_symbol}上
               </p>
             </div>
             <div className="flex items-center pt-8 text-2xl text-[var(--color-gold-dark)]">→</div>

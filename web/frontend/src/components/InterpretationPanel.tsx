@@ -7,6 +7,109 @@ interface Props {
   interpretation: string;
   question: string;
   onReset: () => void;
+  isLoading?: boolean;
+}
+
+// 八卦符号
+const BAGUA_SYMBOLS: Record<string, string> = {
+  "999": "☰", "996": "☱", "969": "☲", "966": "☳",
+  "699": "☴", "696": "☵", "669": "☶", "666": "☷",
+};
+const BAGUA_NAMES: Record<string, string> = {
+  "999": "乾", "996": "兑", "969": "离", "966": "震",
+  "699": "巽", "696": "坎", "669": "艮", "666": "坤",
+};
+
+// 绘制六爻符号（从下到上显示：yaos[0]=初爻在下，yaos[5]=上爻在上）
+function GuaYaoLines({ yaos, showChange }: { yaos: { value: number; is_change: boolean }[]; showChange: boolean }) {
+  return (
+    <div className="flex flex-col gap-[2px] items-center">
+      {[...yaos].reverse().map((yao, idx) => {
+        // reversed: [上爻,...,初爻]，idx=0是上爻，idx=5是初爻
+        const isYang = yao.value === 9 || yao.value === 7;
+        const isChange = showChange && yao.is_change;
+        return (
+          <div key={idx} className="relative w-full h-4 flex items-center">
+            {isYang ? (
+              <div
+                className="w-full rounded-sm"
+                style={{
+                  height: "3px",
+                  background: "linear-gradient(90deg, #8b6914, #d4a843, #8b6914)",
+                  boxShadow: "0 0 4px rgba(212,168,67,0.4)",
+                }}
+              />
+            ) : (
+              <div className="w-full flex items-center h-3">
+                <div className="w-[48%] border-t-2 border-[#8a8070]" style={{ borderStyle: "solid" }} />
+                <div className="w-[4%]" />
+                <div className="w-[48%] border-t-2 border-[#8a8070]" style={{ borderStyle: "solid" }} />
+              </div>
+            )}
+            {isChange && (
+              <span className="absolute -right-5 text-xs" style={{ color: "#d4a843" }}>⚡</span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// 单卦完整面板
+function GuaPanel({
+  gua,
+  yaos,
+  isZhi,
+  guaTypeName,
+}: {
+  gua: { name: string; lower_code: string; upper_code: string; sentence?: string };
+  yaos: { yao_name: string; value: number; is_change: boolean; sentence: string }[];
+  isZhi: boolean;
+  guaTypeName: string;
+}) {
+  const upperName = BAGUA_NAMES[gua.upper_code] || "";
+  const lowerName = BAGUA_NAMES[gua.lower_code] || "";
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      {/* 标签 */}
+      <p className="text-xs text-[var(--color-text-muted)]">{guaTypeName}</p>
+
+      {/* 卦名大字 */}
+      <p className="text-2xl font-bold text-gold">{gua.name}卦</p>
+
+      {/* 六爻符号 */}
+      <div className="w-16">
+        <GuaYaoLines yaos={yaos} showChange={!isZhi} />
+      </div>
+
+      {/* 上下卦组合 */}
+      <p className="text-sm text-[var(--color-text-muted)]">
+        {upperName}{lowerName} · {BAGUA_SYMBOLS[gua.upper_code]}{BAGUA_SYMBOLS[gua.lower_code]}
+      </p>
+
+      {/* 卦辞 */}
+      {gua.sentence && (
+        <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36">
+          《{gua.name}》：{gua.sentence}
+        </p>
+      )}
+
+      {/* 爻辞（从下到上） */}
+      <div className="w-full mt-1">
+        {[...yaos].map((yao) => (
+          <div key={yao.yao_name} className="flex items-start gap-2 py-1.5 border-b border-[var(--color-border)] last:border-0">
+            <span className="text-xs text-[var(--color-text-muted)] w-8 shrink-0 flex items-center gap-0.5">
+              {yao.yao_name}
+              {!isZhi && yao.is_change && <span style={{ color: "#d4a843" }}>⚡</span>}
+            </span>
+            <span className="text-xs text-[var(--color-text)] leading-snug">{yao.sentence}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function InterpretationPanel({
@@ -14,43 +117,70 @@ export default function InterpretationPanel({
   interpretation,
   question,
   onReset,
+  isLoading = false,
 }: Props) {
-  const { ben_gua, zhi_gua, changed_indices } = result;
+  const { ben_gua, zhi_gua, yaos, zhi_yaos, changed_indices } = result;
 
-  // 简单的分段解析，将 AI 解读按标题分割
-  const sections = interpretation.split(/\n(?=\d+\.|#{1,3}\s)/g);
+  const changedNames = changed_indices.length > 0
+    ? changed_indices.map((i) => yaos[i].yao_name).join("、")
+    : "无";
+
+  const benUpperName = BAGUA_NAMES[ben_gua.upper_code] || "";
+  const benLowerName = BAGUA_NAMES[ben_gua.lower_code] || "";
+  const zhiUpperName = BAGUA_NAMES[zhi_gua.upper_code] || "";
+  const zhiLowerName = BAGUA_NAMES[zhi_gua.lower_code] || "";
+
+  // 按双换行分段（段落分隔），单换行在段内作为换行展示
+  const rawParagraphs = interpretation.split(/\n{2,}/);
+  // 每个段落再按单换行拆成多行
+  const paragraphs = rawParagraphs
+    .map((p) => p.split(/\n/).filter((l) => l.trim()))
+    .filter((lines) => lines.length > 0);
 
   return (
-    <div className="animate-fade-in space-y-6">
-      {/* 卦象摘要 */}
+    <div className="animate-fade-in space-y-5">
+
+      {/* ===== 左右对称卦象面板 ===== */}
       <div className="glass rounded-2xl p-6">
-        <div className="flex items-center justify-between">
-          <div className="text-center">
-            <p className="text-xs text-[var(--color-text-muted)] mb-1">本卦</p>
-            <p className="text-2xl font-bold text-gold">{ben_gua.name}</p>
+        <div className="flex items-start justify-center gap-12">
+          {/* 本卦 */}
+          <GuaPanel
+            gua={ben_gua}
+            yaos={yaos}
+            isZhi={false}
+            guaTypeName="本卦"
+          />
+
+          {/* 箭头 */}
+          <div className="flex items-center pt-10">
+            <span className="text-2xl text-[var(--color-gold-dark)]">→</span>
           </div>
-          <div className="text-2xl text-[var(--color-gold-dark)] mx-4">→</div>
-          <div className="text-center">
-            <p className="text-xs text-[var(--color-text-muted)] mb-1">之卦</p>
-            <p className="text-2xl font-bold text-gold">{zhi_gua.name}</p>
-          </div>
+
+          {/* 之卦 */}
+          <GuaPanel
+            gua={zhi_gua}
+            yaos={zhi_yaos}
+            isZhi={true}
+            guaTypeName="之卦"
+          />
         </div>
+      </div>
+
+      {/* ===== 占卜结果摘要 ===== */}
+      <div className="glass rounded-2xl p-5 text-center">
+        <p className="text-sm text-[var(--color-text)] leading-relaxed">
+          此次占卜结果：本卦{benLowerName}{benUpperName}《{ben_gua.name}》，
+          之卦{zhiLowerName}{zhiUpperName}《{zhi_gua.name}》，
+          变爻为{changedNames}。
+        </p>
         {question && (
-          <div className="mt-4 pt-4 border-t border-[var(--color-border)] text-center">
-            <p className="text-xs text-[var(--color-text-muted)]">你所问</p>
-            <p className="text-sm text-gold mt-1">{question}</p>
-          </div>
-        )}
-        {changed_indices.length > 0 && (
-          <div className="mt-3 text-center">
-            <p className="text-xs text-[var(--color-text-muted)]">
-              变爻：{changed_indices.map((i) => result.yaos[i].yao_name).join("、")}
-            </p>
-          </div>
+          <p className="text-sm text-[var(--color-text-muted)] mt-2">
+            所问：{question}
+          </p>
         )}
       </div>
 
-      {/* AI 解读 */}
+      {/* ===== AI 解读 ===== */}
       <div className="glass rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-lg">🔮</span>
@@ -58,29 +188,64 @@ export default function InterpretationPanel({
           <span className="text-xs text-[var(--color-text-muted)] ml-auto">DeepSeek</span>
         </div>
 
-        <div className="text-sm text-[var(--color-text)] leading-7 space-y-3">
-          {sections.map((section, i) => {
-            const trimmed = section.trim();
-            if (!trimmed) return null;
-            // 检查是否是标题行
-            const isHeading = /^\d+\.|\*{1,3}\s/.test(trimmed);
-            if (isHeading && trimmed.length < 50) {
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-12 gap-4">
+            <div className="animate-spin text-4xl">☰</div>
+            <p className="text-[var(--color-text-muted)] text-sm">AI 正在解读，请稍候…</p>
+            <p className="text-[var(--color-text-muted)] text-xs">DeepSeek 推理需要数十秒，请耐心等待</p>
+          </div>
+        ) : (
+          <div className="text-sm text-[var(--color-text)] leading-7 space-y-4">
+            {paragraphs.map((paraLines, i) => {
+              if (!paraLines || paraLines.length === 0) return null;
+              // 第一行：去掉 ** 标题标记
+              const firstLine = paraLines[0].trim().replace(/\*\*/g, "");
+              // 检查是否是章节标题（以 "一、" ~ "六、" 或 "①" 等开头）
+              const isHeading = /^#{1,3}\s*[一二三四五六]、/.test(firstLine)
+                || /^[一二三四五六]、/.test(firstLine)
+                || /^[①②③④⑤⑥⑦⑧⑨⑩][闪烁智慧古今君子之道]/.test(firstLine);
+              // 检查是否以列表项开头（- 或 *）
+              const isList = /^[-*]\s*/.test(firstLine);
+
+              if (isHeading) {
+                return (
+                  <div key={i} className="mt-5 first:mt-0">
+                    <p className="text-gold font-semibold text-base leading-relaxed">
+                      {firstLine.replace(/^#+\s*/, "")}
+                    </p>
+                    {paraLines.slice(1).map((line, j) => {
+                      const clean = line.trim().replace(/\*\*/g, "");
+                      if (!clean) return null;
+                      // 子标题（如 "① xxx" 或 "② xxx"）
+                      if (/^[①②③④⑤⑥⑦⑧⑨⑩][闪烁智慧古今君子之道]/.test(clean)) {
+                        return <p key={j} className="text-gold/80 font-medium mt-2">{clean}</p>;
+                      }
+                      return <p key={j} className="text-[var(--color-text)] leading-relaxed mt-1">{clean}</p>;
+                    })}
+                  </div>
+                );
+              }
+
+              // 普通段落：段内每行以 <br/> 分行展示
               return (
-                <p key={i} className="text-gold font-semibold mt-4 first:mt-0">
-                  {trimmed.replace(/^#{1,3}\s/, "")}
-                </p>
+                <div key={i} className="space-y-0.5">
+                  {paraLines.map((line, j) => {
+                    const clean = line.trim().replace(/\*\*/g, "").replace(/^[-*]\s*/, "");
+                    if (!clean) return null;
+                    return (
+                      <p key={j} className="text-[var(--color-text)] leading-relaxed">
+                        {clean}
+                      </p>
+                    );
+                  })}
+                </div>
               );
-            }
-            return (
-              <p key={i} className="text-[var(--color-text)]">
-                {trimmed}
-              </p>
-            );
-          })}
-        </div>
+            })}
+          </div>
+        )}
       </div>
 
-      {/* 操作按钮 */}
+      {/* ===== 操作按钮 ===== */}
       <div className="space-y-2">
         <button
           onClick={onReset}

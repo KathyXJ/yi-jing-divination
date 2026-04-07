@@ -3,29 +3,56 @@
 """
 from fastapi import APIRouter
 from pydantic import BaseModel
-from ..divination import perform_divination, yao_to_symbol
+from ..divination import perform_divination, yao_to_symbol, compute_hexagram_from_throws
 from ..data_loader import get_gua_info, get_single_gua_table, get_double_gua_table
 
 router = APIRouter(prefix="/api/divination", tags=["占卜"])
 
 
 class DivinationResponse(BaseModel):
+    guaxiang: dict
     ben_gua: dict
     zhi_gua: dict
     yaos: list
     zhi_yaos: list
     changed_indices: list
     total_throws: int
+    hua_gua: dict | None = None
+    divination_time: dict | None = None
 
 
 class GuaQuery(BaseModel):
     gua_name: str
 
 
+class ThrowResult(BaseModel):
+    """单次投掷结果：faceIdx 对应 COIN_FACES 的索引
+    faceIdx=0 → 三正(老阳,变爻), value=9
+    faceIdx=1 → 二正一反(少阴), value=8
+    faceIdx=2 → 一正二反(少阳), value=7
+    faceIdx=3 → 三反(老阴,变爻), value=6
+    """
+    faceIdx: int
+
+
 @router.post("/cast", response_model=DivinationResponse)
 async def cast_divination():
     """自动占卜：模拟掷六次硬币，返回本卦和之卦"""
     result = perform_divination()
+    # 添加爻的符号表示
+    for yao in result["yaos"]:
+        yao["symbol"] = yao_to_symbol(yao["value"])
+    for yao in result["zhi_yaos"]:
+        yao["symbol"] = yao_to_symbol(yao["value"])
+    return result
+
+
+@router.post("/compute", response_model=DivinationResponse)
+async def compute_divination(throws: list[int]):
+    """根据用户实际投掷的6次结果计算卦象"""
+    if len(throws) != 6:
+        return {"error": "需要 exactly 6 次投掷结果"}
+    result = compute_hexagram_from_throws(throws)
     # 添加爻的符号表示
     for yao in result["yaos"]:
         yao["symbol"] = yao_to_symbol(yao["value"])
