@@ -376,7 +376,7 @@ def _build_priority_rule(changed_count: int, ben_gua_name: str, zhi_gua_name: st
         return f"**【{changed_count}个动爻】** 按一般原则解读。"
 
 
-def build_interpretation_prompt(divination_result: dict, user_question: str = "") -> str:
+def build_interpretation_prompt(divination_result: dict, user_question: str = "", lang: str = "zh") -> str:
     """构建 AI 解读提示词"""
     ben = divination_result["ben_gua"]
     zhi = divination_result["zhi_gua"]
@@ -522,6 +522,7 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 class InterpretationRequest(BaseModel):
     divination_result: dict
     user_question: str = ""
+    lang: str = "zh"  # 语言选项：zh=中文，en=英文
 
 
 class InterpretationResponse(BaseModel):
@@ -585,15 +586,16 @@ async def interpret_divination(req: InterpretationRequest):
         }
         print(f"[DEBUG] Converted string ben_gua to dict: {ben_name}")
 
-    prompt = build_interpretation_prompt(divination_result, req.user_question)
+    prompt = build_interpretation_prompt(divination_result, req.user_question, req.lang)
 
     def _call_api():
         resp = requests.post(
             "https://api.deepseek.com/chat/completions",
             json={
                 "model": "deepseek-chat",
+                system_content = "You are a fortune-telling master with decades of experience in I Ching studies, speaking with wisdom and warmth." if lang == "en" else "你是一位精通《周易》的占卜师，拥有数十年易学研究经验，说话富有智慧且温暖。"
                 "messages": [
-                    {"role": "system", "content": "你是一位精通《周易》的占卜师，拥有数十年易学研究经验，说话富有智慧且温暖。"},
+                    {"role": "system", "content": system_content},
                     {"role": "user", "content": prompt}
                 ],
                 "max_tokens": 2048,
