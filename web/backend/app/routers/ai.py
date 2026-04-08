@@ -593,7 +593,10 @@ async def interpret_divination(req: InterpretationRequest):
             "https://api.deepseek.com/chat/completions",
             json={
                 "model": "deepseek-chat",
-                system_content = "You are a fortune-telling master with decades of experience in I Ching studies, speaking with wisdom and warmth." if lang == "en" else "你是一位精通《周易》的占卜师，拥有数十年易学研究经验，说话富有智慧且温暖。"
+                if req.lang == "en":
+                    system_content = "You are a fortune-telling master with decades of experience in I Ching studies, speaking with wisdom and warmth."
+                else:
+                    system_content = "你是一位精通《周易》的占卜师，拥有数十年易学研究经验，说话富有智慧且温暖。"
                 "messages": [
                     {"role": "system", "content": system_content},
                     {"role": "user", "content": prompt}
