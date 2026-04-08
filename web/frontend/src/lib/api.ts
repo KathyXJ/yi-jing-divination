@@ -89,7 +89,8 @@ export async function computeDivination(throws: number[]): Promise<DivinationRes
 
 export async function interpretWithAI(
   result: DivinationResult,
-  question: string
+  question: string,
+  lang: string = "zh"
 ): Promise<string> {
   const res = await fetchWithTimeout(`${BASE_URL}/api/ai/interpret`, {
     method: "POST",
@@ -97,6 +98,7 @@ export async function interpretWithAI(
     body: JSON.stringify({
       divination_result: result,
       user_question: question,
+      lang,  // 添加这行
     }),
   });
   if (!res.ok) throw new Error("AI 解读失败，请稍后重试");
