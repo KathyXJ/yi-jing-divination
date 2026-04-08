@@ -516,6 +516,9 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 ═══════════════════════════════════════
 
 请使用古典与当代结合的语言风格，既保持《周易》的智慧底蕴，又让现代人容易理解。回答要有深度，但不要过于晦涩。"""
+    
+    if lang == "en":
+        prompt = "IMPORTANT: You must respond in English ONLY...\n\n" + prompt
     return prompt
 
 
