@@ -8,6 +8,7 @@ interface Props {
   question: string;
   onReset: () => void;
   isLoading?: boolean;
+  lang?: "zh" | "en";
 }
 
 // 八卦符号
@@ -25,7 +26,6 @@ function GuaYaoLines({ yaos, showChange }: { yaos: { value: number; is_change: b
   return (
     <div className="flex flex-col gap-[2px] items-center">
       {[...yaos].reverse().map((yao, idx) => {
-        // reversed: [上爻,...,初爻]，idx=0是上爻，idx=5是初爻
         const isYang = yao.value === 9 || yao.value === 7;
         const isChange = showChange && yao.is_change;
         return (
@@ -118,12 +118,42 @@ export default function InterpretationPanel({
   question,
   onReset,
   isLoading = false,
+  lang = "zh",
 }: Props) {
   const { ben_gua, zhi_gua, yaos, zhi_yaos, changed_indices } = result;
 
+  const t = {
+    zh: {
+      benGua: "本卦",
+      zhiGua: "之卦",
+      resultSummary: (benLower: string, benUpper: string, benName: string, zhiLower: string, zhiUpper: string, zhiName: string, changed: string) =>
+        `此次占卜结果：本卦${benLower}${benUpper}《${benName}》，之卦${zhiLower}${zhiUpper}《${zhiName}》，变爻为${changed}。`,
+      askedLabel: "所问：",
+      aiTitle: "AI 解卦",
+      aiThinking: "AI 正在解读，请稍候…",
+      aiThinkHint: "DeepSeek 推理需要数十秒，请耐心等待",
+      castAgain: "再次占卜",
+      disclaimer: "占卜结果由程序随机生成，AI 解读仅供参考",
+      noChanged: "无",
+    },
+    en: {
+      benGua: "Original",
+      zhiGua: "Changed",
+      resultSummary: (benLower: string, benUpper: string, benName: string, zhiLower: string, zhiUpper: string, zhiName: string, changed: string) =>
+        `Divination result: Original ${benLower}${benUpper}《${benName}》, Changed ${zhiLower}${zhiUpper}《${zhiName}》, changing lines: ${changed}.`,
+      askedLabel: "Question: ",
+      aiTitle: "AI Interpretation",
+      aiThinking: "AI is interpreting, please wait…",
+      aiThinkHint: "DeepSeek reasoning takes ~30 seconds",
+      castAgain: "Divine Again",
+      disclaimer: "Divination results are randomly generated; AI interpretation is for reference only.",
+      noChanged: "none",
+    },
+  }[lang];
+
   const changedNames = changed_indices.length > 0
-    ? changed_indices.map((i) => yaos[i].yao_name).join("、")
-    : "无";
+    ? changed_indices.map((i) => yaos[i].yao_name).join(lang === "en" ? ", " : "、")
+    : t.noChanged;
 
   const benUpperName = BAGUA_NAMES[ben_gua.upper_code] || "";
   const benLowerName = BAGUA_NAMES[ben_gua.lower_code] || "";
@@ -148,7 +178,7 @@ export default function InterpretationPanel({
             gua={ben_gua}
             yaos={yaos}
             isZhi={false}
-            guaTypeName="本卦"
+            guaTypeName={t.benGua}
           />
 
           {/* 箭头 */}
@@ -161,7 +191,7 @@ export default function InterpretationPanel({
             gua={zhi_gua}
             yaos={zhi_yaos}
             isZhi={true}
-            guaTypeName="之卦"
+            guaTypeName={t.zhiGua}
           />
         </div>
       </div>
@@ -169,13 +199,11 @@ export default function InterpretationPanel({
       {/* ===== 占卜结果摘要 ===== */}
       <div className="glass rounded-2xl p-5 text-center">
         <p className="text-sm text-[var(--color-text)] leading-relaxed">
-          此次占卜结果：本卦{benLowerName}{benUpperName}《{ben_gua.name}》，
-          之卦{zhiLowerName}{zhiUpperName}《{zhi_gua.name}》，
-          变爻为{changedNames}。
+          {t.resultSummary(benLowerName, benUpperName, ben_gua.name, zhiLowerName, zhiUpperName, zhi_gua.name, changedNames)}
         </p>
         {question && (
           <p className="text-sm text-[var(--color-text-muted)] mt-2">
-            所问：{question}
+            {t.askedLabel}{question}
           </p>
         )}
       </div>
@@ -184,28 +212,24 @@ export default function InterpretationPanel({
       <div className="glass rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-lg">🔮</span>
-          <h2 className="text-lg font-semibold text-gold">AI 解卦</h2>
+          <h2 className="text-lg font-semibold text-gold">{t.aiTitle}</h2>
           <span className="text-xs text-[var(--color-text-muted)] ml-auto">DeepSeek</span>
         </div>
 
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12 gap-4">
             <div className="animate-spin text-4xl">☰</div>
-            <p className="text-[var(--color-text-muted)] text-sm">AI 正在解读，请稍候…</p>
-            <p className="text-[var(--color-text-muted)] text-xs">DeepSeek 推理需要数十秒，请耐心等待</p>
+            <p className="text-[var(--color-text-muted)] text-sm">{t.aiThinking}</p>
+            <p className="text-[var(--color-text-muted)] text-xs">{t.aiThinkHint}</p>
           </div>
         ) : (
           <div className="text-sm text-[var(--color-text)] leading-7 space-y-4">
             {paragraphs.map((paraLines, i) => {
               if (!paraLines || paraLines.length === 0) return null;
-              // 第一行：去掉 ** 标题标记
               const firstLine = paraLines[0].trim().replace(/\*\*/g, "");
-              // 检查是否是章节标题（以 "一、" ~ "六、" 或 "①" 等开头）
               const isHeading = /^#{1,3}\s*[一二三四五六]、/.test(firstLine)
                 || /^[一二三四五六]、/.test(firstLine)
                 || /^[①②③④⑤⑥⑦⑧⑨⑩][闪烁智慧古今君子之道]/.test(firstLine);
-              // 检查是否以列表项开头（- 或 *）
-              const isList = /^[-*]\s*/.test(firstLine);
 
               if (isHeading) {
                 return (
@@ -216,7 +240,6 @@ export default function InterpretationPanel({
                     {paraLines.slice(1).map((line, j) => {
                       const clean = line.trim().replace(/\*\*/g, "");
                       if (!clean) return null;
-                      // 子标题（如 "① xxx" 或 "② xxx"）
                       if (/^[①②③④⑤⑥⑦⑧⑨⑩][闪烁智慧古今君子之道]/.test(clean)) {
                         return <p key={j} className="text-gold/80 font-medium mt-2">{clean}</p>;
                       }
@@ -226,7 +249,6 @@ export default function InterpretationPanel({
                 );
               }
 
-              // 普通段落：段内每行以 <br/> 分行展示
               return (
                 <div key={i} className="space-y-0.5">
                   {paraLines.map((line, j) => {
@@ -251,10 +273,10 @@ export default function InterpretationPanel({
           onClick={onReset}
           className="w-full py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all"
         >
-          再次占卜
+          {t.castAgain}
         </button>
         <p className="text-center text-xs text-[var(--color-text-muted)]">
-          占卜结果由程序随机生成，AI 解读仅供参考
+          {t.disclaimer}
         </p>
       </div>
     </div>

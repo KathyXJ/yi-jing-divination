@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { computeDivination, type DivinationResult } from "@/lib/api";
 
 const COIN_FACES = [
@@ -10,7 +10,7 @@ const COIN_FACES = [
   { label: "三反", sub: "老阴（变爻）", color: "#5a5040", isChange: true },
 ];
 
-// 历史记录项：包含爻象数据和对应的faceIdx
+// 历史记录项
 type HistoryEntry = {
   face: typeof COIN_FACES[0];
   faceIdx: number;
@@ -18,12 +18,12 @@ type HistoryEntry = {
 
 interface Props {
   onComplete: (result: DivinationResult) => void;
+  lang?: "zh" | "en";
 }
 
 type Phase = "idle" | "animating" | "result" | "generating" | "calling";
 
-export default function CoinCaster({ onComplete }: Props) {
-  // completed = 已完成的投掷次数 (0~6)
+export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
   const [completed, setCompleted] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [coins, setCoins] = useState<boolean[]>([]);
@@ -34,6 +34,34 @@ export default function CoinCaster({ onComplete }: Props) {
   const [error, setError] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const t = lang === "zh" ? {
+    titleIdle: completed === 0 ? "准备开始" : completed >= 6 ? "六爻已定" : `第 ${completed} / 6 次投掷`,
+    generating: "解读中...",
+    hint: "每次投掷三枚硬币，得一爻",
+    btnStart: "🎲 开始投掷",
+    btnNext: `投掷第 ${completed + 1} 次`,
+    btnView: "🔮 查看结果",
+    btnConfirm: completed >= 6 ? "🔮 查看结果" : `确认第 ${completed} 爻 →`,
+    btnGenerate: "🌟 生成卦象",
+    tossing: "投掷中...",
+    history: "已得爻象",
+    yaoN: (n: number) => `第 ${n} 爻`,
+    errorMsg: "占卜失败，请重试",
+  } : {
+    titleIdle: completed === 0 ? "Ready to Begin" : completed >= 6 ? "Six Lines Complete" : `Toss ${completed} / 6`,
+    generating: "Interpreting...",
+    hint: "Toss three coins each time to obtain one yao",
+    btnStart: "🎲 Begin Tossing",
+    btnNext: `Toss #${completed + 1}`,
+    btnView: "🔮 View Results",
+    btnConfirm: completed >= 6 ? "🔮 View Results" : `Confirm Line ${completed} →`,
+    btnGenerate: "🌟 Generate Hexagram",
+    tossing: "Tossing...",
+    history: "Recorded Lines",
+    yaoN: (n: number) => `Line ${n}`,
+    errorMsg: "Divination failed, please try again",
+  };
+
   function clearTimer() {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -42,17 +70,14 @@ export default function CoinCaster({ onComplete }: Props) {
   }
 
   function doThrow() {
-    // 随机硬币
     const heads = Math.floor(Math.random() * 4);
     const needed: boolean[] =
       heads === 3 ? [true, true, true] :
       heads === 2 ? [true, true, false] :
       heads === 1 ? [true, false, false] :
                    [false, false, false];
-    // faceIdx: 3-正面数，对应 COIN_FACES[0]=3正面, [1]=2正面, [2]=1正面, [3]=0正面
     const faceIdx = 3 - needed.filter(Boolean).length;
     const face = COIN_FACES[faceIdx];
-    // shuffled 仅用于动画展示，随机打乱硬币位置
     const shuffled = [...needed].sort(() => Math.random() - 0.5);
 
     setPhase("animating");
@@ -66,21 +91,16 @@ export default function CoinCaster({ onComplete }: Props) {
     }, 800);
   }
 
-  // 点击"开始投掷"或"投掷第X次"
   function handleThrow() {
     if (phase !== "idle") return;
-
     if (completed === 0) {
-      // 第一次投掷
       setCompleted(1);
     } else {
-      // 后续投掷：在投掷前递增
       setCompleted(completed + 1);
     }
     doThrow();
   }
 
-  // 确认当前结果
   function handleConfirm() {
     if (phase !== "result") return;
     clearTimer();
@@ -90,10 +110,8 @@ export default function CoinCaster({ onComplete }: Props) {
     }
 
     if (completed >= 6) {
-      // 6次全部完成，等待用户主动触发卦象生成
       setPhase("generating");
     } else {
-      // 准备下一轮
       setCoins([]);
       setCurrentFace(null);
       setCurrentFaceIdx(-1);
@@ -101,11 +119,9 @@ export default function CoinCaster({ onComplete }: Props) {
     }
   }
 
-  // 用户主动触发卦象生成（增加仪式感）
   function triggerDivination() {
     if (phase !== "generating") return;
     setPhase("calling");
-    // 提取6次投掷的faceIdx，发送给后端计算卦象
     const faceIndices = history.map((entry) => entry.faceIdx);
     computeDivination(faceIndices)
       .then((data) => {
@@ -113,12 +129,11 @@ export default function CoinCaster({ onComplete }: Props) {
         timerRef.current = setTimeout(() => onComplete(data), 600);
       })
       .catch(() => {
-        setError("占卜失败，请重试");
+        setError(t.errorMsg);
         setPhase("generating");
       });
   }
 
-  // 进度
   const progress = history.length;
 
   return (
@@ -129,15 +144,11 @@ export default function CoinCaster({ onComplete }: Props) {
         <div className="text-center mb-8">
           <h2 className="text-xl font-semibold text-gold mb-1">
             {phase === "calling"
-              ? "解读中..."
-              : completed === 0 && phase === "idle"
-              ? "准备开始"
-              : completed >= 6
-              ? "六爻已定"
-              : `第 ${completed} / 6 次投掷`}
+              ? t.generating
+              : t.titleIdle}
           </h2>
           <p className="text-xs text-[var(--color-text-muted)]">
-            每次投掷三枚硬币，得一爻
+            {t.hint}
           </p>
         </div>
 
@@ -200,39 +211,36 @@ export default function CoinCaster({ onComplete }: Props) {
 
         {/* 按钮 */}
         <div className="text-center min-h-[56px] flex items-center justify-center">
-          {/* 初始状态 */}
           {completed === 0 && phase === "idle" && (
             <button
               onClick={handleThrow}
               className="px-10 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-lg hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              🎲 开始投掷
+              {t.btnStart}
             </button>
           )}
 
-          {/* 投掷按钮：completed 表示已完成次数，+1 表示下一次投掷的编号 */}
           {phase === "idle" && completed >= 1 && completed < 6 && (
             <button
               onClick={handleThrow}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              投掷第 {completed + 1} 次
+              {t.btnNext}
             </button>
           )}
 
-          {/* 6次全部投完（idle 状态下的查看结果） */}
           {phase === "idle" && completed >= 6 && (
             <button
               onClick={handleConfirm}
               className="px-10 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-lg hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              🔮 查看结果
+              {t.btnView}
             </button>
           )}
 
           {phase === "animating" && (
             <div className="text-[var(--color-text-muted)] text-sm animate-pulse">
-              投掷中...
+              {t.tossing}
             </div>
           )}
 
@@ -241,7 +249,7 @@ export default function CoinCaster({ onComplete }: Props) {
               onClick={handleConfirm}
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-base hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              {completed >= 6 ? "🔮 查看结果" : `确认第 ${completed} 爻 →`}
+              {t.btnConfirm}
             </button>
           )}
 
@@ -250,13 +258,13 @@ export default function CoinCaster({ onComplete }: Props) {
               onClick={triggerDivination}
               className="px-10 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold text-lg hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_20px_rgba(212,168,67,0.3)]"
             >
-              🌟 生成卦象
+              {t.btnGenerate}
             </button>
           )}
 
           {phase === "calling" && (
             <div className="text-[var(--color-text-muted)] text-sm animate-pulse">
-              正在生成卦象...
+              {t.generating}
             </div>
           )}
         </div>
@@ -288,7 +296,7 @@ export default function CoinCaster({ onComplete }: Props) {
       {/* 历史记录 */}
       {history.length > 0 && (
         <div className="glass rounded-2xl p-5">
-          <p className="text-xs text-[var(--color-text-muted)] mb-3 text-center">已得爻象</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3 text-center">{t.history}</p>
           <div className="space-y-1.5">
             {[...history].reverse().map((entry, i) => {
               if (!entry.face) return null;
@@ -297,7 +305,7 @@ export default function CoinCaster({ onComplete }: Props) {
                   key={history.length - 1 - i}
                   className="flex items-center justify-between text-sm py-1 border-b border-[var(--color-border)] last:border-0"
                 >
-                  <span className="text-[var(--color-text-muted)] w-16">第 {history.length - i} 爻</span>
+                  <span className="text-[var(--color-text-muted)] w-16">{t.yaoN(history.length - i)}</span>
                   <div className="flex items-center gap-2">
                     <span
                       className="px-3 py-0.5 rounded text-xs"

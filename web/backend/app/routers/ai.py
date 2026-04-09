@@ -376,7 +376,7 @@ def _build_priority_rule(changed_count: int, ben_gua_name: str, zhi_gua_name: st
         return f"**【{changed_count}个动爻】** 按一般原则解读。"
 
 
-def build_interpretation_prompt(divination_result: dict, user_question: str = "") -> str:
+def build_interpretation_prompt(divination_result: dict, user_question: str = "", lang: str = "zh") -> str:
     """构建 AI 解读提示词"""
     ben = divination_result["ben_gua"]
     zhi = divination_result["zhi_gua"]
@@ -523,6 +523,7 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 class InterpretationRequest(BaseModel):
     divination_result: dict
     user_question: str = ""
+    lang: str = "zh"
 
 
 class InterpretationResponse(BaseModel):
@@ -586,7 +587,13 @@ async def interpret_divination(req: InterpretationRequest):
         }
         print(f"[DEBUG] Converted string ben_gua to dict: {ben_name}")
 
-    prompt = build_interpretation_prompt(divination_result, req.user_question)
+    prompt = build_interpretation_prompt(divination_result, req.user_question, req.lang)
+
+    system_msg = (
+        "You are a master of the I Ching (Zhou Yi /周易), with decades of experience in Yi Jing studies. You speak with wisdom and warmth, blending classical insight with modern understanding. Always respond in English."
+        if req.lang == "en"
+        else "你是一位精通《周易》的占卜师，拥有数十年易学研究经验，说话富有智慧且温暖。"
+    )
 
     def _call_api():
         resp = requests.post(
@@ -594,7 +601,7 @@ async def interpret_divination(req: InterpretationRequest):
             json={
                 "model": "deepseek-chat",
                 "messages": [
-                    {"role": "system", "content": "你是一位精通《周易》的占卜师，拥有数十年易学研究经验，说话富有智慧且温暖。"},
+                    {"role": "system", "content": system_msg},
                     {"role": "user", "content": prompt}
                 ],
                 "max_tokens": 2048,
