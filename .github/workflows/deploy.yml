@@ -41,3 +41,4 @@ jobs:
           projectName: yi-jing-divination
           directory: web/frontend/out
           gitHubToken: ""
+          skipDupDeployments: true
