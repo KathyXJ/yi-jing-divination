@@ -5,6 +5,10 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -36,4 +40,4 @@ jobs:
           accountId: 1485a5e1d9b5c3b8ac80b5235a56bdfb
           projectName: yi-jing-divination
           directory: web/frontend/.next
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          gitHubToken: ""
