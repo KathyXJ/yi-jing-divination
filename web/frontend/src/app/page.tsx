@@ -59,9 +59,9 @@ export default function HomePage() {
           {/* Language Toggle */}
           <button
             onClick={toggleLang}
-            className="text-xs text-[var(--color-text-muted)] border border-[var(--color-border)] rounded-full px-3 py-1 hover:text-[var(--color-gold)] hover:border-[var(--color-gold-dark)] transition-all"
+            className="text-xs font-bold rounded-full px-4 py-1.5 bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_10px_rgba(212,168,67,0.3)] hover:shadow-[0_0_16px_rgba(212,168,67,0.5)]"
           >
-            {lang === "zh" ? "EN" : "中"}
+            {lang === "zh" ? "EN 中" : "中 EN"}
           </button>
         </div>
         <p className="text-[var(--color-text-muted)] text-sm tracking-wide">

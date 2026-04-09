@@ -3,16 +3,29 @@
 import { useState, useRef } from "react";
 import { computeDivination, type DivinationResult } from "@/lib/api";
 
-const COIN_FACES = [
-  { label: "三正", sub: "老阳（变爻）", color: "#d4a843", isChange: true },
-  { label: "二正一反", sub: "少阴", color: "#e8c060", isChange: false },
-  { label: "一正二反", sub: "少阳", color: "#8a8070", isChange: false },
-  { label: "三反", sub: "老阴（变爻）", color: "#5a5040", isChange: true },
+// 硬币面颜色配置（与语言无关）
+const COIN_FACE_COLORS = [
+  { color: "#d4a843", isChange: true },
+  { color: "#e8c060", isChange: false },
+  { color: "#8a8070", isChange: false },
+  { color: "#5a5040", isChange: true },
 ];
 
-// 历史记录项
+function getCoinFaces(t: {
+  face3heads: string; face2heads1tail: string; face1head2tails: string; face0heads: string;
+  faceOldYang: string; faceYoungYin: string; faceYoungYang: string; faceOldYin: string;
+}) {
+  return [
+    { label: t.face3heads, sub: t.faceOldYang, ...COIN_FACE_COLORS[0] },
+    { label: t.face2heads1tail, sub: t.faceYoungYin, ...COIN_FACE_COLORS[1] },
+    { label: t.face1head2tails, sub: t.faceYoungYang, ...COIN_FACE_COLORS[2] },
+    { label: t.face0heads, sub: t.faceOldYin, ...COIN_FACE_COLORS[3] },
+  ];
+}
+
+// 历史记录项（运行时类型）
 type HistoryEntry = {
-  face: typeof COIN_FACES[0];
+  face: { label: string; sub: string; color: string; isChange: boolean };
   faceIdx: number;
 };
 
@@ -27,7 +40,7 @@ export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
   const [completed, setCompleted] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [coins, setCoins] = useState<boolean[]>([]);
-  const [currentFace, setCurrentFace] = useState<typeof COIN_FACES[0] | null>(null);
+  const [currentFace, setCurrentFace] = useState<typeof coinFaces[0] | null>(null);
   const [currentFaceIdx, setCurrentFaceIdx] = useState<number>(-1);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [result, setResult] = useState<DivinationResult | null>(null);
@@ -47,6 +60,12 @@ export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
     history: "已得爻象",
     yaoN: (n: number) => `第 ${n} 爻`,
     errorMsg: "占卜失败，请重试",
+    coinHeads: "正面", coinTails: "反面",
+    coinHeadsShort: "正", coinTailsShort: "反",
+    castingImage: "投掷的图像",
+    face3heads: "三正", face2heads1tail: "二正一反", face1head2tails: "一正二反", face0heads: "三反",
+    faceOldYang: "老阳（变爻）", faceYoungYin: "少阴", faceYoungYang: "少阳", faceOldYin: "老阴（变爻）",
+    faceOldYangShrt: "老阳", faceOldYinShrt: "老阴", faceYoungYinShrt: "少阴", faceYoungYangShrt: "少阳",
   } : {
     titleIdle: completed === 0 ? "Ready to Begin" : completed >= 6 ? "Six Lines Complete" : `Toss ${completed} / 6`,
     generating: "Interpreting...",
@@ -60,7 +79,15 @@ export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
     history: "Recorded Lines",
     yaoN: (n: number) => `Line ${n}`,
     errorMsg: "Divination failed, please try again",
+    coinHeads: "Heads", coinTails: "Tails",
+    coinHeadsShort: "H", coinTailsShort: "T",
+    castingImage: "Casting Image",
+    face3heads: "3 Heads", face2heads1tail: "2 Heads 1 Tail", face1head2tails: "1 Head 2 Tails", face0heads: "3 Tails",
+    faceOldYang: "Old Yang (changing)", faceYoungYin: "Young Yin", faceYoungYang: "Young Yang", faceOldYin: "Old Yin (changing)",
+    faceOldYangShrt: "Old Yang", faceOldYinShrt: "Old Yin", faceYoungYinShrt: "Young Yin", faceYoungYangShrt: "Young Yang",
   };
+
+  const coinFaces = getCoinFaces(t);
 
   function clearTimer() {
     if (timerRef.current) {
@@ -77,7 +104,7 @@ export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
       heads === 1 ? [true, false, false] :
                    [false, false, false];
     const faceIdx = 3 - needed.filter(Boolean).length;
-    const face = COIN_FACES[faceIdx];
+    const face = coinFaces[faceIdx];
     const shuffled = [...needed].sort(() => Math.random() - 0.5);
 
     setPhase("animating");
@@ -153,6 +180,7 @@ export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
         </div>
 
         {/* 硬币 */}
+        <p className="text-xs text-[var(--color-text-muted)] text-center mb-4">{t.castingImage}</p>
         <div className="flex justify-center gap-6 mb-8">
           {[0, 1, 2].map((i) => {
             const coin = coins[i];
