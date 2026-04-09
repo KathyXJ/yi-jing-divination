@@ -377,7 +377,7 @@ def _build_priority_rule(changed_count: int, ben_gua_name: str, zhi_gua_name: st
 
 
 def build_interpretation_prompt(divination_result: dict, user_question: str = "", lang: str = "zh") -> str:
-    """构建 AI 解读提示词"""
+    """构建 AI 解读提示词（支持中/英）"""
     ben = divination_result["ben_gua"]
     zhi = divination_result["zhi_gua"]
     yaos = divination_result["yaos"]
@@ -387,70 +387,69 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
     hua_gua = divination_result.get("hua_gua")
     div_time = divination_result.get("divination_time", {})
 
-    # 变爻详细信息
-    changed_yao_info = ""
+    # ── 变爻信息 ──
+    changed_yao_info_en = []
+    changed_yao_info_zh = []
     if changed:
-        changed_yaos = [yaos[i] for i in changed if i < len(yaos)]
-        changed_yao_info = "本次占卜变爻：\n"
-        for yao in changed_yaos:
-            pos = (yao.get("position") or 1) - 1
-            if 0 <= pos < len(zhi_yaos):
-                zhi_yao_name = zhi_yaos[pos]["yao_name"]
-            else:
-                zhi_yao_name = "（信息不全）"
-            changed_yao_info += f"- {yao['yao_name']}：{yao['sentence']} → 变后为 {zhi_yao_name}\n"
+        for i in changed:
+            if i < len(yaos):
+                yao = yaos[i]
+                pos = yao.get("position", i + 1) - 1
+                zhi_yao_name = zhi_yaos[pos]["yao_name"] if 0 <= pos < len(zhi_yaos) else "(data unavailable)"
+                changed_yao_info_en.append(f"- {yao['yao_name']}: {yao['sentence']} → changes to {zhi_yao_name}")
+                changed_yao_info_zh.append(f"- {yao['yao_name']}：{yao['sentence']} → 变后为 {zhi_yao_name}")
     else:
-        changed_yao_info = "无（本卦无变爻，为静卦）"
+        changed_yao_info_en.append("(None — this is a静卦, a still hexagram with no changing lines)")
+        changed_yao_info_zh.append("无（本卦无变爻，为静卦）")
 
-    # 互卦信息（3爻动时展示）
-    hua_gua_info = ""
+    # ── 互卦信息 ──
+    hua_gua_en = ""
+    hua_gua_zh = ""
     if changed_count == 3 and hua_gua:
-        hua_gua_info = f"""
-互卦（中爻，用于观察演变过程）：《{hua_gua['name']}》
+        hua_gua_en = f"""\nInterchangeable hexagram (Hùa Guà — for observing the transitional process): {hua_gua['name']}
+  - Structure: {hua_gua['lower_symbol']} (lower) / {hua_gua['upper_symbol']} (upper)
+  - Hexagram meaning: {hua_gua.get('sentence', '(none)')}"""
+        hua_gua_zh = f"""\n互卦（中爻，用于观察演变过程）：《{hua_gua['name']}》
   - 卦象：{hua_gua['lower_symbol']}下 + {hua_gua['upper_symbol']}上
   - 卦辞：{hua_gua.get('sentence', '（无）')}"""
 
-    # 第二步：解读优先级
-    priority_rule = _build_priority_rule(changed_count, ben["name"], zhi["name"], changed)
+    # ── 第二步到第四步（与语言无关，使用数字和符号保持一致性）──
+    # 体用规则构建（中文，用于注入）
+    tiyong_zh = _build_tiyong_rule(changed, ben, zhi, div_time, zhi_yaos, hua_gua)
+    sancai_zh, _ = _build_sancai_rule(changed if isinstance(changed, list) else [], changed_count, yaos)
+    priority_zh = _build_priority_rule(changed_count, ben["name"], zhi["name"], changed)
 
-    # 第三步：体用生克
-    tiyong_rule = _build_tiyong_rule(changed, ben, zhi, div_time, zhi_yaos, hua_gua)
-
-    # 体用关系文字提取（用于综合判断）
-    # 对于3爻动及以上：京房八宫卦的五行已直接在tiyong_rule中明确，
-    # 提取时把整行带上，确保第五步不混淆
-    try:
-        if '体用生克：' in tiyong_rule:
-            line = tiyong_rule.split('体用生克：')[1].split('\n')[0].strip()
-            # 3爻动及以上时，用更明确的格式强制AI使用正确的五行
-            if changed_count in (3, 4, 5, 6):
-                # 从tiyong_rule中直接找到体卦五行和用卦五行
-                lines = tiyong_rule.split('\n')
-                ti_line = next((l for l in lines if '体卦五行' in l), '')
-                yong_line = next((l for l in lines if '用卦五行' in l), '')
-                tiyong_text = f"（{ti_line.strip()}，{yong_line.strip()}）→ {line}"
-            else:
-                tiyong_text = line
-        elif '判断：' in tiyong_rule:
-            tiyong_text = tiyong_rule.split('判断：')[1].split('\n')[0].strip()
+    def extract_tiyong_text(tiyong_rule: str) -> str:
+        if "体用生克：" in tiyong_rule:
+            seg = tiyong_rule.split("体用生克：")[1].split("\n")[0].strip()
+        elif "判断：" in tiyong_rule:
+            seg = tiyong_rule.split("判断：")[1].split("\n")[0].strip()
         else:
-            tiyong_text = '（见体用生克分析）'
-    except:
-        tiyong_text = '（见体用生克分析）'
+            seg = "(see body/weight analysis above)"
+        if changed_count in (3, 4, 5, 6) and "体卦五行" in tiyong_rule:
+            lines = tiyong_rule.split("\n")
+            ti_l = next((l for l in lines if "体卦五行" in l), "")
+            yong_l = next((l for l in lines if "用卦五行" in l), "")
+            seg = f"（{ti_l.strip()}，{yong_l.strip()}）→ {seg}"
+        return seg
 
-    # 3爻动及以上时，加强约束：强制使用京房八宫卦查出的五行
+    tiyong_text = extract_tiyong_text(tiyong_zh)
+
+    # ── 五行约束（用于3爻动及以上）──
     if changed_count in (3, 4, 5, 6):
         ben_gong, ben_gong_wx = _find_gua_gong_and_wuxing(ben["name"])
         zhi_gong, zhi_gong_wx = _find_gua_gong_and_wuxing(zhi["name"])
-        tiyong_constraint = f"⚠️ 重要：本卦《{ben['name']}》属{ben_gong}，体卦五行={ben_gong_wx}；之卦《{zhi['name']}》属{zhi_gong or '未知'}，用卦五行={zhi_gong_wx or '未知'}。请在【定量】判断中严格使用上述数据，不得自行重新推算。"
+        tiyong_constraint_zh = f"⚠️ 重要：本卦《{ben['name']}》属{ben_gong}，体卦五行={ben_gong_wx}；之卦《{zhi['name']}》属{zhi_gong or '未知'}，用卦五行={zhi_gong_wx or '未知'}。请在【定量】判断中严格使用上述数据，不得自行重新推算。"
+        tiyong_constraint_en = f"IMPORTANT: Original hexagram {ben['name']} belongs to the {ben_gong} palace (body element: {ben_gong_wx}); Changed hexagram {zhi['name']} belongs to {zhi_gong or 'unknown'} palace (use element: {zhi_gong_wx or 'unknown'}). You MUST use these exact element assignments in your【Quantitative】analysis — do NOT recalculate them from hexagram names."
     else:
-        tiyong_constraint = ""
+        tiyong_constraint_zh = ""
+        tiyong_constraint_en = ""
 
-    # 第四步：三才定位（根据动爻位置）
-    changed_positions = changed if isinstance(changed, list) else []
-    sān_cái_rules, _ = _build_sancai_rule(changed_positions, changed_count, yaos)
+    # ── 五行名称映射（用于英文）──
+    WX_NAMES_EN = {"金": "Metal", "木": "Wood", "水": "Water", "火": "Fire", "土": "Earth"}
 
-    prompt = f"""你是一位精通《周易》的占卜师，请严格遵循以下五步解卦，为用户提供深入准确的解读。
+    # ── 构建中文版 prompt ──
+    prompt_zh = f"""你是一位精通《周易》的占卜师，请严格遵循以下五步解卦，为用户提供深入准确的解读。
 
 {'用户的问题：' + user_question if user_question else '（用户未提供具体问题，请从卦象本身出发进行解读）'}
 
@@ -466,29 +465,29 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
   - 卦象：{zhi['lower_symbol']}下 + {zhi['upper_symbol']}上
   - 卦辞：{zhi['sentence']}
 
-动爻：{changed_yao_info}
-{hua_gua_info}
+动爻：{''.join(changed_yao_info_zh)}
+{hua_gua_zh}
 
 ═══════════════════════════════════════
 【第二步 · 确定解读优先级】
 核心铁律："爻为君，卦为臣"——变爻的爻辞优先级高于卦辞。
 ═══════════════════════════════════════
 
-{priority_rule}
+{priority_zh}
 
 ═══════════════════════════════════════
 【第三步 · 体用生克（辅助定量分析）】
 核心原则：爻辞/卦辞是"定性"主干，体用生克是"定量"辅助。两者结合，方得完整判断。
 ═══════════════════════════════════════
 
-{tiyong_rule}
+{tiyong_zh}
 
 ═══════════════════════════════════════
 【第四步 · 三才定位】
 将动爻的位置与现实处境结合，找到你可以发力的方向。
 ═══════════════════════════════════════
 
-{sān_cái_rules}
+{sancai_zh}
 
 ═══════════════════════════════════════
 【第五步 · 综合判断（必须全部包含四项）】
@@ -503,7 +502,7 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 根据动爻位置（三才：初爻=地、二三爻=人、四五爻=人、上爻=天），指出问题出在哪个阶段。
 
 **③ 定量**
-{tiyong_constraint}
+{tiyong_constraint_zh}
 直接使用第三步给出的体用生克关系（{tiyong_text}），判断你与外部环境的能量对比。
 绝对禁止：自行根据卦名重新推算体卦/用卦五行，或自行判断生克关系——必须严格采用第三步中已明确给出的结果。
 
@@ -517,7 +516,232 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 
 请使用古典与当代结合的语言风格，既保持《周易》的智慧底蕴，又让现代人容易理解。回答要有深度，但不要过于晦涩。"""
 
-    return prompt
+    # ── 构建英文版 prompt ──
+    changed_names_en = ", ".join(yaos[i]["yao_name"] for i in changed) if changed else "none"
+    position_meaning_en = {
+        0: "Ground/Foot (the foundation — where you stand)",
+        1: "Ground/Foot (inner strength, inner resources)",
+        2: "Person/Middle (cautious action, middle road)",
+        3: "Person/Middle (position of transition, adapt to circumstances)",
+        4: "Heaven/High (high position, guard against arrogance)",
+        5: "Heaven/Top (extreme, retreat or transform)",
+    }
+    changed_positions_en = [position_meaning_en.get(i, f"position {i+1}") for i in (changed if isinstance(changed, list) else [])]
+
+    def get_priority_en(count):
+        if count == 0:
+            return "This is a静卦 (Still Hexagram) — no lines are changing. The situation is at rest. Focus entirely on the hexagram judgment (卦辞) and its "virtue" — the energy it represents. No internal driving force. Advise the user to stay steady and wait."
+        elif count == 1:
+            return f"One line is changing (line(s): {changed_names_en}). This is the KEY node of the entire situation. Focus primarily on the changing line's爻辞 (line text). Use the changed hexagram's corresponding line text as a glimpse of the future direction."
+        elif count == 2:
+            pos = changed[:]
+            lower = min(pos); upper = max(pos)
+            return f"Two lines are changing (lines {', '.join(changed_names_en.split(', '))}). Focus mainly on the爻辞 of line {lower+1} (the lower position), and use line {upper+1} (the higher position) as secondary context — the higher line represents the external/visible outcome, the lower represents internal/root cause."
+        elif count == 3:
+            return f"Three lines are changing — a MAJOR transformation affecting both inner and outer structures. The entire hexagram is in flux. Look at BOTH hexagram judgments (卦辞 of original and changed) for the full picture. Original = current reality; Changed = future destination."
+        elif count == 4:
+            return f"Four lines are changing — most of the hexagram is transforming. The TWO STILL lines are the only constants you can rely on. Focus on those still lines, especially the one in the lower position (near the root). These represent what remains steady in a changing situation."
+        elif count == 5:
+            return f"Five lines are changing — only one line remains still. That single still line is the key to the entire situation. Everything else is in motion; hold fast to what is unmoving."
+        elif count == 6:
+            return f"All six lines are changing — total transformation. The entire structure collapses and rebuilds. For 乾 (all yang), follow '用九' — '群龙无首，吉' (no single leader, harmony). For 坤 (all yin), follow '用六' — '利永贞' (lasting perseverance). Otherwise, interpret through the changed hexagram's meaning."
+        return f"{count} lines changing."
+
+    def get_tiyong_en(count, ben, zhi, hua_gua, div_time):
+        SYM_TO_WX = {"☰": "金", "☱": "金", "☲": "火", "☳": "木", "☴": "木", "☵": "水", "☷": "土", "☶": "土"}
+        GUA_WUXING = {s: SYM_TO_WX.get(s, "土") for s in ["☰", "☱", "☳", "☴", "☵", "☲", "☷", "☶"]}
+
+        if count == 0:
+            ti_el = GUA_WUXING.get(ben["upper_symbol"], "土")
+            return f"Body-Use: Static balance (静卦). The entire hexagram is the Body, with no separate Use. Element: {WX_NAMES_EN.get(ti_el, ti_el)}."
+
+        ti_elements = []
+        yong_elements = []
+        ti_gua_str = ""; yong_gua_str = ""
+        ti_pos_str = ""; yong_pos_str = ""
+
+        if count == 1:
+            pos = changed[0] if changed else 0
+            ti_is_upper = pos >= 3
+            ti_gua = "upper" if ti_is_upper else "lower"
+            yong_gua = "lower" if ti_is_upper else "upper"
+            ti_el = GUA_WUXING.get(ben["upper_symbol"] if ti_is_upper else ben["lower_symbol"], "土")
+            yong_el = GUA_WUXING.get(ben["lower_symbol"] if ti_is_upper else ben["upper_symbol"], "火")
+            ti_elements = [ti_el]; yong_elements = [yong_el]
+            ti_gua_str = ti_gua; yong_gua_str = yong_gua
+            ti_pos_str = f"{'upper' if ti_is_upper else 'lower'} trigram ({ben['upper_symbol'] if ti_is_upper else ben['lower_symbol']})"; yong_pos_str = f"{'lower' if ti_is_upper else 'upper'} trigram ({ben['lower_symbol'] if ti_is_upper else ben['upper_symbol']})"
+        elif count == 2:
+            all_pos = set(range(6))
+            static = all_pos - set(changed)
+            lower_changed = sum(1 for p in changed if p < 3)
+            upper_changed = len(changed) - lower_changed
+            if lower_changed == 0:
+                ti_gua_str, yong_gua_str = "lower", "upper"
+                ti_el = GUA_WUXING.get(ben["lower_symbol"], "土"); yong_el = GUA_WUXING.get(ben["upper_symbol"], "火")
+                ti_pos_str = f"lower trigram ({ben['lower_symbol']})"; yong_pos_str = f"upper trigram ({ben['upper_symbol']})"
+            elif upper_changed == 0:
+                ti_gua_str, yong_gua_str = "upper", "lower"
+                ti_el = GUA_WUXING.get(ben["upper_symbol"], "土"); yong_el = GUA_WUXING.get(ben["lower_symbol"], "火")
+                ti_pos_str = f"upper trigram ({ben['upper_symbol']})"; yong_pos_str = f"lower trigram ({ben['lower_symbol']})"
+            else:
+                ti_gua_str, yong_gua_str = "lower", "upper"
+                ti_el = GUA_WUXING.get(ben["lower_symbol"], "土"); yong_el = GUA_WUXING.get(ben["upper_symbol"], "火")
+                ti_pos_str = f"lower trigram ({ben['lower_symbol']})"; yong_pos_str = f"upper trigram ({ben['upper_symbol']})"
+            ti_elements = [ti_el]; yong_elements = [yong_el]
+        elif count in (3, 4, 5, 6):
+            ben_gong, bwx = _find_gua_gong_and_wuxing(ben["name"])
+            zhi_gong, zwx = _find_gua_gong_and_wuxing(zhi["name"])
+            ti_el = bwx or "土"; yong_el = zwx or "火"
+            ti_elements = [WX_NAMES_EN.get(ti_el, ti_el)]; yong_elements = [WX_NAMES_EN.get(yong_el, yong_el)]
+            ti_pos_str = f"{ben_gong} palace main element ({WX_NAMES_EN.get(ti_el, ti_el)})"; yong_pos_str = f"{zhi_gong or 'unknown'} palace element ({WX_NAMES_EN.get(yong_el, yong_el)})"
+
+        def shengke_en(ti, yong):
+            pairs = [("Wood","Fire"),("Fire","Earth"),("Earth","Metal"),("Metal","Water"),("Water","Wood")]
+            if ti == yong:
+                return "Body and Use are in harmony (比和) — stable and balanced."
+            if (ti, yong) in pairs:
+                return f"Use nourishes Body ({yong} → {ti}) — FAVORABLE. External energy supports you."
+            rev = [("Wood","Earth"),("Earth","Water"),("Water","Fire"),("Fire","Metal"),("Metal","Wood")]
+            if (ti, yong) in rev:
+                return f"Body controls Use ({ti} → {yong}) — productive but requires effort."
+            if (yong, ti) in pairs:
+                return f"Body generates Use ({ti} → {yong}) — draining, energy leaks away."
+            if (yong, ti) in rev:
+                return f"Use controls Body ({yong} → {ti}) — DANGEROUS. External force overwhelms you."
+            return f"Body {ti}, Use {yong}"
+
+        sk = shengke_en(ti_elements[0], yong_elements[0])
+        ti_pos_str = ti_pos_str.replace("土","Earth").replace("火","Fire").replace("水","Water").replace("金","Metal").replace("木","Wood")
+        yong_pos_str = yong_pos_str.replace("土","Earth").replace("火","Fire").replace("水","Water").replace("金","Metal").replace("木","Wood")
+
+        if count in (0, 1, 2):
+            return f"Body-Use analysis ({count} changing line{'s' if count != 1 else ''}): Body element = {ti_elements[0]} (in the {ti_pos_str}), Use element = {yong_elements[0]} (in the {yong_pos_str}). Relationship: {sk}"
+        else:
+            return f"Jingfang Gong analysis ({count} changing lines): Body element = {ti_elements[0]} (from {ben['name']}'s {ti_pos_str}), Use element = {yong_elements[0]} (from {zhi['name']}'s {yong_pos_str}). Relationship: {sk}"
+
+    def get_sancai_en(changed_list, count, yaos):
+        if count == 0:
+            return "Three Powers (三才) — Still Hexagram: All three levels (Ground/Person/Heaven) are at rest. No active force anywhere. Advise calm observation, maintain current position, do not act."
+        involved = []
+        not_inv = ["Ground (lower)", "Person (middle)", "Heaven (upper)"]
+        rules = []
+        for i, pos in enumerate(changed_list):
+            desc = [
+                "Ground/Fundament — Adjust your foundation, root strategy, or underlying conditions. Act from the source.",
+                "Ground/Fundament — Build inner strength, support others, or stabilize the inner foundation.",
+                "Person/Middle — Proceed with caution. This is a difficult in-between position — do not rush.",
+                "Person/Middle — You have entered a higher level. Assess the situation and adapt flexibly.",
+                "Heaven/High — You have reached a prominent position. Maintain virtue and balance — do not become arrogant.",
+                "Heaven/Top — Extreme position. Consider retreat or transformation. Avoid extremism.",
+            ]
+            rules.append(f"  Line {pos+1} ({yaos[pos]['yao_name']}): {desc[pos]}")
+            involved.append(desc[pos].split("—")[0].strip())
+            if "Ground" in involved[-1]: not_inv = [n for n in not_inv if "Ground" not in n]
+            if "Person" in involved[-1]: not_inv = [n for n in not_inv if "Person" not in n]
+            if "Heaven" in involved[-1]: not_inv = [n for n in not_inv if "Heaven" not in n]
+        note = f"\n\n⚠️ Only the following Three Powers levels have changing lines: {', '.join(involved)}. Levels {', '.join(not_inv)} have NO changing lines — do NOT analyze or mention these levels."
+        if count == 1:
+            note += f"\n\nThe sole changing line is at {changed_list[0]+1}: {position_meaning_en.get(changed_list[0], '')}."
+        return "Three Powers (三才) positioning — match changing line positions to real-world areas:\n" + "\n".join(rules) + note
+
+    lunar = div_time.get("lunar_month", "")
+    yue_wx = div_time.get("yueling_wuxing", "")
+    yue_state = div_time.get("yueling_state", "")
+
+    priority_en = get_priority_en(changed_count)
+    tiyong_en = get_tiyong_en(changed_count, ben, zhi, hua_gua, div_time)
+    sancai_en = get_sancai_en(changed if isinstance(changed, list) else [], changed_count, yaos)
+
+    if yue_state:
+        state_map = {"旺": "at its peak (strongest)", "帝旺": "at imperial peak", "相": "in a growing phase",
+                     "休": "resting/recovering", "囚": "imprisoned/constrained", "死": "exhausted/declining"}
+        yue_desc = state_map.get(yue_state, yue_state)
+    else:
+        yue_desc = "moderate"
+
+    prompt_en = f"""You are a master of the I Ching (Zhou Yi / 周易). Using the Five-Step method below, give the user a deep, accurate, and practical interpretation.
+
+{'User\'s question: ' + user_question if user_question else '(No specific question asked — read the hexagram from its imagery and structure.)'}
+
+══════════════════════════════════════════════════════
+STEP 1 — IDENTIFY THE THREE ELEMENTS
+══════════════════════════════════════════════════════
+
+ORIGINAL HEXAGRAM (本卦 Ben Guà): {ben['name']}
+  - Structure: {ben['lower_symbol']} (lower trigram) / {ben['upper_symbol']} (upper trigram)
+  - Hexagram judgment: {ben['sentence']}
+
+CHANGED HEXAGRAM (之卦 Zhì Guà): {zhi['name']}
+  - Structure: {zhi['lower_symbol']} (lower trigram) / {zhi['upper_symbol']} (upper trigram)
+  - Hexagram judgment: {zhi['sentence']}
+
+CHANGING LINES: {chr(10).join(changed_yao_info_en)}
+{hua_gua_en}
+
+LUNAR CONTEXT: {lunar} — Element: {WX_NAMES_EN.get(yue_wx, yue_wx)}, State: {yue_desc}
+
+══════════════════════════════════════════════════════
+STEP 2 — DETERMINE INTERPRETATION PRIORITY
+Core rule: "Lines are the sovereign, hexagrams are the ministers"
+→ Changing line text ALWAYS takes priority over hexagram judgment.
+══════════════════════════════════════════════════════
+
+{priority_en}
+
+══════════════════════════════════════════════════════
+STEP 3 — BODY-USER ELEMENTAL ANALYSIS (Quantitative)
+Core: Line/hexagram texts are QUALITATIVE (what kind of situation).
+Body-Use analysis is QUANTITATIVE (energy balance with environment).
+Combine both for a complete reading.
+══════════════════════════════════════════════════════
+
+{tiyong_en}
+
+{tiyong_constraint_en}
+
+══════════════════════════════════════════════════════
+STEP 4 — THREE POWERS POSITIONING
+Map each changing line to a real-world domain where you can take action.
+  Lines 1-2 = Ground (foundation, inner resources, starting conditions)
+  Lines 3-4 = Person (mid-stage, social context, relationships)
+  Line 5  = Heaven (high position, public stage, outcome)
+  Line 6  = Top (extreme, end-cycle, transformation zone)
+══════════════════════════════════════════════════════
+
+{sancai_en}
+
+══════════════════════════════════════════════════════
+STEP 5 — SYNTHESIS (Include ALL four dimensions below)
+══════════════════════════════════════════════════════
+
+Provide your conclusion across exactly four dimensions:
+
+**① QUALITY (定性)**
+Based on the key judgment words in the changing line(s) and hexagram text (auspicious: 元吉/贞吉/无咎/悔亡; inauspicious: 吝/凶 etc.), set the overall tone for this reading.
+
+**② POSITIONING (定位)**
+Which "stage" does this situation occupy? Use the Three Powers (Ground/Person/Heaven) and the specific line positions to pinpoint where the issue lies — the root (ground), the present challenge (person), or the larger context (heaven).
+
+**③ QUANTITATIVE (定量)**
+{tiyong_constraint_en}
+Use the Body-Use relationship from Step 3 to assess the energy balance between you and your environment. DO NOT recalculate elements from hexagram names — use the exact values given in Step 3.
+
+**④ DIRECTION (定向)**
+Based on the Changed Hexagram (之卦 {zhi['name']}), point toward the future direction and suggest a concrete action or mindset shift.
+
+══════════════════════════════════════════════════════
+GUIDING PRINCIPLE OF THE I CHING
+The purpose of divination is NOT to predict fate — it is to help you find where to act.
+Follow the way of "无咎" (no-blame): adjust your virtue, abilities, and mindset; avoid the inauspicious trends and move toward the auspicious ones.
+══════════════════════════════════════════════════════
+
+Write in clear, modern English that a thoughtful contemporary person can understand. Blend classical I Ching wisdom with practical modern language. Be substantive but accessible. Do NOT simply translate Chinese terms — explain their meaning in natural English. Structure your response with clear headings for each of the 5 steps and the 4 synthesis dimensions."""
+
+    if lang == "en":
+        return prompt_en
+    else:
+        return prompt_zh
+
 
 
 class InterpretationRequest(BaseModel):

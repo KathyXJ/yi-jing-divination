@@ -1403,7 +1403,7 @@ let yaoSentenceData = [
     "guaName": "大壮",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "小人用壮，君子用",
+    "sentence": "小人用壮，君子用罔，贞厉。羝羊触藩，羸其角。象曰：小人用壮，君子罔也。",
     "futureGuaName": "归妹"
   },
   {
