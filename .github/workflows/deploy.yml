@@ -21,6 +21,7 @@ jobs:
         run: |
           cd web/frontend
           corepack enable
+          yarn config set registry https://registry.npmjs.org/
           yarn install --ignore-engines
 
       - name: Build
