@@ -176,13 +176,13 @@ export default function CoinCaster({ onComplete, lang = "zh" }: Props) {
                   {isAnim ? (
                     <span className="text-[var(--color-text-muted)] text-lg">?</span>
                   ) : coin === true ? (
-                    <span style={{ color: "#d4a843" }} className="text-xs font-bold">正</span>
+                    <span style={{ color: "#d4a843" }} className="text-xs font-bold">{t.coinHeadsShort}</span>
                   ) : coin === false ? (
-                    <span className="text-[var(--color-text-muted)] text-xs font-bold">反</span>
+                    <span className="text-[var(--color-text-muted)] text-xs font-bold">{t.coinTailsShort}</span>
                   ) : null}
                 </div>
                 <span className="text-[10px] text-[var(--color-text-muted)]">
-                  {isAnim ? "?" : coin === true ? "正面" : coin === false ? "反面" : ""}
+                  {isAnim ? "?" : coin === true ? t.coinHeads : coin === false ? t.coinTails : ""}
                 </span>
               </div>
             );
