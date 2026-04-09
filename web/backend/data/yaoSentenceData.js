@@ -45,21 +45,21 @@ let yaoSentenceData = [
     "guaName": "坤",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "履霜，坚冰至。象曰：履霜坚冰，阴始凝也。",
+    "sentence": "履霜，坚冰至。象曰：履霜坚冰，阴始凝也。驯致其道，至坚冰也。",
     "futureGuaName": "复"
   },
   {
     "guaName": "坤",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "直，方，大，不习无不利。象曰：六二之动，直以方也。",
+    "sentence": "直，方，大，不习无不利。象曰：六二之动，直以方也。不习无不利，地道光也。",
     "futureGuaName": "师"
   },
   {
     "guaName": "坤",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "含章可贞，或从王事，无成有终。",
+    "sentence": "含章可贞，或从王事，无成有终。象曰：含章可贞;以时发也。或从王事，知光大也。",
     "futureGuaName": "谦"
   },
   {
@@ -87,21 +87,21 @@ let yaoSentenceData = [
     "guaName": "屯",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "磐桓;利居贞，利建侯。象曰：虽磐桓，志 行正也。",
+    "sentence": "磐桓;利居贞，利建侯。象曰：虽磐桓，志行正也。以贵下贱，大得民也。",
     "futureGuaName": "比"
   },
   {
     "guaName": "屯",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "屯如，遣如。",
+    "sentence": "屯如邅如，乘马班如。匪寇婚媾，女子贞不字，十年乃字。象曰：六二之难，乘 刚也。十年乃字，反常也。",
     "futureGuaName": "节"
   },
   {
     "guaName": "屯",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "既鹿无虞，惟入于林中，君子几不如舍，往吝。象曰：既鹿无虞，以纵禽也。",
+    "sentence": "既鹿无虞，惟入于林中，君子几不如舍，往吝。象曰：既鹿无虞，以纵禽也。君子舍之，往吝穷也。",
     "futureGuaName": "既济"
   },
   {
@@ -171,21 +171,21 @@ let yaoSentenceData = [
     "guaName": "需",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "需于郊。利用恒，无",
+    "sentence": "需于郊。利用恒，无咎。象曰：需于郊，不犯难行也。利用恒，无咎;未失常也。",
     "futureGuaName": "井"
   },
   {
     "guaName": "需",
     "index": 1,
     "yaoName": "九二",
-    "sentence": "需于沙，小有言，终",
+    "sentence": "需于沙，小有言，终吉。象曰：需于沙，衍在中也。虽小有言，以终吉也。",
     "futureGuaName": "既济"
   },
   {
     "guaName": "需",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "需于泥，致寇至。象曰：需于泥，灾在外也。",
+    "sentence": "需于泥，致寇至。象曰：需于泥，灾在外也。自我致寇，敬慎不败也。",
     "futureGuaName": "节"
   },
   {
@@ -206,21 +206,21 @@ let yaoSentenceData = [
     "guaName": "需",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "入于穴，有不速之客三人 来，敬之终吉。象曰：不速之客来，敬之终吉。",
+    "sentence": "入于穴，有不速之客三人 来，敬之终吉。象曰：不速之客来，敬之终吉。虽不当位，未大失也。",
     "futureGuaName": "小畜"
   },
   {
     "guaName": "讼",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "不永所事，小有言，终吉。象曰：不 永所事，讼不可长也。",
+    "sentence": "不永所事，小有言，终吉。象曰：不 永所事，讼不可长也。虽有小言，其辩明也。",
     "futureGuaName": "履"
   },
   {
     "guaName": "讼",
     "index": 1,
     "yaoName": "九二",
-    "sentence": "不克讼，归而逋，其邑人三百户，无眚。象曰：不克讼，归而逋也。",
+    "sentence": "不克讼，归而逋，其邑人三百户，无眚。象曰：不克讼，归而逋也。自下讼上，患至掇也。",
     "futureGuaName": "否"
   },
   {
@@ -255,14 +255,14 @@ let yaoSentenceData = [
     "guaName": "师",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "师出以律，否臧凶。象曰：师出以律， 失律凶也。",
+    "sentence": "师出以律，否臧凶。象曰：师出以律，失律凶也。",
     "futureGuaName": "临"
   },
   {
     "guaName": "师",
     "index": 1,
     "yaoName": "九二",
-    "sentence": "在师中，吉无咎，王三锡命。象曰：在师中吉，承天宠也。",
+    "sentence": "在师中，吉无咎，王三锡命。象曰：在师中吉，承天宠也。王三锡命，怀万邦也。",
     "futureGuaName": "坤"
   },
   {
@@ -283,21 +283,21 @@ let yaoSentenceData = [
     "guaName": "师",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "田有禽，利执言，无",
+    "sentence": "田有禽，利执言，无咎。长子帅师，弟子舆尸，贞凶。象曰：长子帅师，以中行也。弟子舆师，使不当也。",
     "futureGuaName": "坎"
   },
   {
     "guaName": "师",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "大君有命，开国承家，小人勿用。象曰：大君有命，以正功也。",
+    "sentence": "大君有命，开国承家，小人勿用。象曰：大君有命，以正功也。小人勿用，必乱邦也。",
     "futureGuaName": "蒙"
   },
   {
     "guaName": "比",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "有孚比之，无咎",
+    "sentence": "有孚比之，无咎。有孚盈缶，终 来有他，吉。象曰：比之初六，有他吉也。",
     "futureGuaName": "屯"
   },
   {
@@ -311,21 +311,21 @@ let yaoSentenceData = [
     "guaName": "比",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "比之匪人。象曰：比之匪人，不亦伤乎!六四：外比之，贞吉。",
+    "sentence": "比之匪人。象曰：比之匪人，不亦伤乎!",
     "futureGuaName": "蹇"
   },
   {
     "guaName": "比",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "外比之，贞吉。",
+    "sentence": "外比之，贞吉。象曰：外比於贤，以从上也。",
     "futureGuaName": "萃"
   },
   {
     "guaName": "比",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "显比;王用三驱，失前",
+    "sentence": "显比;王用三驱，失前禽。邑人不诫，吉。象曰：显比之吉，位正中也。舍逆取顺，失前禽也。邑人不诫，上使中也。",
     "futureGuaName": "坤"
   },
   {
@@ -353,7 +353,7 @@ let yaoSentenceData = [
     "guaName": "小畜",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "舆说辐，夫妻反目。象曰：夫 妻反目，不能正室也。",
+    "sentence": "舆说辐，夫妻反目。象曰：夫妻反目，不能正室也。",
     "futureGuaName": "中孚"
   },
   {
@@ -374,14 +374,14 @@ let yaoSentenceData = [
     "guaName": "小畜",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "既雨既处，尚德载",
+    "sentence": "既雨既处，尚德载，妇贞厉。月几望，君子征凶。象曰：既雨既处，德积载也。君子征凶，有所疑也。",
     "futureGuaName": "需"
   },
   {
     "guaName": "履",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "素履，往无咎。象曰：素履之 往，独行愿也。",
+    "sentence": "素履，往无咎。象曰：素履之往，独行愿也。",
     "futureGuaName": "讼"
   },
   {
@@ -395,7 +395,7 @@ let yaoSentenceData = [
     "guaName": "履",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "眇能视，跛能履。",
+    "sentence": "眇能视，跛能履，履虎尾，咥人，凶。武人为于大君。象曰：眇能视;不足以有明也。跛能履;不足以与行也。咥人之凶;位不当也。武人为于大君;志刚也。",
     "futureGuaName": "乾"
   },
   {
@@ -437,14 +437,14 @@ let yaoSentenceData = [
     "guaName": "泰",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "无平不陂，无往不复",
+    "sentence": "无平不陂，无往不复，艰贞无咎。勿恤其孚，于食有福。象曰：无往不复，天地际也。",
     "futureGuaName": "临"
   },
   {
     "guaName": "泰",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "翩翩不富，以其邻，不戒以孚。象曰：翩翩不富，皆失实也。",
+    "sentence": "翩翩不富，以其邻，不戒以孚。象曰：翩翩不富，皆失实也。不戒以孚，中心愿也。",
     "futureGuaName": "大壮"
   },
   {
@@ -458,21 +458,21 @@ let yaoSentenceData = [
     "guaName": "泰",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "城复于隍;勿用师",
+    "sentence": "城复于隍，勿用师。自邑告命，贞吝。象曰：城复于隍，其命乱也。",
     "futureGuaName": "大畜"
   },
   {
     "guaName": "否",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "拔茅茹，以其夤，贞吉 亨。象曰：拔茅贞吉，志在君也。",
+    "sentence": "拔茅茹，以其夤，贞吉亨。象曰：拔茅贞吉，志在君也。",
     "futureGuaName": "无妄"
   },
   {
     "guaName": "否",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "包承，小人吉；大人",
+    "sentence": "包承，小人吉；大人否亨。象曰：大人否亨，不乱群也。",
     "futureGuaName": "讼"
   },
   {
@@ -493,7 +493,7 @@ let yaoSentenceData = [
     "guaName": "否",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "休否，大人吉；其亡",
+    "sentence": "休否，大人吉；其亡其亡，系于苞桑。象曰：大人之吉，位正当也。",
     "futureGuaName": "晋"
   },
   {
@@ -507,7 +507,7 @@ let yaoSentenceData = [
     "guaName": "同人",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "同人于门，无咎。象曰：出门同人，又 谁咎也。",
+    "sentence": "同人于门，无咎。象曰：出门同人，又谁咎也。",
     "futureGuaName": "遁"
   },
   {
@@ -521,7 +521,7 @@ let yaoSentenceData = [
     "guaName": "同人",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "伏戎于莽，升其高陵，三岁不兴。象曰：伏戎于莽，敌刚也。",
+    "sentence": "伏戎于莽，升其高陵，三岁不兴。象曰：伏戎于莽，敌刚也。三岁不兴，安行也。",
     "futureGuaName": "无妄"
   },
   {
@@ -535,7 +535,7 @@ let yaoSentenceData = [
     "guaName": "同人",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "同人，先号眺，而",
+    "sentence": "同人，先号啕而后笑。大师克相遇。象曰：同人之先，以中直也。大师相遇，言相克也。",
     "futureGuaName": "离"
   },
   {
@@ -549,7 +549,7 @@ let yaoSentenceData = [
     "guaName": "大有",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "无交害，匪咎，艰则无 咎。象曰：大有初九，无交害也。",
+    "sentence": "无交害，匪咎，艰则无咎。象曰：大有初九，无交害也。",
     "futureGuaName": "鼎"
   },
   {
@@ -570,14 +570,14 @@ let yaoSentenceData = [
     "guaName": "大有",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "匪其彭，无咎。象曰：匪其彭，无咎;明辨晰也。",
+    "sentence": "匪其彭，无咎。象曰：匪其彭，无咎；明辨晰也。",
     "futureGuaName": "大畜"
   },
   {
     "guaName": "大有",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "厥孚交如，威如;吉。象曰：厥孚交如，信以发志也。",
+    "sentence": "厥孚交如，威如；吉。象曰：厥孚交如，信以发志也。威如之吉，易而无备也。",
     "futureGuaName": "乾"
   },
   {
@@ -591,7 +591,7 @@ let yaoSentenceData = [
     "guaName": "谦",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "谦谦君子，用涉大川，吉。",
+    "sentence": "谦谦君子，用涉大川，吉。象曰：谦谦君子，卑以自牧也。",
     "futureGuaName": "明夷"
   },
   {
@@ -612,7 +612,7 @@ let yaoSentenceData = [
     "guaName": "谦",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "无不利，(扌为)谦。象曰：无不利，(扌为)谦;不违则也。",
+    "sentence": "无不利，撝谦。象曰：无不利，撝谦；不违则也。",
     "futureGuaName": "小过"
   },
   {
@@ -626,7 +626,7 @@ let yaoSentenceData = [
     "guaName": "谦",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "鸣谦，利用行师，征邑国。象曰：鸣谦，志未得也。",
+    "sentence": "鸣谦，利用行师，征邑国。象曰：鸣谦，志未得也。可用行师，征邑国也。",
     "futureGuaName": "艮"
   },
   {
@@ -640,28 +640,28 @@ let yaoSentenceData = [
     "guaName": "豫",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "介于石，不终日，贞吉。象曰：不终日，贞吉;以中正也。",
+    "sentence": "介于石，不终日，贞吉。象曰：不终日，贞吉；以中正也。",
     "futureGuaName": "解"
   },
   {
     "guaName": "豫",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "盱豫悔；迟有悔。",
+    "sentence": "盱豫，悔。迟有悔。象曰：盱豫有悔，位不当也。",
     "futureGuaName": "小过"
   },
   {
     "guaName": "豫",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "由豫，大有得；勿疑",
+    "sentence": "由豫，大有得。勿疑。朋盍簪。象曰：由豫，大有得；志大行也。",
     "futureGuaName": "坤"
   },
   {
     "guaName": "豫",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "贞疾，恒不死。象曰：六五贞疾，乘刚也。",
+    "sentence": "贞疾，恒不死。象曰：六五贞疾，乘刚也。恒不死，中未亡也。",
     "futureGuaName": "萃"
   },
   {
@@ -675,7 +675,7 @@ let yaoSentenceData = [
     "guaName": "随",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "官有渝，贞吉。出门",
+    "sentence": "官有渝，贞吉。出门交有功。象曰： 官有渝，从正吉也。出门交有功，不失也。",
     "futureGuaName": "萃"
   },
   {
@@ -689,28 +689,28 @@ let yaoSentenceData = [
     "guaName": "随",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "系丈夫，失小子。随",
+    "sentence": "系丈夫，失小子。随有求得，利居贞。象曰：系丈夫，志舍下也。",
     "futureGuaName": "革"
   },
   {
     "guaName": "随",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "随有获，贞凶；有孚",
+    "sentence": "随有获，贞凶；有孚在道，以明，何咎。象曰：随有获，其义凶也。有孚在道，明功也。",
     "futureGuaName": "屯"
   },
   {
     "guaName": "随",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "孚于嘉，吉。象曰：孚于嘉，吉;位正中也。",
+    "sentence": "孚于嘉，吉。象曰：孚于嘉，吉；位正中也。",
     "futureGuaName": "震"
   },
   {
     "guaName": "随",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "拘系之，乃从，维之",
+    "sentence": "拘系之，乃从维之。王用亨于西山。象曰：拘系之，上穷也。",
     "futureGuaName": "无妄"
   },
   {
@@ -745,7 +745,7 @@ let yaoSentenceData = [
     "guaName": "蛊",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "干父之蛊，用誉。象曰：干父之蛊;承以德也。",
+    "sentence": "干父之蛊，用誉。象曰：干父之蛊；承以德也。",
     "futureGuaName": "巽"
   },
   {
@@ -766,14 +766,14 @@ let yaoSentenceData = [
     "guaName": "临",
     "index": 1,
     "yaoName": "九二",
-    "sentence": "咸临，吉无不利。象曰：咸临，吉无不利;未顺命也。",
+    "sentence": "咸临，吉无不利。象曰：咸临，吉无不利；未顺命也。",
     "futureGuaName": "复"
   },
   {
     "guaName": "临",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "甘临，无攸利；既忧",
+    "sentence": "甘临，无攸利；既忧之，无咎。象曰：甘临，位不当也。既忧之，咎不长也。",
     "futureGuaName": "泰"
   },
   {
@@ -815,7 +815,7 @@ let yaoSentenceData = [
     "guaName": "观",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "观我生，进退。象曰：观我生，进退;未失道也。",
+    "sentence": "观我生，进退。象曰：观我生，进退；未失道也。",
     "futureGuaName": "渐"
   },
   {
@@ -843,7 +843,7 @@ let yaoSentenceData = [
     "guaName": "噬嗑",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "屦校灭趾，无咎。象曰：屦校灭趾，不行 也。",
+    "sentence": "屦校灭趾，无咎。象曰：屦校灭趾，不行也。",
     "futureGuaName": "晋"
   },
   {
@@ -906,7 +906,7 @@ let yaoSentenceData = [
     "guaName": "贲",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "贲如皤如，白马翰如，匪寇婚媾。象曰：六四，当位疑也。",
+    "sentence": "贲如皤如，白马翰如，匪寇婚媾。象曰：六四，当位疑也。匪寇婚媾，终无尤也。",
     "futureGuaName": "离"
   },
   {
@@ -927,14 +927,14 @@ let yaoSentenceData = [
     "guaName": "剥",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "剥(爿木)以足，蔑贞凶。象曰：剥(爿木)以足，以灭下也。",
+    "sentence": "剥床以足，蔑贞凶。象曰：剥床以足，以灭下也。",
     "futureGuaName": "颐"
   },
   {
     "guaName": "剥",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "剥(爿木)以辨，蔑贞凶。象曰：剥(爿木)以辨，未有与也。",
+    "sentence": "剥床以辨，蔑贞凶。象曰：剥床以辨，未有与也。",
     "futureGuaName": "蒙"
   },
   {
@@ -948,7 +948,7 @@ let yaoSentenceData = [
     "guaName": "剥",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "剥(爿木)以肤，凶。象曰：剥(爿木)以肤，切近灾也。",
+    "sentence": "剥床以肤，凶。象曰：剥床以肤，切近灾也。",
     "futureGuaName": "晋"
   },
   {
@@ -962,7 +962,7 @@ let yaoSentenceData = [
     "guaName": "剥",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "硕果不食，君子得舆，小人剥庐。象曰：君子得舆，民所载也。",
+    "sentence": "硕果不食，君子得舆，小人剥庐。象曰：君子得舆，民所载也。小人剥庐，终不可用也。",
     "futureGuaName": "坤"
   },
   {
@@ -1004,14 +1004,14 @@ let yaoSentenceData = [
     "guaName": "复",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "迷复，凶，有灾眚。",
+    "sentence": "迷复，凶，有灾眚。用行师，终有大败，以其国君，凶;至于十年，不克征。象曰：迷复之凶，反君道也。",
     "futureGuaName": "颐"
   },
   {
     "guaName": "无妄",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "无妄，往吉。象曰：无妄 之往，得志也。",
+    "sentence": "无妄，往吉。象曰：无妄之往，得志也。",
     "futureGuaName": "否"
   },
   {
@@ -1067,7 +1067,7 @@ let yaoSentenceData = [
     "guaName": "大畜",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "良马逐，利艰贞。",
+    "sentence": "良马逐，利艰贞。曰闲舆卫，利有攸往。象曰：利有攸往，上合志也。",
     "futureGuaName": "损"
   },
   {
@@ -1165,7 +1165,7 @@ let yaoSentenceData = [
     "guaName": "大过",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "枯杨生华，老妇得士夫，无咎无誉。象曰：枯杨生华，何可久也。",
+    "sentence": "枯杨生华，老妇得士夫，无咎无誉。象曰：枯杨生华，何可久也。老妇士夫，亦可丑也。",
     "futureGuaName": "恒"
   },
   {
@@ -1277,14 +1277,14 @@ let yaoSentenceData = [
     "guaName": "咸",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "咸其股，执其随，往吝。象曰：咸其股，亦不处也。",
+    "sentence": "咸其股，执其随，往吝。象曰：咸其股，亦不处也。志在随人，所执下也。",
     "futureGuaName": "萃"
   },
   {
     "guaName": "咸",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "贞吉悔亡，憧憧往来，朋从尔思。象曰：贞吉悔亡，未感害也。",
+    "sentence": "贞吉悔亡，憧憧往来，朋从尔思。象曰：贞吉悔亡，未感害也。憧憧往来，未光大也。",
     "futureGuaName": "蹇"
   },
   {
@@ -1305,7 +1305,7 @@ let yaoSentenceData = [
     "guaName": "恒",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "浚恒，贞凶，无攸利。象曰：浚恒之凶，始 求深也。",
+    "sentence": "浚恒，贞凶，无攸利。象曰：浚恒之凶，始求深也。",
     "futureGuaName": "大壮"
   },
   {
@@ -1333,7 +1333,7 @@ let yaoSentenceData = [
     "guaName": "恒",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "恒其德，贞，妇人吉，夫子凶。象曰：妇人贞吉，从一而终也。",
+    "sentence": "恒其德，贞，妇人吉，夫子凶。象曰：妇人贞吉，从一而终也。夫子制义，从妇凶也。",
     "futureGuaName": "大过"
   },
   {
@@ -1361,7 +1361,7 @@ let yaoSentenceData = [
     "guaName": "遁",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "系遁，有疾厉，畜臣妾吉。象曰：系遁之厉，有疾惫也。",
+    "sentence": "系遁，有疾厉，畜臣妾吉。象曰：系遁之厉，有疾惫也。畜臣妾吉，不可大事也。",
     "futureGuaName": "否"
   },
   {
@@ -1382,14 +1382,14 @@ let yaoSentenceData = [
     "guaName": "遁",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "肥遁，无不利。象曰：肥遁，无不利;无所疑也。",
+    "sentence": "肥遁，无不利。象曰：肥遁，无不利；无所疑也。",
     "futureGuaName": "咸"
   },
   {
     "guaName": "大壮",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "壮于趾，征凶，有孚。象曰：壮于 趾，其孚穷也。",
+    "sentence": "壮于趾，征凶，有孚。象曰：壮于趾，其孚穷也。",
     "futureGuaName": "恒"
   },
   {
@@ -1424,21 +1424,21 @@ let yaoSentenceData = [
     "guaName": "大壮",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "羝羊触藩，不能退，不能遂，无攸利，艰则吉。象曰：不能退，不能遂，不祥也。",
+    "sentence": "羝羊触藩，不能退，不能遂，无攸利，艰则吉。象曰：不能退，不能遂，不祥也。艰则吉，咎不长也。",
     "futureGuaName": "大有"
   },
   {
     "guaName": "晋",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "晋如摧如，贞吉。",
+    "sentence": "晋如，摧如，贞吉。罔孚，裕无咎。象曰：晋如，摧如;独行正也。裕无咎;未受命也。",
     "futureGuaName": "噬嗑"
   },
   {
     "guaName": "晋",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "晋如愁如，贞吉；",
+    "sentence": "晋如，愁如，贞吉。受兹介福，于其王母。象曰：受之介福，以中正也。",
     "futureGuaName": "未济"
   },
   {
@@ -1473,7 +1473,7 @@ let yaoSentenceData = [
     "guaName": "明夷",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "明夷于飞，垂其翼",
+    "sentence": "明夷于飞，垂其翼。君子于行，三日不食，有攸往，主人有言。象曰：君子于行，义不食也。",
     "futureGuaName": "谦"
   },
   {
@@ -1508,7 +1508,7 @@ let yaoSentenceData = [
     "guaName": "明夷",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "不明晦，初登于天，后入于地。象曰：初登于天，照四国也。",
+    "sentence": "不明晦，初登于天，后入于地。象曰：初登于天，照四国也。后入于地，失则也。",
     "futureGuaName": "贲"
   },
   {
@@ -1529,7 +1529,7 @@ let yaoSentenceData = [
     "guaName": "家人",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "家人嗃嗃，悔厉吉;妇子嘻嘻，终吝。象曰：家人嗃嗃，未失也;妇子嘻嘻，失家节也。",
+    "sentence": "家人嗃嗃，悔厉吉；妇子嘻嘻，终吝。象曰：家人嗃嗃，未失也；妇子嘻嘻，失家节也。",
     "futureGuaName": "益"
   },
   {
@@ -1571,7 +1571,7 @@ let yaoSentenceData = [
     "guaName": "睽",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "见舆曳，其牛掣，其人天且劓，无初有终。象曰：见舆曳，位不当也。",
+    "sentence": "见舆曳，其牛掣，其人天且劓，无初有终。象曰：见舆曳，位不当也。无初有终，遇刚也。",
     "futureGuaName": "大有"
   },
   {
@@ -1634,7 +1634,7 @@ let yaoSentenceData = [
     "guaName": "蹇",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "往蹇来硕，吉;利见大人。象曰：往蹇来硕，志在内也。",
+    "sentence": "往蹇来硕，吉;利见大人。象曰：往蹇来硕，志在内也。利见大人，以从贵也。",
     "futureGuaName": "渐"
   },
   {
@@ -1683,7 +1683,7 @@ let yaoSentenceData = [
     "guaName": "损",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "已事遄往，无咎，酌损之。象曰：已事 遄往，尚合志也。",
+    "sentence": "已事遄往，无咎，酌损之。象曰：已事遄往，尚合志也。",
     "futureGuaName": "蒙"
   },
   {
@@ -1697,7 +1697,7 @@ let yaoSentenceData = [
     "guaName": "损",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "三人行，则损一人;一人行，则得其友。象曰：一人行，三则疑也。",
+    "sentence": "三人行，则损一人；一人行，则得其友。象曰：一人行，三则疑也。",
     "futureGuaName": "大畜"
   },
   {
@@ -1732,42 +1732,42 @@ let yaoSentenceData = [
     "guaName": "益",
     "index": 1,
     "yaoName": "六二",
-    "sentence": "或益之十朋之龟，弗",
+    "sentence": "或益之，十朋之龟弗克违，永贞吉。王用享于帝，吉。象曰：或益之，自外来也。",
     "futureGuaName": "中孚"
   },
   {
     "guaName": "益",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "益之用凶事，无咎；",
+    "sentence": "益之用凶事，无咎。有孚中行，告公用圭。象曰：益用凶事，固有之也。",
     "futureGuaName": "家人"
   },
   {
     "guaName": "益",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "中行告公从，利用为",
+    "sentence": "中行告公从，利用为依迁国。象曰：告公从，以益志也。",
     "futureGuaName": "无妄"
   },
   {
     "guaName": "益",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "有孚惠心，勿问元吉",
+    "sentence": "有孚惠心，勿问元吉。有孚惠我德。象曰：有孚惠心，勿问之矣。惠我德，大得志也。",
     "futureGuaName": "颐"
   },
   {
     "guaName": "益",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "莫益之，或击之，立心勿恒，凶。象曰：莫益之，偏辞也。",
+    "sentence": "莫益之，或击之，立心勿恒，凶。象曰：莫益之，偏辞也。或击之，自外来也。",
     "futureGuaName": "屯"
   },
   {
     "guaName": "夬",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "壮于前趾，往不胜为",
+    "sentence": "壮于前趾，往不胜为吝。 象曰：不胜而往，咎也。",
     "futureGuaName": "大过"
   },
   {
@@ -1781,14 +1781,14 @@ let yaoSentenceData = [
     "guaName": "夬",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "壮于頑，有凶；君子",
+    "sentence": "壮于頑，有凶；君子夬夬，独行遇雨，若濡有愠，无咎。象曰：君子夬夬，终无咎也。",
     "futureGuaName": "兑"
   },
   {
     "guaName": "夬",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "臀无肤，其行次且；",
+    "sentence": "臀无肤，其行次且。牵羊悔亡，闻言不信。象曰：其行次且，位不当也。闻言不信，聪不明也。",
     "futureGuaName": "需"
   },
   {
@@ -1837,7 +1837,7 @@ let yaoSentenceData = [
     "guaName": "姤",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "以杞包瓜，含章，有陨自天。象曰：九五含章，中正也。",
+    "sentence": "以杞包瓜，含章，有陨自天。象曰：九五含章，中正也。有陨自天，志不舍命也。",
     "futureGuaName": "鼎"
   },
   {
@@ -1851,7 +1851,7 @@ let yaoSentenceData = [
     "guaName": "萃",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "有孚不终，乃乱乃萃，若号一握 为笑，勿恤，往无咎。象曰：乃乱乃萃，其志乱也。",
+    "sentence": "有孚不终，乃乱乃萃，若号一握为笑，勿恤，往无咎。象曰：乃乱乃萃，其志乱也。",
     "futureGuaName": "随"
   },
   {
@@ -1879,7 +1879,7 @@ let yaoSentenceData = [
     "guaName": "萃",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "萃有位，无咎",
+    "sentence": "萃有位，无咎。匪孚，元永贞，悔亡。象曰：萃有位，志未光也。",
     "futureGuaName": "豫"
   },
   {
@@ -1893,7 +1893,7 @@ let yaoSentenceData = [
     "guaName": "升",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "允升，大吉。象曰：允升大 吉，上合志也。",
+    "sentence": "允升，大吉。象曰：允升大吉，上合志也。",
     "futureGuaName": "泰"
   },
   {
@@ -1949,35 +1949,35 @@ let yaoSentenceData = [
     "guaName": "困",
     "index": 2,
     "yaoName": "六三",
-    "sentence": "困于石，据于蒺藜，入于其宫，不见其妻，凶。象曰：据于蒺藜，乘刚也。",
+    "sentence": "困于石，据于蒺藜，入于其宫，不见其妻，凶。象曰：据于蒺藜，乘刚也。入于其宫，不见其妻，不祥也。",
     "futureGuaName": "大过"
   },
   {
     "guaName": "困",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "来徐徐，困于金车，吝，有终。象曰：来徐徐，志在下也。",
+    "sentence": "来徐徐，困于金车，吝，有终。象曰：来徐徐，志在下也。虽不当位，有与也。",
     "futureGuaName": "坎"
   },
   {
     "guaName": "困",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "劓刖，困于赤绂，乃徐有说，利用祭祀。象曰：劓刖，志未得也。",
+    "sentence": "劓刖，困于赤绂，乃徐有说，利用祭祀。象曰：劓刖，志未得也。乃徐有说，以中直也。利用祭祀，受福也。",
     "futureGuaName": "解"
   },
   {
     "guaName": "困",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "困于葛藟，于臲卼，",
+    "sentence": "困于葛藟，于臲卼，曰动悔。有悔，征吉。象曰：困于葛藟，未当也。动悔，有悔吉，行也。",
     "futureGuaName": "讼"
   },
   {
     "guaName": "井",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "井泥不食，旧井无禽。象曰：井泥不 食，下也。",
+    "sentence": "井泥不食，旧井无禽。象曰：井泥不食，下也。旧井无禽，时舍也。",
     "futureGuaName": "需"
   },
   {
@@ -1991,7 +1991,7 @@ let yaoSentenceData = [
     "guaName": "井",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "井渫不食，为我民恻，可用汲，王明，并受其福。象曰：井渫不食，行恻也。",
+    "sentence": "井渫不食，为我民恻，可用汲，王明，并受其福。象曰：井渫不食，行恻也。求王明，受福也。",
     "futureGuaName": "坎"
   },
   {
@@ -2019,7 +2019,7 @@ let yaoSentenceData = [
     "guaName": "革",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "巩用黄牛之革。象曰：巩用黄牛，不可 以有为也。",
+    "sentence": "巩用黄牛之革。象曰：巩用黄牛，不可以有为也。",
     "futureGuaName": "咸"
   },
   {
@@ -2054,21 +2054,21 @@ let yaoSentenceData = [
     "guaName": "革",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "君子豹变，小人革面，征凶，居贞吉。象曰：君子豹变，其文蔚也。",
+    "sentence": "君子豹变，小人革面，征凶，居贞吉。象曰：君子豹变，其文蔚也。小人革面，顺以从君也。",
     "futureGuaName": "同人"
   },
   {
     "guaName": "鼎",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "鼎颠趾，利出否；得",
+    "sentence": "鼎颠趾，利出否；得妾以其子，无咎。 象曰：鼎颠趾，未悖也。利出否，以从贵也。",
     "futureGuaName": "大有"
   },
   {
     "guaName": "鼎",
     "index": 1,
     "yaoName": "九二",
-    "sentence": "鼎有实，我仇有疾，不我能即，吉。象曰：鼎有实，慎所之也。",
+    "sentence": "鼎有实，我仇有疾，不我能即，吉。象曰：鼎有实，慎所之也。我仇有疾，终无尤也。",
     "futureGuaName": "旅"
   },
   {
@@ -2103,7 +2103,7 @@ let yaoSentenceData = [
     "guaName": "震",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "震来虩虩，后笑言哑哑，吉。象曰： 震来虩虩，恐致福也。",
+    "sentence": "震来虩虩，后笑言哑哑，吉。象曰： 震来虩虩，恐致福也。笑言哑哑，后有则也。",
     "futureGuaName": "豫"
   },
   {
@@ -2131,14 +2131,14 @@ let yaoSentenceData = [
     "guaName": "震",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "震往来厉，亿无丧，有事。象曰：震往来厉，危行也。",
+    "sentence": "震往来厉，亿无丧，有事。象曰：震往来厉，危行也。其事在中，大无丧也。",
     "futureGuaName": "随"
   },
   {
     "guaName": "震",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "震索索，视矍矍，征",
+    "sentence": "震索索，视矍矍，征凶。震不于其躬，于其邻，无咎。婚媾有言。象曰：震索索，未得中也。虽凶无咎，畏邻戒也。",
     "futureGuaName": "噬嗑"
   },
   {
@@ -2187,7 +2187,7 @@ let yaoSentenceData = [
     "guaName": "渐",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "鸿渐于干；小子厉，",
+    "sentence": "鸿渐于干；小子厉，有言，无咎。 象曰：小子之厉，义无咎也。",
     "futureGuaName": "家人"
   },
   {
@@ -2201,7 +2201,7 @@ let yaoSentenceData = [
     "guaName": "渐",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "鸿渐于陆，夫征不复，妇孕不育，凶;利御寇。象曰：夫征不复，离群丑也。",
+    "sentence": "鸿渐于陆，夫征不复，妇孕不育，凶；利御寇。象曰：夫征不复，离群丑也。妇孕不育，失其道也。利用御寇，顺相保也。",
     "futureGuaName": "观"
   },
   {
@@ -2215,21 +2215,21 @@ let yaoSentenceData = [
     "guaName": "渐",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "鸿渐于陵，妇三岁不孕，终莫之胜，吉。象曰：终莫之胜，吉;得所愿也。",
+    "sentence": "鸿渐于陵，妇三岁不孕，终莫之胜，吉。象曰：终莫之胜，吉；得所愿也。",
     "futureGuaName": "艮"
   },
   {
     "guaName": "渐",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "鸿渐于逵，其羽可用为仪，吉。象曰：其羽可用为仪，吉;不可乱也。",
+    "sentence": "鸿渐于逵，其羽可用为仪，吉。象曰：其羽可用为仪，吉；不可乱也。",
     "futureGuaName": "蹇"
   },
   {
     "guaName": "归妹",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "归妹以娣，跛能履，征吉。象曰：归 妹以娣，以恒也。",
+    "sentence": "归妹以娣，跛能履，征吉。象曰：归 妹以娣，以恒也。跛能履吉，相承也。",
     "futureGuaName": "解"
   },
   {
@@ -2257,7 +2257,7 @@ let yaoSentenceData = [
     "guaName": "归妹",
     "index": 4,
     "yaoName": "六五",
-    "sentence": "帝乙归妹，其君之袂，不如其娣之袂良，月几望，吉。象曰：帝乙归妹，不如其娣之袂良也。",
+    "sentence": "帝乙归妹，其君之袂，不如其娣之袂良，月几望，吉。象曰：帝乙归妹，不如其娣之袂良也。其位在中，以贵行也。",
     "futureGuaName": "兑"
   },
   {
@@ -2285,14 +2285,14 @@ let yaoSentenceData = [
     "guaName": "丰",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "丰其沛，日中见昧，折其右肱，无咎。象曰：丰其沛，不可大事也。",
+    "sentence": "丰其沛，日中见昧，折其右肱，无咎。象曰：丰其沛，不可大事也。折其右肱，终不可用也。",
     "futureGuaName": "震"
   },
   {
     "guaName": "丰",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "丰其蔀，日中见斗，遇其夷主，吉。象曰：丰其蔀，位不当也。",
+    "sentence": "丰其蔀，日中见斗，遇其夷主，吉。象曰：丰其蔀，位不当也。日中见斗，幽不明也。遇其夷主，吉；行也。",
     "futureGuaName": "明夷"
   },
   {
@@ -2306,7 +2306,7 @@ let yaoSentenceData = [
     "guaName": "丰",
     "index": 5,
     "yaoName": "上六",
-    "sentence": "丰其屋，蔀其家，窥其户，阒其无人，三岁不见，凶。象曰：丰其屋，天际翔也。",
+    "sentence": "丰其屋，蔀其家，窥其户，阒其无人，三岁不见，凶。象曰：丰其屋，天际翔也。窥其户，阒其无人，自藏也。",
     "futureGuaName": "离"
   },
   {
@@ -2327,14 +2327,14 @@ let yaoSentenceData = [
     "guaName": "旅",
     "index": 2,
     "yaoName": "九三",
-    "sentence": "旅焚其次，丧其童仆，贞厉。象曰：旅焚其次，亦以伤矣。",
+    "sentence": "旅焚其次，丧其童仆，贞厉。象曰：旅焚其次，亦以伤矣。以旅与下，其义丧也。",
     "futureGuaName": "晋"
   },
   {
     "guaName": "旅",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "旅于处，得其资斧，我心不快。象曰：旅于处，未得位也。",
+    "sentence": "旅于处，得其资斧，我心不快。象曰：旅于处，未得位也。得其资斧，心未快也。",
     "futureGuaName": "艮"
   },
   {
@@ -2348,21 +2348,21 @@ let yaoSentenceData = [
     "guaName": "旅",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "鸟焚其巢，旅人先笑后号咷。丧牛于易，凶。",
+    "sentence": "鸟焚其巢，旅人先笑后号咷。丧牛于易，凶。象曰：以旅在上，其义焚也。丧牛于易，终莫之闻也。",
     "futureGuaName": "小过"
   },
   {
     "guaName": "巽",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "进退，利武人之贞。象曰：进退，志疑也。",
+    "sentence": "进退，利武人之贞。象曰：进退，志疑也。利武人之贞，志治也。",
     "futureGuaName": "小畜"
   },
   {
     "guaName": "巽",
     "index": 1,
     "yaoName": "九二",
-    "sentence": "巽在床下，用史巫纷若，吉，无咎。",
+    "sentence": "巽在床下，用史巫纷若，吉，无咎。象曰：纷若之吉，得中也。",
     "futureGuaName": "渐"
   },
   {
@@ -2383,14 +2383,14 @@ let yaoSentenceData = [
     "guaName": "巽",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "贞吉，悔亡，无不利，无初有终。先庚三日，后庚三日，吉。",
+    "sentence": "贞吉，悔亡，无不利，无初有终。先庚三日，后庚三日，吉。象曰：九五之吉，位正中也。",
     "futureGuaName": "蛊"
   },
   {
     "guaName": "巽",
     "index": 5,
     "yaoName": "上九",
-    "sentence": "巽在牀下，丧其资斧，贞凶。象曰：巽在牀（chuáng）下，上穷也。",
+    "sentence": "巽在床下，丧其资斧，贞凶。象曰：巽在床下，上穷也。丧其资斧，正乎凶也。",
     "futureGuaName": "井"
   },
   {
@@ -2439,7 +2439,7 @@ let yaoSentenceData = [
     "guaName": "涣",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "用拯马壮，吉。象曰：初六之吉，顺 也。",
+    "sentence": "用拯马壮，吉。象曰：初六之吉，顺也。",
     "futureGuaName": "中孚"
   },
   {
@@ -2460,7 +2460,7 @@ let yaoSentenceData = [
     "guaName": "涣",
     "index": 3,
     "yaoName": "六四",
-    "sentence": "涣其群，元吉；涣有",
+    "sentence": "涣其群，元吉；涣有丘，匪夷所思。象曰：涣其群，元吉;光大也。",
     "futureGuaName": "讼"
   },
   {
@@ -2481,7 +2481,7 @@ let yaoSentenceData = [
     "guaName": "节",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "不出户庭，无咎。象曰：不出户 庭，知通塞也。",
+    "sentence": "不出户庭，无咎。象曰：不出户庭，知通塞也。",
     "futureGuaName": "坎"
   },
   {
@@ -2523,7 +2523,7 @@ let yaoSentenceData = [
     "guaName": "中孚",
     "index": 0,
     "yaoName": "初九",
-    "sentence": "虞吉，有他不燕。象曰：初九虞吉， 志未变也。",
+    "sentence": "虞吉，有他不燕。象曰：初九虞吉，志未变也。",
     "futureGuaName": "涣"
   },
   {
@@ -2586,7 +2586,7 @@ let yaoSentenceData = [
     "guaName": "小过",
     "index": 3,
     "yaoName": "九四",
-    "sentence": "密云不雨",
+    "sentence": "无咎，弗过遇之。往厉必戒，勿用永贞。象曰：弗过遇之，位不当也。往厉必戒，终不可长也。",
     "futureGuaName": "谦"
   },
   {
@@ -2635,7 +2635,7 @@ let yaoSentenceData = [
     "guaName": "既济",
     "index": 4,
     "yaoName": "九五",
-    "sentence": "东邻杀牛，不如西邻之禴祭，实受其福。象曰：东邻杀牛，不如西邻之时也;实受其福，吉大来也。",
+    "sentence": "东邻杀牛，不如西邻之禴祭，实受其福。象曰：东邻杀牛，不如西邻之时也；实受其福，吉大来也。",
     "futureGuaName": "明夷"
   },
   {
@@ -2649,7 +2649,7 @@ let yaoSentenceData = [
     "guaName": "未济",
     "index": 0,
     "yaoName": "初六",
-    "sentence": "濡其尾，吝。象曰：濡其尾，亦不 知极也。",
+    "sentence": "濡其尾，吝。象曰：濡其尾，亦不知极也。",
     "futureGuaName": "睽"
   },
   {
