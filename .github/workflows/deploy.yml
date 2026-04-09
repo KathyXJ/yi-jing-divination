@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd web/frontend
-          npm install --no-optional
+          npm install --ignore-scripts --no-optional
 
       - name: Build
         run: |
