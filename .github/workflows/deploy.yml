@@ -29,6 +29,8 @@ jobs:
           yarn install --ignore-engines
 
       - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: https://yi-jing-divination-4h6y.onrender.com
         run: |
           cd web/frontend
           yarn build
