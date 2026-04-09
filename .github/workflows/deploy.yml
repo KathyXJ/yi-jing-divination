@@ -20,12 +20,13 @@ jobs:
       - name: Install dependencies
         run: |
           cd web/frontend
-          npm install --ignore-scripts --no-optional
+          corepack enable
+          yarn install --ignore-engines
 
       - name: Build
         run: |
           cd web/frontend
-          npm run build
+          yarn build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
