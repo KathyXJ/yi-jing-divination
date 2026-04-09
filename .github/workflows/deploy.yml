@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
-          apiToken: ${{ secrets.YIJINGDIVINATION }}
+          apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: 1485a5e1d9b5c3b8ac80b5235a56bdfb
           projectName: yi-jing-divination
           directory: web/frontend/.next
