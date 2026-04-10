@@ -659,83 +659,22 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
     else:
         yue_desc = "moderate"
 
-    prompt_en = f"""You are a master of the I Ching (Zhou Yi / 周易). Using the Five-Step method below, give the user a deep, accurate, and practical interpretation.
+    prompt_en = f"""You are a wise and warm I Ching master. Give the user a clear, practical reading in simple English.
 
-{"User's question: " + user_question if user_question else '(No specific question asked — read the hexagram from its imagery and structure.)'}
-
-══════════════════════════════════════════════════════
-STEP 1 — IDENTIFY THE THREE ELEMENTS
-══════════════════════════════════════════════════════
-
-ORIGINAL HEXAGRAM (本卦 Ben Guà): {ben['name']}
-  - Structure: {ben['lower_symbol']} (lower trigram) / {ben['upper_symbol']} (upper trigram)
-  - Hexagram judgment: {ben['sentence']}
-
-CHANGED HEXAGRAM (之卦 Zhì Guà): {zhi['name']}
-  - Structure: {zhi['lower_symbol']} (lower trigram) / {zhi['upper_symbol']} (upper trigram)
-  - Hexagram judgment: {zhi['sentence']}
-
-CHANGING LINES: {chr(10).join(changed_yao_info_en)}
-{hua_gua_en}
-
-LUNAR CONTEXT: {lunar} — Element: {WX_NAMES_EN.get(yue_wx, yue_wx)}, State: {yue_desc}
-
-══════════════════════════════════════════════════════
-STEP 2 — DETERMINE INTERPRETATION PRIORITY
-Core rule: "Lines are the sovereign, hexagrams are the ministers"
-→ Changing line text ALWAYS takes priority over hexagram judgment.
-══════════════════════════════════════════════════════
-
-{priority_en}
-
-══════════════════════════════════════════════════════
-STEP 3 — BODY-USER ELEMENTAL ANALYSIS (Quantitative)
-Core: Line/hexagram texts are QUALITATIVE (what kind of situation).
-Body-Use analysis is QUANTITATIVE (energy balance with environment).
-Combine both for a complete reading.
-══════════════════════════════════════════════════════
+THE HEXAGRAM:
+- Original (Current): **{ben['name']}**
+- Changed (Future): **{zhi['name']}**
+- Changing line(s): {changed_names_en if changed_names_en else 'none'}
 
 {tiyong_en}
 
-{tiyong_constraint_en}
+GUIDANCE (keep it simple and practical, like advice from a wise friend):
 
-══════════════════════════════════════════════════════
-STEP 4 — THREE POWERS POSITIONING
-Map each changing line to a real-world domain where you can take action.
-  Lines 1-2 = Ground (foundation, inner resources, starting conditions)
-  Lines 3-4 = Person (mid-stage, social context, relationships)
-  Line 5  = Heaven (high position, public stage, outcome)
-  Line 6  = Top (extreme, end-cycle, transformation zone)
-══════════════════════════════════════════════════════
+{priority_en}
 
 {sancai_en}
 
-══════════════════════════════════════════════════════
-STEP 5 — SYNTHESIS (Include ALL four dimensions below)
-══════════════════════════════════════════════════════
-
-Provide your conclusion across exactly four dimensions:
-
-**① QUALITY (定性)**
-Based on the key judgment words in the changing line(s) and hexagram text (auspicious: 元吉/贞吉/无咎/悔亡; inauspicious: 吝/凶 etc.), set the overall tone for this reading.
-
-**② POSITIONING (定位)**
-Which "stage" does this situation occupy? Use the Three Powers (Ground/Person/Heaven) and the specific line positions to pinpoint where the issue lies — the root (ground), the present challenge (person), or the larger context (heaven).
-
-**③ QUANTITATIVE (定量)**
-{tiyong_constraint_en}
-Use the Body-Use relationship from Step 3 to assess the energy balance between you and your environment. DO NOT recalculate elements from hexagram names — use the exact values given in Step 3.
-
-**④ DIRECTION (定向)**
-Based on the Changed Hexagram (之卦 {zhi['name']}), point toward the future direction and suggest a concrete action or mindset shift.
-
-══════════════════════════════════════════════════════
-GUIDING PRINCIPLE OF THE I CHING
-The purpose of divination is NOT to predict fate — it is to help you find where to act.
-Follow the way of "无咎" (no-blame): adjust your virtue, abilities, and mindset; avoid the inauspicious trends and move toward the auspicious ones.
-══════════════════════════════════════════════════════
-
-Write in clear, modern English that a thoughtful contemporary person can understand. Blend classical I Ching wisdom with practical modern language. Be substantive but accessible. Do NOT simply translate Chinese terms — explain their meaning in natural English. Structure your response with clear headings for each of the 5 steps and the 4 synthesis dimensions."""
+Give your advice in 2-3 short paragraphs. Use plain English. Be warm but direct. Focus on WHAT TO DO next, not on ancient theory."""
 
     if lang == "en":
         return prompt_en
