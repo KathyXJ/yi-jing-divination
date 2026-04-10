@@ -530,7 +530,7 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 
     def get_priority_en(count):
         if count == 0:
-            return "This is a静卦 (Still Hexagram) — no lines are changing. The situation is at rest. Focus entirely on the hexagram judgment (卦辞) and its "virtue" — the energy it represents. No internal driving force. Advise the user to stay steady and wait."
+            return "This is a静卦 (Still Hexagram) — no lines are changing. The situation is at rest. Focus entirely on the hexagram judgment (卦辞) and its 'virtue' — the energy it represents. No internal driving force. Advise the user to stay steady and wait."
         elif count == 1:
             return f"One line is changing (line(s): {changed_names_en}). This is the KEY node of the entire situation. Focus primarily on the changing line's爻辞 (line text). Use the changed hexagram's corresponding line text as a glimpse of the future direction."
         elif count == 2:
