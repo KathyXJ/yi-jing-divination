@@ -190,7 +190,7 @@ function ResultPanel({
               <GuaDisplay gua={guaxiang} yaos={yaos} isZhi={false} />
               <p className="text-2xl font-bold text-gold mt-2">{guaxiang.name}</p>
               <p className="text-xs text-[var(--color-text-muted)] mt-1">
-                {guaxiang.upper_symbol}下 + {guaxiang.lower_symbol}上
+                {guaxiang.upper_symbol}上 + {guaxiang.lower_symbol}下
               </p>
             </div>
             <div className="flex items-center pt-8 text-2xl text-[var(--color-gold-dark)]">→</div>
@@ -199,7 +199,7 @@ function ResultPanel({
               <GuaDisplay gua={zhi_gua} yaos={yaos} isZhi={true} />
               <p className="text-2xl font-bold text-gold mt-2">{zhi_gua.name}</p>
               <p className="text-xs text-[var(--color-text-muted)] mt-1">
-                {zhi_gua.upper_symbol}下 + {zhi_gua.lower_symbol}上
+                {zhi_gua.upper_symbol}上 + {zhi_gua.lower_symbol}下
               </p>
             </div>
           </div>
