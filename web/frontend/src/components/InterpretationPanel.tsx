@@ -86,7 +86,7 @@ function GuaPanel({
 
       {/* 上下卦组合 */}
       <p className="text-sm text-[var(--color-text-muted)]">
-        {upperName}{lowerName} · {BAGUA_SYMBOLS[gua.upper_code]}{BAGUA_SYMBOLS[gua.lower_code]}
+        {lowerName}{upperName} · {BAGUA_SYMBOLS[gua.lower_code]}{BAGUA_SYMBOLS[gua.upper_code]}
       </p>
 
       {/* 卦辞 */}
