@@ -661,7 +661,7 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
 
     prompt_en = f"""You are a master of the I Ching (Zhou Yi / 周易). Using the Five-Step method below, give the user a deep, accurate, and practical interpretation.
 
-{'User\'s question: ' + user_question if user_question else '(No specific question asked — read the hexagram from its imagery and structure.)'}
+{"User's question: " + user_question if user_question else '(No specific question asked — read the hexagram from its imagery and structure.)'}
 
 ══════════════════════════════════════════════════════
 STEP 1 — IDENTIFY THE THREE ELEMENTS
