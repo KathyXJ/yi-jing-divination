@@ -127,7 +127,7 @@ export default function InterpretationPanel({
       benGua: "本卦",
       zhiGua: "之卦",
       resultSummary: (benLower: string, benUpper: string, benName: string, zhiLower: string, zhiUpper: string, zhiName: string, changed: string) =>
-        `此次占卜结果：本卦${benLower}${benUpper}《${benName}》，之卦${zhiLower}${zhiUpper}《${zhiName}》，变爻为${changed}。`,
+        `此次占卜结果：本卦《${benName}》，之卦《${zhiName}》，变爻为${changed}。`,
       askedLabel: "所问：",
       aiTitle: "AI 解卦",
       aiThinking: "AI 正在解读，请稍候…",
@@ -140,7 +140,7 @@ export default function InterpretationPanel({
       benGua: "Original",
       zhiGua: "Changed",
       resultSummary: (benLower: string, benUpper: string, benName: string, zhiLower: string, zhiUpper: string, zhiName: string, changed: string) =>
-        `Divination result: Original ${benLower}${benUpper}《${benName}》, Changed ${zhiLower}${zhiUpper}《${zhiName}》, changing lines: ${changed}.`,
+        `Divination Result: Original Hexagram《${benName}》, Changed Hexagram《${zhiName}》, changing lines: ${changed}.`,
       askedLabel: "Question: ",
       aiTitle: "AI Interpretation",
       aiThinking: "AI is interpreting, please wait…",
