@@ -659,22 +659,32 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
     else:
         yue_desc = "moderate"
 
-    prompt_en = f"""You are a wise and warm I Ching master. Give the user a clear, practical reading in simple English.
+    prompt_en = f"""You are a wise I Ching master. Give a clear, practical reading in simple modern English.
 
-THE HEXAGRAM:
-- Original (Current): **{ben['name']}**
-- Changed (Future): **{zhi['name']}**
+## THE HEXAGRAM
+- Current: **{ben['name']}** → Future: **{zhi['name']}**
 - Changing line(s): {changed_names_en if changed_names_en else 'none'}
 
 {tiyong_en}
 
-GUIDANCE (keep it simple and practical, like advice from a wise friend):
+## COMPREHENSIVE ANALYSIS
 
-{priority_en}
+**① Overall Energy & Mood**
+(tone: favorable or unfavorable? auspicious or risky?)
 
-{sancai_en}
+**② Situation Positioning**
+(where is this happening — foundation, relationships, or bigger context?)
 
-Give your advice in 2-3 short paragraphs. Use plain English. Be warm but direct. Focus on WHAT TO DO next, not on ancient theory."""
+**③ Energy Balance**
+(your energy vs external conditions — supportive or challenging?)
+
+**④ Development Direction**
+(where is this heading? what should you prepare for?)
+
+## FINAL GUIDANCE
+(give 1-2 short paragraphs of practical advice — what to do next, what to avoid, mindset to adopt)
+
+Keep it short, warm, and actionable. Like advice from a wise friend. No ancient theory needed."""
 
     if lang == "en":
         return prompt_en
