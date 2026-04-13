@@ -1,0 +1,7 @@
+name = "yi-jing-auth-callback"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+# 后端 OAuth callback 地址
+BACKEND_CALLBACK_URL = "https://yi-jing-divination-4h6y.onrender.com/auth/google/callback"

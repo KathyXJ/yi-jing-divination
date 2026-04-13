@@ -44,3 +44,11 @@ jobs:
           directory: web/frontend/out
           gitHubToken: ""
           skipDupDeployments: true
+
+      - name: Deploy OAuth Callback Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: 1485a5e1d9b5c3b8ac80b5235a56bdfb
+          workingDirectory: workers/auth-callback
+          environment: production
