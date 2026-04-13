@@ -152,7 +152,11 @@ export default function InterpretationPanel({
   }[lang];
 
   const changedNames = changed_indices.length > 0
-    ? changed_indices.map((i) => yaos[i].yao_name).join(lang === "en" ? ", " : "、")
+    ? changed_indices
+        .slice()
+        .sort((a, b) => b - a)
+        .map((i) => yaos[i].yao_name)
+        .join(lang === "en" ? ", " : "、")
     : t.noChanged;
 
   const benUpperName = BAGUA_NAMES[ben_gua.upper_code] || "";

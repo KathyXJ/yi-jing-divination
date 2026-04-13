@@ -244,18 +244,21 @@ function ResultPanel({
         {result.changed_indices.length > 0 ? (
           <div className="border-t border-[var(--color-border)] pt-4">
             <p className="text-xs text-[var(--color-text-muted)] mb-2">{t.changedYaoInterpret}</p>
-            {result.changed_indices.map((idx) => {
-              const yao = yaos[idx];
-              return (
-                <div key={idx} className="mb-2 p-3 rounded-lg bg-[rgba(212,168,67,0.05)] border border-[var(--color-gold-dark)]/20">
-                  <p className="text-gold text-sm font-semibold">{yao.yao_name}</p>
-                  <p className="text-sm text-[var(--color-text)] mt-1">{yao.sentence}</p>
-                  <p className="text-xs text-[var(--color-text-muted)] mt-1">
-                    → {lang === "en" ? "Will change to" : "将变为"} {yao.future_gua}
-                  </p>
-                </div>
-              );
-            })}
+            {result.changed_indices
+              .slice()
+              .sort((a, b) => b - a)
+              .map((idx) => {
+                const yao = yaos[idx];
+                return (
+                  <div key={idx} className="mb-2 p-3 rounded-lg bg-[rgba(212,168,67,0.05)] border border-[var(--color-gold-dark)]/20">
+                    <p className="text-gold text-sm font-semibold">{yao.yao_name}</p>
+                    <p className="text-sm text-[var(--color-text)] mt-1">{yao.sentence}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-1">
+                      → {lang === "en" ? "Will change to" : "将变为"} {yao.future_gua}
+                    </p>
+                  </div>
+                );
+              })}
           </div>
         ) : (
           <div className="border-t border-[var(--color-border)] pt-4 text-center text-sm text-[var(--color-text-muted)]">

@@ -143,7 +143,8 @@ def _build_tiyong_rule(changed: list, ben: dict, zhi: dict, div_time: dict, zhi_
     elif changed_count == 1:
         # 1爻动：无动爻的卦为体，有动爻的卦为用
         # 五行：乾兑金、震巽木、坎水、离火、坤艮土
-        pos = changed[0] if changed else 0
+        # changed_sorted[0] = 索引最大的变爻（从卦象顶部开始数）
+        pos = changed_sorted[0] if changed_sorted else 0
         # 动爻在下卦(0/1/2) → 上卦(3/4/5)为体；动爻在上卦 → 下卦(0/1/2)为体
         ti_is_upper = pos >= 3
         ti_gua = "上卦" if ti_is_upper else "下卦"
@@ -201,7 +202,7 @@ def _build_tiyong_rule(changed: list, ben: dict, zhi: dict, div_time: dict, zhi_
         yong = GUA_WUXING.get(yong_el, "火")
         pos_name = {0: "初爻", 1: "二爻", 2: "三爻", 3: "四爻", 4: "五爻", 5: "上爻"}
         ti_pos = "/".join(pos_name.get(p, "?") for p in sorted(static_set))
-        yong_pos = "/".join(pos_name.get(p, "?") for p in sorted(changed))
+        yong_pos = "/".join(pos_name.get(p, "?") for p in sorted(changed, reverse=True))
         return f"""**【二爻动】体用分析**
 体用关系：无动爻的卦「{ti_gua}」（{ti_pos}）为体，有动爻的卦「{yong_gua}」（{yong_pos}）为用。
 体卦五行：{ti}（{ti_gua} {ti_el}）
@@ -344,7 +345,7 @@ def _build_priority_rule(changed_count: int, ben_gua_name: str, zhi_gua_name: st
 操作：主要看本卦中动爻的爻辞。参考之卦《{zhi_gua_name}》对应爻的爻辞，作为"未来变化"的参考。"""
     elif changed_count == 2:
         # 以下爻为体、上爻为用，以下爻爻辞为主、上爻爻辞为辅
-        lower_yao = min(changed or [0])
+        lower_yao = max(changed or [0])  # 最大的索引 = 最下面的动爻
         upper_yao = max(changed_positions)
         pos_name = {0:"初爻",1:"二爻",2:"三爻",3:"四爻",4:"五爻",5:"上爻"}
         return f"""**【二爻动】**
@@ -384,6 +385,8 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
     zhi_yaos = divination_result["zhi_yaos"]
     changed = divination_result["changed_indices"]
     changed_count = len(changed)
+    # 按索引从大到小排序（与卦象显示顺序一致：上爻在前，初爻在后）
+    changed_sorted = sorted(changed, reverse=True)
     hua_gua = divination_result.get("hua_gua")
     div_time = divination_result.get("divination_time", {})
 
@@ -391,7 +394,7 @@ def build_interpretation_prompt(divination_result: dict, user_question: str = ""
     changed_yao_info_en = []
     changed_yao_info_zh = []
     if changed:
-        for i in changed:
+        for i in changed_sorted:
             if i < len(yaos):
                 yao = yaos[i]
                 pos = yao.get("position", i + 1) - 1
