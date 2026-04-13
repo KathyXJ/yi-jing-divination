@@ -21,17 +21,21 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Build
-        env:
-          NEXT_PUBLIC_API_URL: https://yi-jing-divination-4h6y.onrender.com
+      - name: Install dependencies
         run: |
           cd web/frontend
           corepack enable
           yarn config set registry https://registry.npmjs.org/
           yarn install --ignore-engines
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: https://yi-jing-divination-4h6y.onrender.com
+        run: |
+          cd web/frontend
           yarn build
-          # 复制 _worker.js 到输出目录，供 Cloudflare Pages Functions 使用
-          cp _worker.js out/_worker.js
+          # 复制 _worker.js 到 Next.js 输出目录
+          cp _worker.js out/_worker.js || true
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
