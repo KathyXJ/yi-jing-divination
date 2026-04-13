@@ -81,8 +81,11 @@ export default function HomePage() {
             ) : (
               <button
                 onClick={login}
-                className="text-xs font-bold rounded-full px-4 py-1.5 bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-gold-dark)] hover:text-[var(--color-gold)] transition-all"
+                className="text-xs font-bold rounded-full px-4 py-1.5 bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all shadow-[0_0_8px_rgba(212,168,67,0.3)] hover:shadow-[0_0_12px_rgba(212,168,67,0.5)] flex items-center gap-1"
               >
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
                 {lang === "zh" ? "登录" : "Login"}
               </button>
             )
