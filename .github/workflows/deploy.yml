@@ -21,19 +21,17 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Install dependencies
-        run: |
-          cd web/frontend
-          corepack enable
-          yarn config set registry https://registry.npmjs.org/
-          yarn install --ignore-engines
-
       - name: Build
         env:
           NEXT_PUBLIC_API_URL: https://yi-jing-divination-4h6y.onrender.com
         run: |
           cd web/frontend
+          corepack enable
+          yarn config set registry https://registry.npmjs.org/
+          yarn install --ignore-engines
           yarn build
+          # 复制 _worker.js 到输出目录，供 Cloudflare Pages Functions 使用
+          cp _worker.js out/_worker.js
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
@@ -44,12 +42,4 @@ jobs:
           directory: web/frontend/out
           gitHubToken: ""
           skipDupDeployments: true
-
-      - name: Deploy OAuth Callback Worker
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: 1485a5e1d9b5c3b8ac80b5235a56bdfb
-        run: |
-          cd workers/auth-callback
-          npm install -g wrangler
-          wrangler deploy --env production
+          wranglerVersion: "3"
