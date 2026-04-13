@@ -228,15 +228,13 @@ async def google_callback(request: Request, code: Optional[str] = None, state: O
             # 生成 JWT token
             jwt_token = create_jwt_token(user["id"], user["email"])
             
-            return {
-                "token": jwt_token,
-                "user": {
-                    "id": user["id"],
-                    "email": user["email"],
-                    "name": user["name"],
-                    "avatar_url": user["avatar_url"],
-                }
-            }
+            # 重定向到前端 callback 页面，带上 token
+            frontend_callback_url = os.getenv(
+                "FRONTEND_CALLBACK_URL",
+                "https://i-chingstudio.cc/auth/callback"
+            )
+            redirect_url = f"{frontend_callback_url}?token={jwt_token}"
+            return RedirectResponse(url=redirect_url)
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"登录处理失败: {str(e)}")
