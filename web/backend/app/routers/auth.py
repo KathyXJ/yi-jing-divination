@@ -11,8 +11,6 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from google.oauth2.credentials import Credentials
-from google.auth.transport import requests as google_requests
-from google.auth import refresh_error
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
