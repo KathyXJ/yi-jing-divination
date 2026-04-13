@@ -51,4 +51,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: 1485a5e1d9b5c3b8ac80b5235a56bdfb
         run: |
           cd workers/auth-callback
-          npx wrangler deploy --env production
+          npm install -g wrangler
+          wrangler deploy --env production
