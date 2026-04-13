@@ -92,25 +92,27 @@ def exchange_code_for_tokens(code: str) -> dict:
     """用 authorization code 换取 access token"""
     from google_auth_oauthlib.flow import Flow
     
-    flow = Flow.from_client_config(
-        {
-            "web": {
-                "client_id": GOOGLE_CLIENT_ID,
-                "client_secret": GOOGLE_CLIENT_SECRET,
-                "redirect_uris": [GOOGLE_REDIRECT_URI],
-                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token",
-            }
-        },
-        scopes=GOOGLE_SCOPE,
-    )
+    client_config = {
+        "web": {
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "redirect_uris": [GOOGLE_REDIRECT_URI],
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+        }
+    }
+    
+    flow = Flow.from_client_config(client_config, scopes=GOOGLE_SCOPE)
     flow.redirect_uri = GOOGLE_REDIRECT_URI
     flow.fetch_token(code=code)
+    
+    # 从 credentials 对象中提取需要的字段
+    creds = flow.credentials
     return {
-        "access_token": flow.credentials.token,
-        "refresh_token": flow.credentials.refresh_token,
-        "id_token": flow.credentials.id_token,
-        "token_type": flow.credentials.token_type,
+        "access_token": creds.token,
+        "refresh_token": getattr(creds, 'refresh_token', None),
+        "id_token": getattr(creds, 'id_token', None),
+        "token_type": getattr(creds, 'token_type', 'Bearer'),
     }
 
 
