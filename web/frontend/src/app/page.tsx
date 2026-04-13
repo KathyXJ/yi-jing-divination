@@ -6,6 +6,7 @@ import GuaDisplay from "@/components/GuaDisplay";
 import CoinCaster from "@/components/CoinCaster";
 import InterpretationPanel from "@/components/InterpretationPanel";
 import { useLang, TXT } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 
 type Phase = "intro" | "casting" | "result" | "interpreting";
 
@@ -17,6 +18,7 @@ export default function HomePage() {
   const [error, setError] = useState("");
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const { lang, toggleLang } = useLang();
+  const { user, isLoading, login, logout } = useAuth();
   const t = TXT[lang];
 
   async function handleCastingComplete(castResult: DivinationResult) {
@@ -63,6 +65,28 @@ export default function HomePage() {
           >
             {lang === "zh" ? "EN 中" : "中 EN"}
           </button>
+          {/* Login / User */}
+          {!isLoading && (
+            user ? (
+              <button
+                onClick={logout}
+                className="text-xs font-bold rounded-full px-4 py-1.5 bg-[var(--color-bg)] border border-[var(--color-gold-dark)] text-[var(--color-gold)] hover:bg-[var(--color-gold-dark)] hover:text-[var(--color-bg)] transition-all flex items-center gap-2"
+                title={user.email}
+              >
+                {user.avatar_url && (
+                  <img src={user.avatar_url} alt={user.name || ""} className="w-5 h-5 rounded-full" />
+                )}
+                {user.name || user.email}
+              </button>
+            ) : (
+              <button
+                onClick={login}
+                className="text-xs font-bold rounded-full px-4 py-1.5 bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-gold-dark)] hover:text-[var(--color-gold)] transition-all"
+              >
+                {lang === "zh" ? "登录" : "Login"}
+              </button>
+            )
+          )}
         </div>
         <p className="text-[var(--color-text-muted)] text-sm tracking-wide">
           {t.siteSubtitle}
