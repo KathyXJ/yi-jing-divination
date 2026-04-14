@@ -3,7 +3,7 @@ AI 解读 API — 使用 DeepSeek DeepThink 模型
 """
 import os
 import json
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 import asyncio
 from dotenv import load_dotenv
