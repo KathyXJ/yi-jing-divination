@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from google.oauth2.credentials import Credentials
 from jose import JWTError, jwt
 
-from ..database import get_db, get_user_by_google_id, get_user_by_email, create_user, update_user
+from ..database import get_db, get_user_by_google_id, get_user_by_email, create_user, update_user, update_user_credits, add_credits_transaction
 from ..models import User, Token
 
 router = APIRouter(prefix="/auth", tags=["认证"])
@@ -221,6 +221,15 @@ async def google_callback(request: Request, code: Optional[str] = None, state: O
                 else:
                     # 创建新用户
                     user = await create_user(db, google_id, email, name, avatar_url)
+                    # 发放注册赠送积分（3积分，7天有效）
+                    from datetime import datetime, timedelta
+                    new_credits = 3
+                    await update_user_credits(db, user["id"], new_credits)
+                    await add_credits_transaction(
+                        db, user["id"], "grant", new_credits, new_credits,
+                        "注册赠送3积分（7天有效）"
+                    )
+                    # TODO: 7天后过期逻辑需要在后台任务中处理
             else:
                 # 老用户，更新信息
                 user = await update_user(db, user["id"], name, avatar_url)
