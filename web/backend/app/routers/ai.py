@@ -346,7 +346,7 @@ def _build_priority_rule(changed_count: int, ben_gua_name: str, zhi_gua_name: st
     elif changed_count == 2:
         # 以下爻为体、上爻为用，以下爻爻辞为主、上爻爻辞为辅
         lower_yao = max(changed or [0])  # 最大的索引 = 最下面的动爻
-        upper_yao = max(changed_positions)
+        upper_yao = max(changed or [0])
         pos_name = {0:"初爻",1:"二爻",2:"三爻",3:"四爻",4:"五爻",5:"上爻"}
         return f"""**【二爻动】**
 逻辑：事情有两个内在驱动力在拉扯，或问题涉及两个层面的交织。
