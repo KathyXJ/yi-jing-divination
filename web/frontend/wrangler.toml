@@ -1,5 +1,7 @@
 name = "yi-jing-divination"
 compatibility_date = "2024-01-01"
 
-# This tells Cloudflare Pages where to find the built output
 pages_build_output_dir = ".next"
+
+[build]
+command = "npm install && npm run build"
