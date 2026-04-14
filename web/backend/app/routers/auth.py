@@ -3,7 +3,6 @@ Google OAuth 认证路由
 """
 import os
 import secrets
-import httplib2
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -12,7 +11,6 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from google.oauth2.credentials import Credentials
 from jose import JWTError, jwt
-from pydantic import BaseModel
 
 from ..database import get_db, get_user_by_google_id, get_user_by_email, create_user, update_user
 from ..models import User, Token
@@ -23,7 +21,7 @@ router = APIRouter(prefix="/auth", tags=["认证"])
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 # Google OAuth Redirect URI（回调地址）
-GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "https://yi-jing-divination.onrender.com/auth/google/callback")
+GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "https://yi-jing-divination-4h6y.onrender.com/auth/google/callback")
 # JWT 配置
 JWT_SECRET = os.getenv("JWT_SECRET", "your-super-secret-key-change-in-production")
 JWT_ALGORITHM = "HS256"
