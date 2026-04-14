@@ -716,10 +716,10 @@ async def interpret_divination(req: InterpretationRequest, request: Request):
     if not DEEPSEEK_API_KEY:
         raise HTTPException(status_code=500, detail="DeepSeek API Key 未配置")
 
-    # ===== 积分检查 =====
+    # ===== 积分检查（不扣费，先验证） =====
     from datetime import datetime
     from .auth import verify_jwt_token
-    from ..database import get_db, get_user_by_id, update_user_credits, add_credits_transaction
+    from ..database import get_db, get_user_by_id
 
     AI_INTERPRET_COST = 3  # AI解读每次消耗积分
 
@@ -758,23 +758,7 @@ async def interpret_divination(req: InterpretationRequest, request: Request):
                 detail=f"积分不足，需要{AI_INTERPRET_COST}积分，当前剩余{user['credits']}积分"
             )
 
-        # 扣减积分：优先扣余额，再扣订阅额度
-        if user["credits"] >= AI_INTERPRET_COST:
-            new_credits = user["credits"] - AI_INTERPRET_COST
-            await update_user_credits(db, user_id, new_credits)
-            await add_credits_transaction(
-                db, user_id, "deduct", -AI_INTERPRET_COST, new_credits,
-                "AI解读消耗"
-            )
-        else:
-            # 扣订阅额度
-            from_sub = AI_INTERPRET_COST - user["credits"]
-            await update_user_credits(db, user_id, 0)
-            await add_credits_transaction(
-                db, user_id, "deduct", -user["credits"], 0,
-                f"AI解读消耗{from_sub}积分（订阅额度）"
-            )
-    # ===== 积分检查结束 =====
+    # ===== AI 解读（成功后才扣积分） =====
 
     # DEBUG: 打印收到的 ben_gua 类型
     ben_gua_val = req.divination_result.get("ben_gua")
@@ -851,8 +835,31 @@ async def interpret_divination(req: InterpretationRequest, request: Request):
 
     try:
         interpretation = await asyncio.to_thread(_call_api)
+
+        # ===== AI 成功，扣除积分 =====
+        from ..database import update_user_credits, add_credits_transaction
+        async with get_db() as db:
+            user = await get_user_by_id(db, user_id)
+            if user["credits"] >= AI_INTERPRET_COST:
+                new_credits = user["credits"] - AI_INTERPRET_COST
+                await update_user_credits(db, user_id, new_credits)
+                await add_credits_transaction(
+                    db, user_id, "deduct", -AI_INTERPRET_COST, new_credits,
+                    "AI解读消耗"
+                )
+            else:
+                # 扣订阅额度
+                from_sub = AI_INTERPRET_COST - user["credits"]
+                await update_user_credits(db, user_id, 0)
+                await add_credits_transaction(
+                    db, user_id, "deduct", -user["credits"], 0,
+                    f"AI解读消耗{from_sub}积分（订阅额度）"
+                )
+        # ===== 扣积分结束 =====
+
         return InterpretationResponse(interpretation=interpretation, model="deepseek-chat")
     except Exception as e:
+        # AI 失败，不扣积分
         raise HTTPException(status_code=500, detail=f"AI 解读失败：{str(e)}")
 
 
