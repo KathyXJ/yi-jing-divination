@@ -1,0 +1,93 @@
+// 64卦拼音对照（带声调）
+export const GUA_PINYIN: Record<string, string> = {
+  "乾": "Qián",
+  "坤": "Kūn",
+  "屯": "Zhūn",
+  "蒙": " Méng",
+  "需": "Xū",
+  "讼": "Sòng",
+  "师": "Shī",
+  "比": "Bǐ",
+  "小畜": "Xiǎo Chù",
+  "履": "Lǚ",
+  "泰": "Tài",
+  "否": "Pǐ",
+  "同人": "Tóng Rén",
+  "大有": "Dà Yǒu",
+  "谦": "Qiān",
+  "豫": "Yù",
+  "随": "Suí",
+  "蛊": "Gǔ",
+  "临": "Lín",
+  "观": "Guān",
+  "噬嗑": "Shì Kē",
+  "贲": "Bì",
+  "剥": "Bō",
+  "复": "Fù",
+  "无妄": "Wú Wàng",
+  "大畜": "Dà Chù",
+  "颐": "Yí",
+  "大过": "Dà Guò",
+  "坎": "Kǎn",
+  "离": "Lí",
+  "咸": "Xián",
+  "恒": "Héng",
+  "遁": "Dùn",
+  "大壮": "Dà Zhuàng",
+  "晋": "Jìn",
+  "明夷": "Míng Yí",
+  "家人": "Jiā Rén",
+  "睽": "Kuí",
+  "蹇": "Jiǎn",
+  "解": "Xiè",
+  "损": "Sǔn",
+  "益": "Yì",
+  "夬": "Guài",
+  "姤": "Gòu",
+  "萃": "Cuì",
+  "升": "Shēng",
+  "困": "Kùn",
+  "井": "Jǐng",
+  "革": "Gé",
+  "鼎": "Dǐng",
+  "震": "Zhèn",
+  "艮": "Gèn",
+  "渐": "Jiàn",
+  "归妹": "Guī Mèi",
+  "丰": "Fēng",
+  "旅": "Lǚ",
+  "巽": "Xùn",
+  "兑": "Duì",
+  "涣": "Huàn",
+  "节": "Jié",
+  "中孚": "Zhōng Fú",
+  "小过": "Xiǎo Guò",
+  "既济": "Jì Jì",
+  "未济": "Wèi Jì",
+};
+
+// 爻名英文对照
+export const YAO_NAME_EN: Record<string, string> = {
+  "初九": "Line 1",
+  "九二": "Line 2",
+  "九三": "Line 3",
+  "九四": "Line 4",
+  "九五": "Line 5",
+  "上九": "Line 6",
+  "初六": "Line 1",
+  "六二": "Line 2",
+  "六三": "Line 3",
+  "六四": "Line 4",
+  "六五": "Line 5",
+  "上六": "Line 6",
+};
+
+// 获取卦名拼音（用于英文显示）
+export function getGuaPinyin(guaName: string): string {
+  return GUA_PINYIN[guaName] || guaName;
+}
+
+// 获取爻名英文（用于英文显示）
+export function getYaoNameEn(yaoName: string): string {
+  return YAO_NAME_EN[yaoName] || yaoName;
+}

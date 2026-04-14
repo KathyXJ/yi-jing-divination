@@ -1,6 +1,7 @@
 "use client";
 
 import type { DivinationResult } from "@/lib/api";
+import { getGuaPinyin, getYaoNameEn } from "@/lib/pinyin";
 
 interface Props {
   result: DivinationResult;
@@ -140,7 +141,7 @@ export default function InterpretationPanel({
       benGua: "Original",
       zhiGua: "Changed",
       resultSummary: (benLower: string, benUpper: string, benName: string, zhiLower: string, zhiUpper: string, zhiName: string, changed: string) =>
-        `Divination Result: Original Hexagram《${benName}》, Changed Hexagram《${zhiName}》, changing lines: ${changed}.`,
+        `Divination Result: Original Hexagram《${getGuaPinyin(benName)}》, Changed Hexagram《${getGuaPinyin(zhiName)}》, changing lines: ${changed}.`,
       askedLabel: "Question: ",
       aiTitle: "AI Interpretation",
       aiThinking: "AI is interpreting, please wait…",
@@ -155,7 +156,7 @@ export default function InterpretationPanel({
     ? changed_indices
         .slice()
         .sort((a, b) => b - a)
-        .map((i) => yaos[i].yao_name)
+        .map((i) => lang === "en" ? getYaoNameEn(yaos[i].yao_name) : yaos[i].yao_name)
         .join(lang === "en" ? ", " : "、")
     : t.noChanged;
 
