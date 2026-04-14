@@ -1,0 +1,239 @@
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-gold, #d4a843);
+  margin-bottom: 0.75rem;
+  font-family: "Noto Serif SC", serif;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.error {
+  background: rgba(220, 50, 50, 0.12);
+  border: 1px solid rgba(220, 50, 50, 0.25);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #e57373;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+.card {
+  position: relative;
+  background: rgba(20, 14, 8, 0.7);
+  border: 1px solid rgba(212, 168, 67, 0.12);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: rgba(212, 168, 67, 0.3);
+  transform: translateY(-2px);
+}
+
+.card.popular {
+  border-color: rgba(212, 168, 67, 0.45);
+  background: rgba(30, 22, 12, 0.85);
+}
+
+.card.bestValue {
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-gold, #d4a843);
+  color: #1a0e00;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.card.bestValue .badge {
+  background: #4caf50;
+  color: #fff;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.productName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+.currency {
+  font-size: 1.25rem;
+  color: var(--color-gold, #d4a843);
+  font-weight: 600;
+}
+
+.amount {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-gold, #d4a843);
+  line-height: 1;
+  font-family: "Noto Serif SC", serif;
+}
+
+.period {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: 0.25rem;
+}
+
+.free {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.creditsInfo {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.creditsNum {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+.validity {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.cardBody {
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.cardFooter {
+  text-align: center;
+}
+
+.ctaBtn {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: rgba(212, 168, 67, 0.15);
+  border: 1px solid rgba(212, 168, 67, 0.35);
+  color: var(--color-gold, #d4a843);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.ctaBtn:hover:not(:disabled) {
+  background: rgba(212, 168, 67, 0.25);
+}
+
+.ctaBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card.popular .ctaBtn {
+  background: var(--color-gold, #d4a843);
+  color: #1a0e00;
+  border-color: var(--color-gold, #d4a843);
+}
+
+.card.popular .ctaBtn:hover {
+  background: #e8bb55;
+  border-color: #e8bb55;
+}
+
+.freeNote {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.9rem;
+}
+
+.contactLink {
+  color: var(--color-gold, #d4a843);
+  text-decoration: none;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .pricingGrid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+}

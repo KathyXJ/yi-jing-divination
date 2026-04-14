@@ -1,0 +1,274 @@
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-gold, #d4a843);
+  margin-bottom: 1.5rem;
+  font-family: "Noto Serif SC", serif;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.notLoggedIn {
+  text-align: center;
+  padding: 4rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.notLoggedIn h2 {
+  color: var(--color-gold, #d4a843);
+  margin-bottom: 0.5rem;
+}
+
+.error {
+  background: rgba(220, 50, 50, 0.15);
+  border: 1px solid rgba(220, 50, 50, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #e57373;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.card {
+  background: rgba(30, 22, 12, 0.6);
+  border: 1px solid rgba(212, 168, 67, 0.15);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.txCard {
+  grid-column: 1 / -1;
+}
+
+.cardTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+/* Credits Display */
+.creditsDisplay {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.creditsNumber {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-gold, #d4a843);
+  line-height: 1;
+  font-family: "Noto Serif SC", serif;
+}
+
+.creditsLabel {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.5rem;
+}
+
+.cardActions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.primaryBtn {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: var(--color-gold, #d4a843);
+  color: #1a0e00;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.primaryBtn:hover {
+  background: #e8bb55;
+}
+
+.secondaryBtn {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: rgba(212, 168, 67, 0.1);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  color: var(--color-gold, #d4a843);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.secondaryBtn:hover {
+  background: rgba(212, 168, 67, 0.2);
+}
+
+/* Subscription */
+.subscriptionSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.subLabel {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.subBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.subBadge.active {
+  background: rgba(76, 175, 80, 0.15);
+  color: #81c784;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.subBadge.inactive {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.subExpiry {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.5rem;
+}
+
+/* Account Info */
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoLabel {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.infoValue {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Transactions */
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.9rem;
+}
+
+.txList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.txItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.txItem:last-child {
+  border-bottom: none;
+}
+
+.txLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.txAmount {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.txAmount.positive {
+  color: #81c784;
+}
+
+.txAmount.negative {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.txDesc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.txDate {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.viewAllLink {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--color-gold, #d4a843);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.viewAllLink:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .txCard {
+    grid-column: 1;
+  }
+
+  .creditsNumber {
+    font-size: 2.5rem;
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { LangProvider } from "@/lib/i18n";
 import { AuthProvider } from "@/lib/auth";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "周易占卜 · AI 智能解卦",
@@ -26,7 +27,10 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <LangProvider>{children}</LangProvider>
+          <LangProvider>
+            <Navbar />
+            <main>{children}</main>
+          </LangProvider>
         </AuthProvider>
       </body>
     </html>

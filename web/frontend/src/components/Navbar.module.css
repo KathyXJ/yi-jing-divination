@@ -1,0 +1,141 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 8, 5, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212, 168, 67, 0.15);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-gold, #d4a843);
+  font-family: "Noto Serif SC", serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.logoIcon {
+  font-size: 1.5rem;
+}
+
+.navLinks {
+  display: flex;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.navLink {
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.navLink:hover {
+  color: #fff;
+  background: rgba(212, 168, 67, 0.1);
+}
+
+.navLink.active {
+  color: var(--color-gold, #d4a843);
+  background: rgba(212, 168, 67, 0.08);
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.langBtn {
+  padding: 0.35rem 0.75rem;
+  background: rgba(212, 168, 67, 0.1);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  color: var(--color-gold, #d4a843);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.langBtn:hover {
+  background: rgba(212, 168, 67, 0.2);
+}
+
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.userBtn {
+  padding: 0.4rem 1rem;
+  background: rgba(212, 168, 67, 0.1);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  color: var(--color-gold, #d4a843);
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.userBtn:hover {
+  background: rgba(212, 168, 67, 0.2);
+}
+
+.logoutBtn {
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.logoutBtn:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.loginBtn {
+  padding: 0.4rem 1.2rem;
+  background: var(--color-gold, #d4a843);
+  border: none;
+  color: #1a0e00;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.loginBtn:hover {
+  background: #e8bb55;
+}
+
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+
+  .container {
+    gap: 1rem;
+  }
+}

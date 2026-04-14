@@ -60,6 +60,72 @@ async function fetchWithTimeout(url: string, init?: RequestInit): Promise<Respon
   }
 }
 
+// ============ Credits API ============
+
+export interface BalanceInfo {
+  credits: number;
+  subscription_type: string | null;
+  subscription_expires_at: string | null;
+  is_subscription_active: boolean;
+}
+
+export interface Transaction {
+  id: number;
+  type: string;
+  amount: number;
+  balance_after: number;
+  description: string | null;
+  created_at: string;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  name_en: string;
+  credits: number;
+  price_cents: number;
+  type: string;
+  valid_days: number | null;
+  description: string | null;
+  description_en: string | null;
+}
+
+export async function getCreditsBalance(token: string): Promise<BalanceInfo> {
+  const res = await fetch(`${BASE_URL}/api/credits/balance`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to fetch balance");
+  return res.json();
+}
+
+export async function getCreditsTransactions(token: string, limit = 20): Promise<Transaction[]> {
+  const res = await fetch(`${BASE_URL}/api/credits/transactions?limit=${limit}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to fetch transactions");
+  return res.json();
+}
+
+export async function getProducts(token: string): Promise<Product[]> {
+  const res = await fetch(`${BASE_URL}/api/credits/products`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to fetch products");
+  return res.json();
+}
+
+export async function createOrder(token: string, productId: number): Promise<{ order_id: number; amount_cents: number; currency: string; status: string }> {
+  const res = await fetch(`${BASE_URL}/api/credits/create-order?product_id=${productId}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: "Create order failed" }));
+    throw new Error(err.detail || "Create order failed");
+  }
+  return res.json();
+}
+
 /** 随机模拟投掷（保留给测试用） */
 export async function castDivination(): Promise<DivinationResult> {
   const res = await fetchWithTimeout(`${BASE_URL}/api/divination/cast`, {
