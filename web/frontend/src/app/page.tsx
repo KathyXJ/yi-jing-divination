@@ -35,7 +35,15 @@ export default function HomePage() {
       const text = await interpretWithAI(result, question, lang);
       setInterpretation(text);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : t.aiFailed);
+      const msg = e instanceof Error ? e.message : t.aiFailed;
+      // AI失败时提示积分未扣除，可重新尝试
+      if (msg.includes("AI 解读失败") || msg.includes("AI interpretation failed")) {
+        setError(lang === "zh"
+          ? "AI 解读失败，积分未扣除。您可以重新尝试。"
+          : "AI interpretation failed, no credits deducted. Please try again.");
+      } else {
+        setError(msg);
+      }
     } finally {
       setIsLoadingAI(false);
     }
