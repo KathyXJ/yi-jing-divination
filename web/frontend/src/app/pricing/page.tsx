@@ -109,8 +109,14 @@ export default function PricingPage() {
                 <div className={styles.creditsInfo}>
                   <span className={styles.creditsNum}>{product.credits}</span>
                   <span className={styles.creditsUnit}> {t.credits}</span>
-                  {!isSubscription && <span className={styles.validity}> · {t.permanent}</span>}
-                  {isSubscription && <span className={styles.validity}> · {t.features.monthly}</span>}
+                  <span className={styles.validity}>
+                    {!isSubscription && (
+                      product.valid_days
+                        ? (lang === "zh" ? ` · ${product.valid_days}天内有效` : ` · Valid for ${product.valid_days} days`)
+                        : ` · ${t.permanent}`
+                    )}
+                    {isSubscription && ` · ${t.features.monthly}`}
+                  </span>
                 </div>
               </div>
 
