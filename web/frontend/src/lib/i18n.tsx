@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export type Lang = "zh" | "en";
 
@@ -9,16 +9,30 @@ interface LangContextValue {
   toggleLang: () => void;
 }
 
+const LANG_STORAGE_KEY = "ichoose_lang";
+
 const LangContext = createContext<LangContextValue>({
-  lang: "zh",
+  lang: "en",
   toggleLang: () => {},
 });
 
 export function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>("zh");
+  const [lang, setLang] = useState<Lang>("en");
+
+  // 初始化时从 localStorage 恢复语言偏好
+  useEffect(() => {
+    const saved = localStorage.getItem(LANG_STORAGE_KEY);
+    if (saved === "zh" || saved === "en") {
+      setLang(saved);
+    }
+  }, []);
 
   function toggleLang() {
-    setLang((prev) => (prev === "zh" ? "en" : "zh"));
+    setLang((prev) => {
+      const next = prev === "zh" ? "en" : "zh";
+      localStorage.setItem(LANG_STORAGE_KEY, next);
+      return next;
+    });
   }
 
   return (
