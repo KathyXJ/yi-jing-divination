@@ -63,11 +63,13 @@ function GuaPanel({
   yaos,
   isZhi,
   guaTypeName,
+  lang = "zh",
 }: {
-  gua: { name: string; lower_code: string; upper_code: string; sentence?: string };
+  gua: { name: string; pinyin?: string; lower_code: string; upper_code: string; sentence?: string };
   yaos: { yao_name: string; value: number; is_change: boolean; sentence: string }[];
   isZhi: boolean;
   guaTypeName: string;
+  lang?: "zh" | "en";
 }) {
   const upperName = BAGUA_NAMES[gua.upper_code] || "";
   const lowerName = BAGUA_NAMES[gua.lower_code] || "";
@@ -78,7 +80,11 @@ function GuaPanel({
       <p className="text-xs text-[var(--color-text-muted)]">{guaTypeName}</p>
 
       {/* 卦名大字 */}
-      <p className="text-2xl font-bold text-gold">{gua.name}卦</p>
+      <p className="text-2xl font-bold text-gold">
+        {gua.name}
+        {lang === "en" && gua.pinyin && <span className="text-lg text-gold/70 ml-1">{gua.pinyin}</span>}
+        <span className="text-base font-normal ml-1">{lang === "en" ? "Hexagram" : "卦"}</span>
+      </p>
 
       {/* 六爻符号 */}
       <div className="w-16">
@@ -184,6 +190,7 @@ export default function InterpretationPanel({
             yaos={yaos}
             isZhi={false}
             guaTypeName={t.benGua}
+            lang={lang}
           />
 
           {/* 箭头 */}
@@ -197,6 +204,7 @@ export default function InterpretationPanel({
             yaos={zhi_yaos}
             isZhi={true}
             guaTypeName={t.zhiGua}
+            lang={lang}
           />
         </div>
       </div>
