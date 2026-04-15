@@ -65,8 +65,8 @@ function GuaPanel({
   guaTypeName,
   lang = "zh",
 }: {
-  gua: { name: string; pinyin?: string; lower_code: string; upper_code: string; sentence?: string };
-  yaos: { yao_name: string; value: number; is_change: boolean; sentence: string }[];
+  gua: { name: string; pinyin?: string; lower_code: string; upper_code: string; sentence?: string; sentence_en?: string };
+  yaos: { yao_name: string; value: number; is_change: boolean; sentence: string; sentence_en?: string }[];
   isZhi: boolean;
   guaTypeName: string;
   lang?: "zh" | "en";
@@ -97,9 +97,9 @@ function GuaPanel({
       </p>
 
       {/* 卦辞 */}
-      {gua.sentence && (
+      {(lang === "en" ? gua.sentence_en : gua.sentence) && (
         <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36">
-          《{gua.name}》：{gua.sentence}
+          《{gua.name}》：{lang === "en" ? gua.sentence_en : gua.sentence}
         </p>
       )}
 
@@ -111,7 +111,9 @@ function GuaPanel({
               {yao.yao_name}
               {!isZhi && yao.is_change && <span style={{ color: "#d4a843" }}>⚡</span>}
             </span>
-            <span className="text-xs text-[var(--color-text)] leading-snug">{yao.sentence}</span>
+            <span className="text-xs text-[var(--color-text)] leading-snug">
+              {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+            </span>
           </div>
         ))}
       </div>

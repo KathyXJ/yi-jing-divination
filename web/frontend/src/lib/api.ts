@@ -11,6 +11,7 @@ export interface GuaInfo {
   lower_symbol: string;
   upper_symbol: string;
   sentence?: string;
+  sentence_en?: string;
 }
 
 export interface YaoDetail {
@@ -20,6 +21,7 @@ export interface YaoDetail {
   type: string;
   is_change: boolean;
   sentence: string;
+  sentence_en?: string;
   future_gua: string;
   symbol?: string;
 }
