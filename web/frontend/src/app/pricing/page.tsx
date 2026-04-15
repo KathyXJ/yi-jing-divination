@@ -101,7 +101,7 @@ export default function PricingPage() {
                   ) : (
                     <>
                       <span className={styles.currency}>$</span>
-                      <span className={styles.amount}>{(product.price_cents / 100).toFixed(0)}</span>
+                      <span className={styles.amount}>{(product.price_cents / 100).toFixed(2).replace(/\.?0+$/, '')}</span>
                       {isSubscription && <span className={styles.period}>{t.perMonth}</span>}
                     </>
                   )}
