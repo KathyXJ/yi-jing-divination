@@ -156,11 +156,16 @@ export async function computeDivination(throws: number[]): Promise<DivinationRes
 export async function interpretWithAI(
   result: DivinationResult,
   question: string,
-  lang: "zh" | "en" = "zh"
+  lang: "zh" | "en" = "zh",
+  token?: string
 ): Promise<string> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
   const res = await fetchWithTimeout(`${BASE_URL}/api/ai/interpret`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({
       divination_result: result,
       user_question: question,

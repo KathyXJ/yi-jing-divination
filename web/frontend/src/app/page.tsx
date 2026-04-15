@@ -6,6 +6,7 @@ import GuaDisplay from "@/components/GuaDisplay";
 import CoinCaster from "@/components/CoinCaster";
 import InterpretationPanel from "@/components/InterpretationPanel";
 import { useLang, TXT } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 
 type Phase = "intro" | "casting" | "result" | "interpreting";
 
@@ -17,6 +18,7 @@ export default function HomePage() {
   const [error, setError] = useState("");
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const { lang } = useLang();
+  const { token } = useAuth();
   const t = TXT[lang];
 
   async function handleCastingComplete(castResult: DivinationResult) {
@@ -30,7 +32,7 @@ export default function HomePage() {
     setError("");
     setIsLoadingAI(true);
     try {
-      const text = await interpretWithAI(result, question, lang);
+      const text = await interpretWithAI(result, question, lang, token);
       setInterpretation(text);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : t.aiFailed;
