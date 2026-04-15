@@ -230,22 +230,27 @@ async def list_transactions(request: Request, limit: int = 20):
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""
-    async with get_db() as db:
-        products = await get_all_active_products(db)
-        return [
-            ProductResponse(
-                id=p["id"],
-                name=p["name"],
-                name_en=p["name_en"],
-                credits=p["credits"],
-                price_cents=p["price_cents"],
-                type=p["type"],
-                valid_days=p["valid_days"],
-                description=p.get("description"),
-                description_en=p.get("description_en")
-            )
-            for p in products
-        ]
+    try:
+        async with get_db() as db:
+            products = await get_all_active_products(db)
+            return [
+                ProductResponse(
+                    id=p["id"],
+                    name=p["name"],
+                    name_en=p["name_en"],
+                    credits=p["credits"],
+                    price_cents=p["price_cents"],
+                    type=p["type"],
+                    valid_days=p.get("valid_days"),
+                    description=p.get("description"),
+                    description_en=p.get("description_en")
+                )
+                for p in products
+            ]
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Database error: str(e)")
 
 
 class OrderCreateResponse(BaseModel):

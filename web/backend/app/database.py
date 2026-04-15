@@ -284,18 +284,28 @@ async def get_user_transactions(db: aiosqlite.Connection, user_id: int, limit: i
 
 async def get_product_by_id(db: aiosqlite.Connection, product_id: int) -> Optional[dict]:
     """通过产品ID查询产品"""
-    cursor = await db.execute(
-        "SELECT * FROM products WHERE id = ? AND is_active = 1", (product_id,)
-    )
+    try:
+        cursor = await db.execute(
+            "SELECT * FROM products WHERE id = ? AND is_active = 1", (product_id,)
+        )
+    except Exception:
+        cursor = await db.execute(
+            "SELECT * FROM products WHERE id = ?", (product_id,)
+        )
     row = await cursor.fetchone()
     return dict(row) if row else None
 
 
 async def get_all_active_products(db: aiosqlite.Connection) -> list:
     """获取所有有效产品"""
-    cursor = await db.execute(
-        "SELECT * FROM products WHERE is_active = 1 ORDER BY price_cents ASC"
-    )
+    try:
+        cursor = await db.execute(
+            "SELECT * FROM products WHERE is_active = 1 ORDER BY price_cents ASC"
+        )
+    except Exception:
+        cursor = await db.execute(
+            "SELECT * FROM products ORDER BY price_cents ASC"
+        )
     rows = await cursor.fetchall()
     return [dict(row) for row in rows]
 
