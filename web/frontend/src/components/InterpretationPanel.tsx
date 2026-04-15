@@ -75,7 +75,7 @@ function GuaPanel({
   const lowerName = BAGUA_NAMES[gua.lower_code] || "";
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 min-h-[300px] w-[200px]">
       {/* 标签 */}
       <p className="text-xs text-[var(--color-text-muted)]">{guaTypeName}</p>
 
@@ -183,7 +183,7 @@ export default function InterpretationPanel({
 
       {/* ===== 左右对称卦象面板 ===== */}
       <div className="glass rounded-2xl p-6">
-        <div className="flex items-start justify-center gap-12">
+        <div className="flex items-stretch justify-center gap-12">
           {/* 本卦 */}
           <GuaPanel
             gua={ben_gua}
@@ -194,7 +194,7 @@ export default function InterpretationPanel({
           />
 
           {/* 箭头 */}
-          <div className="flex items-center pt-10">
+          <div className="flex items-center">
             <span className="text-2xl text-[var(--color-gold-dark)]">→</span>
           </div>
 
