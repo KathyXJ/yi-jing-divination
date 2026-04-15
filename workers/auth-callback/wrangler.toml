@@ -1,7 +1,4 @@
-name = "yi-jing-auth-callback"
-main = "src/index.js"
+name = "yi-jing-divination"
 compatibility_date = "2024-01-01"
-
-[vars]
-# 后端 OAuth callback 地址
-BACKEND_CALLBACK_URL = "https://yi-jing-divination-4h6y.onrender.com/auth/google/callback"
+account_id = "1485a5e1d9b5c3b8ac80b5235a56bdfb"
+# Cloudflare Pages configuration
