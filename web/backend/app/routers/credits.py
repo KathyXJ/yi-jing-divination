@@ -227,6 +227,33 @@ async def list_transactions(request: Request, limit: int = 20):
         ]
 
 
+@router.get("/products-debug")
+async def list_products_debug(request: Request):
+    """调试端点：直接返回数据库查询结果和错误"""
+    import traceback
+    try:
+        async with get_db() as db:
+            # 先检查表结构
+            cursor = await db.execute("PRAGMA table_info(products)")
+            columns = await cursor.fetchall()
+            
+            # 尝试查询
+            cursor2 = await db.execute("SELECT * FROM products")
+            rows = await cursor2.fetchall()
+            
+            return {
+                "status": "ok",
+                "columns": [dict(r) for r in columns],
+                "rows": [dict(row) for row in rows]
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }
+
+
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""
