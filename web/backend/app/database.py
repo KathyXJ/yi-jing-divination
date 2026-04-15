@@ -157,6 +157,7 @@ async def init_products(db: aiosqlite.Connection):
     await db.commit()
 
 
+@asynccontextmanager
 async def get_db():
     """获取数据库连接（异步上下文管理器）"""
     db = await aiosqlite.connect(DATABASE_PATH)
