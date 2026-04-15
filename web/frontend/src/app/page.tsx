@@ -34,14 +34,20 @@ export default function HomePage() {
       setInterpretation(text);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : t.aiFailed;
-      // AI失败时提示积分未扣除，可重新尝试
-      if (msg.includes("AI 解读失败") || msg.includes("AI interpretation failed")) {
+      // 统一错误提示
+      if (msg.includes("请先登录") || msg.includes("not logged in") || msg.includes("AI 解读失败") || msg.includes("AI interpretation failed")) {
         setError(lang === "zh"
-          ? "AI 解读失败，积分未扣除。您可以重新尝试。"
-          : "AI interpretation failed, no credits deducted. Please try again.");
+          ? "AI 解读失败，积分未扣除。请重新尝试或登录后使用。"
+          : "AI interpretation failed. Please try again or log in.");
+      } else if (msg.includes("积分") || msg.includes("credit")) {
+        setError(lang === "zh"
+          ? "积分不足，请购买积分后重试。"
+          : "Insufficient credits. Please purchase more credits.");
       } else {
         setError(msg);
       }
+      // 错误时返回结果页，显示错误提示
+      setPhase("result");
     } finally {
       setIsLoadingAI(false);
     }
