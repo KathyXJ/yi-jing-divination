@@ -32,7 +32,7 @@ export default function HomePage() {
     setError("");
     setIsLoadingAI(true);
     try {
-      const text = await interpretWithAI(result, question, lang, token);
+      const text = await interpretWithAI(result, question, lang, token ?? undefined);
       setInterpretation(text);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : t.aiFailed;
