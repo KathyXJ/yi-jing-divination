@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
 from ..database import (
-    get_db, get_user_by_id, update_user_credits,
+    get_db, get_user_by_id, get_user_by_email, update_user_credits,
     add_credits_transaction, get_user_transactions,
     get_all_active_products, get_product_by_id,
     create_order, update_order_status, get_order_by_id
@@ -233,14 +233,10 @@ async def list_products_debug(request: Request):
     import traceback
     try:
         async with get_db() as db:
-            # 先检查表结构
             cursor = await db.execute("PRAGMA table_info(products)")
             columns = await cursor.fetchall()
-            
-            # 尝试查询
             cursor2 = await db.execute("SELECT * FROM products")
             rows = await cursor2.fetchall()
-            
             return {
                 "status": "ok",
                 "columns": [dict(r) for r in columns],
@@ -251,6 +247,30 @@ async def list_products_debug(request: Request):
             "status": "error",
             "error": str(e),
             "traceback": traceback.format_exc()
+        }
+
+
+@router.get("/grant-debug")
+async def grant_debug(request: Request, email: str = "", amount: int = 100):
+    """临时调试接口：按email给用户加积分（无需认证）"""
+    if not email:
+        return {"error": "email required"}
+    async with get_db() as db:
+        user = await get_user_by_email(db, email)
+        if not user:
+            return {"error": "user not found", "email": email}
+        new_balance = user["credits"] + amount
+        await update_user_credits(db, user["id"], new_balance)
+        await add_credits_transaction(
+            db, user["id"], "grant", amount, new_balance,
+            f"测试赠送{amount}积分"
+        )
+        return {
+            "success": True,
+            "user_id": user["id"],
+            "email": email,
+            "amount_granted": amount,
+            "new_balance": new_balance
         }
 
 
