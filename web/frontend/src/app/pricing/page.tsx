@@ -77,8 +77,8 @@ export default function PricingPage() {
         {products.map((product) => {
           const isSubscription = product.type === "subscription";
           const isFree = product.type === "free";
-          const isPopular = product.type === "subscription";
-          const isBestValue = product.type === "one_time" && product.credits >= 50;
+          const isPopular = product.type === "one_time" && product.credits >= 50;
+          const isBestValue = product.type === "subscription";
 
           return (
             <div
