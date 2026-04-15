@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth, useLang } from "@/lib/auth";
+import { useAuth } from "@/lib/auth";
+import { useLang } from "@/lib/i18n";
 import { getCreditsBalance, getCreditsTransactions, type BalanceInfo, type Transaction } from "@/lib/api";
 import Link from "next/link";
 import styles from "./page.module.css";

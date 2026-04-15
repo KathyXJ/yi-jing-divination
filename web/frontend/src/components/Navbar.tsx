@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth, useLang } from "@/lib/auth";
+import { useAuth } from "@/lib/auth";
+import { useLang } from "@/lib/i18n";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
