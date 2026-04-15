@@ -146,6 +146,7 @@ def compute_hexagram_from_throws(face_indices: List[int]) -> Dict:
     # 之卦用 zhi_gua，卦象用 guaxiang（原始 trigram）
     guaxiang = {
         "name": ben_gua["guaName"],
+        "pinyin": ben_gua.get("pinyin", ""),
         "lower_code": ben_gua["lowerCode"],
         "upper_code": ben_gua["upperCode"],
         "lower_symbol": _code_to_symbol(ben_gua["lowerCode"]),
@@ -156,6 +157,7 @@ def compute_hexagram_from_throws(face_indices: List[int]) -> Dict:
         "guaxiang": guaxiang,
         "ben_gua": {
             "name": ben_gua["guaName"],
+            "pinyin": ben_gua.get("pinyin", ""),
             "code": ben_gua["code"],
             "lower_code": ben_gua["lowerCode"],
             "upper_code": ben_gua["upperCode"],
@@ -166,6 +168,7 @@ def compute_hexagram_from_throws(face_indices: List[int]) -> Dict:
         },
         "zhi_gua": {
             "name": zhi_gua["guaName"],
+            "pinyin": zhi_gua.get("pinyin", ""),
             "code": zhi_gua["code"],
             "lower_code": zhi_gua["lowerCode"],
             "upper_code": zhi_gua["upperCode"],

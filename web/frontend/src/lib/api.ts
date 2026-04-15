@@ -4,6 +4,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 export interface GuaInfo {
   name: string;
+  pinyin?: string;
   code: string;
   lower_code: string;
   upper_code: string;
@@ -25,6 +26,7 @@ export interface YaoDetail {
 
 export interface GuaTrigram {
   name: string;
+  pinyin?: string;
   code?: string;
   lower_code: string;
   upper_code: string;

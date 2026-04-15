@@ -193,7 +193,10 @@ function ResultPanel({
             <div>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">{t.benGuaLabel}</p>
               <GuaDisplay gua={guaxiang} yaos={yaos} isZhi={false} />
-              <p className="text-2xl font-bold text-gold mt-2">{guaxiang.name}</p>
+              <p className="text-2xl font-bold text-gold mt-2">
+                {guaxiang.name}
+                {guaxiang.pinyin && lang === "en" && <span className="text-lg text-gold/70 ml-1">{guaxiang.pinyin}</span>}
+              </p>
               <p className="text-xs text-[var(--color-text-muted)] mt-1">
                 {guaxiang.upper_symbol}上 + {guaxiang.lower_symbol}下
               </p>
@@ -202,7 +205,10 @@ function ResultPanel({
             <div>
               <p className="text-xs text-[var(--color-text-muted)] mb-2">{t.zhiGuaLabel}</p>
               <GuaDisplay gua={zhi_gua} yaos={yaos} isZhi={true} />
-              <p className="text-2xl font-bold text-gold mt-2">{zhi_gua.name}</p>
+              <p className="text-2xl font-bold text-gold mt-2">
+                {zhi_gua.name}
+                {zhi_gua.pinyin && lang === "en" && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
+              </p>
               <p className="text-xs text-[var(--color-text-muted)] mt-1">
                 {zhi_gua.upper_symbol}上 + {zhi_gua.lower_symbol}下
               </p>
