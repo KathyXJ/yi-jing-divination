@@ -16,12 +16,11 @@ export default function PricingPage() {
   const [processing, setProcessing] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!token) return;
-    getProducts(token)
+    getProducts()
       .then(setProducts)
       .catch(() => setError("Failed to load products"))
       .finally(() => setLoading(false));
-  }, [token]);
+  }, []);
 
   async function handleBuy(productId: number) {
     if (!token) return;

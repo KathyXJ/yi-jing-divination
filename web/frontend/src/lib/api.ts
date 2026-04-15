@@ -106,10 +106,8 @@ export async function getCreditsTransactions(token: string, limit = 20): Promise
   return res.json();
 }
 
-export async function getProducts(token: string): Promise<Product[]> {
-  const res = await fetch(`${BASE_URL}/api/credits/products`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function getProducts(): Promise<Product[]> {
+  const res = await fetch(`${BASE_URL}/api/credits/products`);
   if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
 }
