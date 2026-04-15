@@ -250,7 +250,7 @@ async def list_products(request: Request):
     except Exception as e:
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Database error: str(e)")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 
 class OrderCreateResponse(BaseModel):
