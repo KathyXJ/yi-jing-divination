@@ -93,6 +93,17 @@ async def init_db():
 
         await db.commit()
 
+        # 数据库迁移：确保新列存在（旧数据库 schema 升级）
+        try:
+            await db.execute("ALTER TABLE products ADD COLUMN valid_days INTEGER DEFAULT NULL")
+        except Exception:
+            pass  # 列已存在
+        try:
+            await db.execute("ALTER TABLE products ADD COLUMN is_active INTEGER DEFAULT 1")
+        except Exception:
+            pass  # 列已存在
+        await db.commit()
+
         # 初始化产品数据
         await init_products(db)
 
