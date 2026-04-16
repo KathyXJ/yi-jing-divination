@@ -68,19 +68,28 @@ def extract_js_array(content: str, var_name: str) -> str:
 
 def js_to_json(js_str: str) -> Any:
     """将简化的 JS 数组/对象转换为合法 JSON"""
+    json_str = js_str
     # 1. 处理 JS 对象 key 不带引号的问题
-    # 匹配 key: 这种模式（在引号外的单词后跟冒号）
     json_str = re.sub(
         r'([{,]\s*)([a-zA-Z_\u4e00-\u9fff][a-zA-Z0-9_\u4e00-\u9fff]*)\s*:',
         r'\1"\2":',
-        js_str
+        json_str
     )
     # 2. 处理尾部多余逗号
-    json_str = re.sub(r",\s*([\]}])", r"\1", json_str)
-    # 3. 单引号 → 双引号
-    json_str = re.sub(r"'([^'\\]*(?:\\.[^'\\]*)*)'", r'"\1"', json_str)
+    json_str = re.sub(r",\s*([\]}\]])", r"\1", json_str)
+    # 3. 处理单引号：先保护双引号字符串，再转单引号
+    quote_pattern = r'"[^"\\]*(?:\\.[^"\\]*)*"'
+    matches = re.findall(quote_pattern, json_str)
+    placeholders = {}
+    for i, m in enumerate(matches):
+        ph = f"__PH_{i}__"
+        placeholders[ph] = m
+        json_str = json_str.replace(m, ph, 1)
+    json_str = json_str.replace("'", '"')
+    for ph, orig in placeholders.items():
+        json_str = json_str.replace(ph, orig)
     # 4. 中文引号
-    json_str = json_str.replace('"', '"').replace('"', '"').replace(''', "'").replace(''', "'")
+    json_str = json_str.replace('\u201c', '"').replace('\u201d', '"').replace('\u2018', "'").replace('\u2019', "'")
 
     import json as _json
     try:
