@@ -41,6 +41,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } else {
       setIsLoading(false);
     }
+
+    // 监听 auth_token_set 事件（登录回调时触发）
+    function onTokenSet(e: Event) {
+      const { token } = (e as CustomEvent).detail;
+      setToken(token);
+      fetchUserInfo(token);
+    }
+    window.addEventListener("auth_token_set", onTokenSet);
+    return () => window.removeEventListener("auth_token_set", onTokenSet);
   }, []);
 
   async function fetchUserInfo(t: string) {
@@ -86,7 +95,8 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-// 解析 callback URL 中的 token
+// 解析 callback URL 中的 token，并通知 AuthProvider
+// Returns the token if found, null otherwise
 export function handleAuthCallback(): string | null {
   if (typeof window === "undefined") return null;
   const params = new URLSearchParams(window.location.search);
@@ -95,6 +105,8 @@ export function handleAuthCallback(): string | null {
     localStorage.setItem("auth_token", token);
     // 清除 URL 中的 token 参数
     window.history.replaceState({}, document.title, window.location.pathname);
+    // 通知 AuthProvider 有新 token
+    window.dispatchEvent(new CustomEvent("auth_token_set", { detail: { token } }));
   }
   return token;
 }
