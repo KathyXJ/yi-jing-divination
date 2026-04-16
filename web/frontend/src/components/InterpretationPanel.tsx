@@ -139,16 +139,12 @@ export default function InterpretationPanel({
     .map((p) => p.split(/\n/).filter((l) => l.trim()))
     .filter((lines) => lines.length > 0);
 
-  // 从下到上排列爻（yaos[0]=初爻在下）
-  const benYaosReversed = [...yaos].reverse(); // 上爻在前
-  const zhiYaosReversed = [...zhi_yaos].reverse();
-
   return (
     <div className="animate-fade-in space-y-5">
 
       {/* ===== 左右对称卦象面板 ===== */}
       <div className="glass rounded-2xl p-6">
-        <div className="flex items-stretch justify-center gap-8">
+        <div className="flex items-stretch justify-center gap-4">
           {/* 本卦 */}
           <div className="flex flex-col items-center w-[200px]">
             {/* 标签 */}
@@ -158,14 +154,6 @@ export default function InterpretationPanel({
               {ben_gua.name}
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
-            {/* 六爻符号（简化） */}
-            <div className="w-12 mt-1">
-              <div className="flex flex-col gap-[2px] items-center">
-                {benYaosReversed.map((yao, idx) => (
-                  <YaoLine key={idx} value={yao.value} isChange={yao.is_change} />
-                ))}
-              </div>
-            </div>
             {/* 上下卦组合 */}
             <p className="text-sm text-[var(--color-text-muted)] mt-1">
               {benUpperName}{benLowerName} · {BAGUA_SYMBOLS[ben_gua.upper_code]}{BAGUA_SYMBOLS[ben_gua.lower_code]}
@@ -176,17 +164,15 @@ export default function InterpretationPanel({
                 《{ben_gua.name}》：{lang === "en" ? ben_gua.sentence_en : ben_gua.sentence}
               </p>
             )}
-            {/* 爻辞（从下到上，上爻显示在上） */}
-            <div className="w-full mt-2">
+            {/* 爻辞（从下到上） */}
+            <div className="w-full mt-2 space-y-1">
               {[...yaos].map((yao) => (
-                <YaoRow
-                  key={yao.yao_name}
-                  yaoName={yao.yao_name}
-                  value={yao.value}
-                  isChange={yao.is_change}
-                  sentence={lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                  lang={lang}
-                />
+                <div key={yao.yao_name} className="text-xs text-left">
+                  <span className="text-[var(--color-text-muted)] mr-1">{yao.yao_name}</span>
+                  <span className="text-[var(--color-text)]">
+                    {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
@@ -205,14 +191,6 @@ export default function InterpretationPanel({
               {zhi_gua.name}
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
-            {/* 六爻符号（简化） */}
-            <div className="w-12 mt-1">
-              <div className="flex flex-col gap-[2px] items-center">
-                {zhiYaosReversed.map((yao, idx) => (
-                  <YaoLine key={idx} value={yao.value} isChange={false} />
-                ))}
-              </div>
-            </div>
             {/* 上下卦组合 */}
             <p className="text-sm text-[var(--color-text-muted)] mt-1">
               {zhiUpperName}{zhiLowerName} · {BAGUA_SYMBOLS[zhi_gua.upper_code]}{BAGUA_SYMBOLS[zhi_gua.lower_code]}
@@ -224,16 +202,14 @@ export default function InterpretationPanel({
               </p>
             )}
             {/* 爻辞（从下到上） */}
-            <div className="w-full mt-2">
+            <div className="w-full mt-2 space-y-1">
               {[...zhi_yaos].map((yao) => (
-                <YaoRow
-                  key={yao.yao_name}
-                  yaoName={yao.yao_name}
-                  value={yao.value}
-                  isChange={false}
-                  sentence={lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                  lang={lang}
-                />
+                <div key={yao.yao_name} className="text-xs text-left">
+                  <span className="text-[var(--color-text-muted)] mr-1">{yao.yao_name}</span>
+                  <span className="text-[var(--color-text)]">
+                    {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
