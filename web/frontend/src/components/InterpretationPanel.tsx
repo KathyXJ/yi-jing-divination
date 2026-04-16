@@ -82,8 +82,7 @@ function GuaPanel({
       {/* 卦名大字 */}
       <p className="text-2xl font-bold text-gold">
         {gua.name}
-        {lang === "en" && gua.pinyin && <span className="text-lg text-gold/70 ml-1">{gua.pinyin}</span>}
-        <span className="text-base font-normal ml-1">{lang === "en" ? "Hexagram" : "卦"}</span>
+        {gua.pinyin && <span className="text-lg text-gold/70 ml-1">{gua.pinyin}</span>}
       </p>
 
       {/* 六爻符号 */}
