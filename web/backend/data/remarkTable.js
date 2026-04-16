@@ -7,7 +7,7 @@ let remarkTable = [
     "sentence": "元亨利贞。象曰：天行健，君子以自强不息。",
     "annotation": "彖象",
     "futureGua": "乾",
-    "sentence_en": "Great success, beneficial to persevere."
+    "sentence_en": "The beginning is supreme, success is assured, benefit is correct and firm."
   },
   {
     "currentGua": "乾",
@@ -71,7 +71,7 @@ let remarkTable = [
     "sentence": "元亨，利牝马之贞。君子有攸往，先迷后得主，利西南得朋，东北丧朋。安贞吉。象曰：地势坤，君子以厚德载物。",
     "annotation": "彖象",
     "futureGua": "坤",
-    "sentence_en": "Supremely prosperous, it is advantageous to be steadfast like a mare; the noble one who acts may first go astray but later finds guidance, finding benefit and companionship in the southwest and losing it in the northeast—remaining steadfast brings good fortune."
+    "sentence_en": "Supremely prosperous, it is beneficial to maintain the steadfastness of a mare. For a noble person with somewhere to go: if they go first, they will lose the way; if they follow, they will find a master. It is beneficial to go southwest to find companions, and to go northeast to lose companions. Remaining steadfast brings good fortune."
   },
   {
     "currentGua": "坤",
@@ -135,7 +135,7 @@ let remarkTable = [
     "sentence": "元亨利贞。勿用有攸往，利建侯。象曰：云雷屯，君子以经纶。",
     "annotation": "彖象",
     "futureGua": "屯",
-    "sentence_en": "The main text translates to: Supreme success, perseverance furthers; do not act, it is beneficial to appoint a leader."
+    "sentence_en": "Great success through perseverance. Do not act hastily; it is favorable to establish a firm foundation."
   },
   {
     "currentGua": "屯",
@@ -199,7 +199,7 @@ let remarkTable = [
     "sentence": "亨。匪我求童蒙，童蒙求我。初筮告，再三渎，渎则不告。利贞。象曰：山下出泉，蒙。君子以果行育德",
     "annotation": "彖象",
     "futureGua": "蒙",
-    "sentence_en": "Success; it is not I who seek the young and ignorant, but they who seek me; with the first consultation, I inform, but if they ask two or three times, it is disrespectful, and I do not inform; perseverance is advantageous."
+    "sentence_en": "Success. It is not I who seek the young and ignorant, but they who seek me. The first consultation brings instruction; to ask repeatedly is disrespectful, and for that, there will be no answer. Perseverance is beneficial."
   },
   {
     "currentGua": "蒙",
@@ -263,7 +263,7 @@ let remarkTable = [
     "sentence": "有孚，光亨，贞吉。利涉大川。象曰：云上于天，需。君子以饮食宴乐",
     "annotation": "彖象",
     "futureGua": "需",
-    "sentence_en": "With sincerity, there is brilliant success; perseverance brings good fortune, and it is favorable to cross great rivers."
+    "sentence_en": "With sincerity, there is brilliant success. Perseverance brings good fortune, and it is favorable to cross great rivers."
   },
   {
     "currentGua": "需",
@@ -327,7 +327,7 @@ let remarkTable = [
     "sentence": "有孚，窒惕，中吉，终凶。利见大人，不利涉大川。象曰：天与水违行，讼。君子以做事谋始",
     "annotation": "彖象",
     "futureGua": "讼",
-    "sentence_en": "With sincerity, caution in adversity brings good fortune in the middle, but final misfortune; it is favorable to see the great person, but not favorable to cross the great river."
+    "sentence_en": "With sincerity, restrain caution: there is good fortune in the middle, but a disastrous end. It is favorable to see the great person; it is not favorable to cross the great river."
   },
   {
     "currentGua": "讼",
@@ -391,7 +391,7 @@ let remarkTable = [
     "sentence": "贞，丈人吉，无咎。象曰：地中有水，师。君子以容民畜众。",
     "annotation": "彖象",
     "futureGua": "师",
-    "sentence_en": "Perseverance brings good fortune to the great man, without blame."
+    "sentence_en": "Perseverance. A great man brings good fortune; there is no blame."
   },
   {
     "currentGua": "师",
@@ -455,7 +455,7 @@ let remarkTable = [
     "sentence": "吉。原筮，元永贞，无咎。不宁方来，后夫凶。象曰：地上有水，比。先王以建万国，亲诸侯。",
     "annotation": "彖象",
     "futureGua": "比",
-    "sentence_en": "Auspicious; with original divination, enduring perseverance brings no blame, yet unrest approaches and latecomers meet misfortune."
+    "sentence_en": "Auspicious. In the initial divination, fundamental and enduring constancy brings no blame. When the unsettled state arrives, those who come last face misfortune."
   },
   {
     "currentGua": "比",
@@ -519,7 +519,7 @@ let remarkTable = [
     "sentence": "亨。密云不雨，自我西郊。象曰：风行天上，小畜。君子以懿文德。",
     "annotation": "彖象",
     "futureGua": "小畜",
-    "sentence_en": "Success: Dense clouds but no rain from our western suburbs."
+    "sentence_en": "Success. Dense clouds do not rain, coming from our western suburbs."
   },
   {
     "currentGua": "小畜",
@@ -583,7 +583,7 @@ let remarkTable = [
     "sentence": "履虎尾，不咥人，亨。象曰：上天下泽，履。君子以辨上下，定民志。",
     "annotation": "彖象",
     "futureGua": "履",
-    "sentence_en": "Treading on a tiger's tail, but it does not bite the man; success."
+    "sentence_en": "Treading on a tiger's tail, yet it does not bite the person. This signifies success."
   },
   {
     "currentGua": "履",
@@ -647,7 +647,7 @@ let remarkTable = [
     "sentence": "小往大来，吉亨。象曰：天地交，泰。后以财成天地之道，辅相天地之宜，以左右民。",
     "annotation": "彖象",
     "futureGua": "泰",
-    "sentence_en": "The small departs and the great arrives, which is auspicious and smooth."
+    "sentence_en": "The small departs and the great arrives. This is auspicious and brings success."
   },
   {
     "currentGua": "泰",
@@ -711,7 +711,7 @@ let remarkTable = [
     "sentence": "否之匪人，不利君子贞，大往小来。象曰：天地不交，否。君子以俭德辟难，不可荣以禄。",
     "annotation": "彖象",
     "futureGua": "否",
-    "sentence_en": "Blocked from humanity, it is not favorable for the noble one's steadfastness; the great departs and the small arrives."
+    "sentence_en": "Rejection by others is unfavorable for the noble one's steadfastness; the great departs and the small arrives."
   },
   {
     "currentGua": "否",
@@ -775,7 +775,7 @@ let remarkTable = [
     "sentence": "同人于野，亨。利涉大川，利君子贞。象曰：天与火，同人。君子以类族辨物。",
     "annotation": "彖象",
     "futureGua": "同人",
-    "sentence_en": "Gathering with others in the open brings success; it is favorable to cross great rivers and for the noble one to be steadfast."
+    "sentence_en": "Gathering with others in the open wilderness brings success. It is favorable to cross great rivers and for the noble person to be steadfast."
   },
   {
     "currentGua": "同人",
@@ -839,7 +839,7 @@ let remarkTable = [
     "sentence": "元亨。象曰：火在天上，大有。君子以遏恶扬善，顺天休命。",
     "annotation": "彖象",
     "futureGua": "大有",
-    "sentence_en": "Great success."
+    "sentence_en": "Great success and smooth progress."
   },
   {
     "currentGua": "大有",
@@ -903,7 +903,7 @@ let remarkTable = [
     "sentence": "亨，君子有终。象曰：地中有山，谦。君子以裒多益寡，称物平施。",
     "annotation": "彖象",
     "futureGua": "谦",
-    "sentence_en": "Success, the noble one brings things to a good end."
+    "sentence_en": "Success. The noble one brings things to a good end."
   },
   {
     "currentGua": "谦",
@@ -967,7 +967,7 @@ let remarkTable = [
     "sentence": "利建侯行师。象曰：雷出地奋，豫。先王以作乐崇德，殷荐之上帝，以配祖考。",
     "annotation": "彖象",
     "futureGua": "豫",
-    "sentence_en": "It is beneficial to establish a lord and mobilize the army."
+    "sentence_en": "This is favorable for appointing a leader and for mobilizing an army."
   },
   {
     "currentGua": "豫",
@@ -1031,7 +1031,7 @@ let remarkTable = [
     "sentence": "元亨，利贞，无咎。象曰：泽中有雷，随。君子以向晦和宴息。",
     "annotation": "彖象",
     "futureGua": "随",
-    "sentence_en": "It is supremely prosperous and beneficial to be steadfast, with no blame."
+    "sentence_en": "Great success, favorable for perseverance, no blame."
   },
   {
     "currentGua": "随",
@@ -1095,7 +1095,7 @@ let remarkTable = [
     "sentence": "元亨，利涉大川。先甲三日，后甲三日。象曰：山下有风，蛊。君子以振民育德。",
     "annotation": "彖象",
     "futureGua": "蛊",
-    "sentence_en": "Great success, favorable for crossing great rivers; three days before the Jia day and three days after."
+    "sentence_en": "Great success, favorable for crossing great rivers. Three days before the Jia day and three days after the Jia day."
   },
   {
     "currentGua": "蛊",
@@ -1159,7 +1159,7 @@ let remarkTable = [
     "sentence": "元亨利贞。至于八月有凶。象曰：泽上有地，临。君子以教思无穷，容保民无疆。",
     "annotation": "彖象",
     "futureGua": "临",
-    "sentence_en": "The main text translates to: Supreme success, furthering through perseverance, but there will be misfortune in the eighth month."
+    "sentence_en": "Great success through perseverance. However, by the eighth month, there will be misfortune."
   },
   {
     "currentGua": "临",
@@ -1223,7 +1223,7 @@ let remarkTable = [
     "sentence": "盥而不荐，有孚颙若。象曰：风行地上，观。先王以省方观民设教。",
     "annotation": "彖象",
     "futureGua": "观",
-    "sentence_en": "When presenting offerings, sincerity is more important than ritual."
+    "sentence_en": "When presenting the offering, be as sincere in the preliminary cleansing as if the sacrifice were already made; then you will be solemn and reverent, commanding profound respect."
   },
   {
     "currentGua": "观",
@@ -1287,7 +1287,7 @@ let remarkTable = [
     "sentence": "亨。利用狱。象曰：雷电噬嗑。先王以明罚敕法。",
     "annotation": "彖象",
     "futureGua": "噬嗑",
-    "sentence_en": "Prosperous. It is beneficial to use legal proceedings."
+    "sentence_en": "Success. It is beneficial to use legal restraint."
   },
   {
     "currentGua": "噬嗑",
@@ -1351,7 +1351,7 @@ let remarkTable = [
     "sentence": "亨。小利有攸往。象曰：山下有火，贲。君子以明庶政，无敢折狱。",
     "annotation": "彖象",
     "futureGua": "贲",
-    "sentence_en": "Success. There is a little advantage to be gained by setting forth."
+    "sentence_en": "Success. There is a little benefit in having someplace to go."
   },
   {
     "currentGua": "贲",
@@ -1415,7 +1415,7 @@ let remarkTable = [
     "sentence": "不利有攸往。象曰：山附于地，剥。上以厚下安宅。",
     "annotation": "彖象",
     "futureGua": "剥",
-    "sentence_en": "It is not beneficial to go forward."
+    "sentence_en": "It is not favorable to set out on a journey."
   },
   {
     "currentGua": "剥",
@@ -1479,7 +1479,7 @@ let remarkTable = [
     "sentence": "亨。出入无疾，朋来无咎。反复其道，七日来复，利有攸往。象曰：雷在地中，复。先王以至日闭关，商旅不行，后不省方。",
     "annotation": "彖象",
     "futureGua": "复",
-    "sentence_en": "Prosperous passage: coming and going without harm, friends arrive without blame, and returning to one's path brings renewal in seven days, favorable for setting out."
+    "sentence_en": "Success. Coming and going without hindrance, friends arrive without blame. The path turns back on itself, returning in seven days; it is favorable to have a direction to go."
   },
   {
     "currentGua": "复",
@@ -1543,7 +1543,7 @@ let remarkTable = [
     "sentence": "元亨利贞。其匪正有眚，不利有攸往。象曰：天下雷行，物与无妄。先王以茂对时，育万物。",
     "annotation": "彖象",
     "futureGua": "无妄",
-    "sentence_en": "The beginning, success, benefit, and perseverance; if not correct, there will be calamity, and it will not be beneficial to have somewhere to go."
+    "sentence_en": "Great success, favorable for perseverance. If you are not upright, there will be trouble, and it will not be beneficial to go anywhere."
   },
   {
     "currentGua": "无妄",
@@ -1607,7 +1607,7 @@ let remarkTable = [
     "sentence": "利贞，不家食，吉，利涉大川。象曰：天在山中，大畜。君子以多识前言往行，以畜其德。",
     "annotation": "彖象",
     "futureGua": "大畜",
-    "sentence_en": "It is beneficial to be steadfast; not eating at home brings good fortune; it is beneficial to cross the great river."
+    "sentence_en": "It is beneficial to be steadfast. Do not rely solely on home; it is auspicious and favorable to cross the great river."
   },
   {
     "currentGua": "大畜",
@@ -1671,7 +1671,7 @@ let remarkTable = [
     "sentence": "贞吉。观颐，自求口实。象曰：山下有雷，颐。君子以慎言语，节饮食。",
     "annotation": "彖象",
     "futureGua": "颐",
-    "sentence_en": "Perseverance brings good fortune; observe nourishment and seek sustenance from within."
+    "sentence_en": "It is auspicious to be steadfast. Observe nourishment and seek your own sustenance."
   },
   {
     "currentGua": "颐",
@@ -1735,7 +1735,7 @@ let remarkTable = [
     "sentence": "栋桡，利有攸往，亨。象曰：泽灭木，大过。君子以独立不惧，遁世无闷。",
     "annotation": "彖象",
     "futureGua": "大过",
-    "sentence_en": "When the ridgepole sags, it is beneficial to have somewhere to go; success."
+    "sentence_en": "When the ridgepole sags, it is beneficial to go somewhere. There will be success."
   },
   {
     "currentGua": "大过",
@@ -1799,7 +1799,7 @@ let remarkTable = [
     "sentence": "有孚，维心亨，行有尚。象曰：水洊至，习坎。君子以常德行，习教事。",
     "annotation": "彖象",
     "futureGua": "坎",
-    "sentence_en": "With sincerity, the heart finds connection, and action brings reward."
+    "sentence_en": "With sincerity, the mind is open and clear; such action brings honor."
   },
   {
     "currentGua": "坎",
@@ -1863,7 +1863,7 @@ let remarkTable = [
     "sentence": "利贞，亨。畜牝牛，吉。象曰：明两作，离。大人以继明照四方。",
     "annotation": "彖象",
     "futureGua": "离",
-    "sentence_en": "It is beneficial to be steadfast; success is achieved by nurturing docility, which brings good fortune."
+    "sentence_en": "It is beneficial to be steadfast; there will be progress. Nurturing a gentle, yielding nature brings good fortune."
   },
   {
     "currentGua": "离",
@@ -1927,7 +1927,7 @@ let remarkTable = [
     "sentence": "亨，利贞，取女吉。象曰：山上有泽，咸。君子以虚受人。",
     "annotation": "彖象",
     "futureGua": "咸",
-    "sentence_en": "Success; it is beneficial to be steadfast, and taking a wife is auspicious."
+    "sentence_en": "Success. It is beneficial to be steadfast. Taking a wife is auspicious."
   },
   {
     "currentGua": "咸",
@@ -1991,7 +1991,7 @@ let remarkTable = [
     "sentence": "亨，无咎，利贞。利有攸往。象曰：雷风恒。君子以立不易方。",
     "annotation": "彖象",
     "futureGua": "恒",
-    "sentence_en": "Success, no blame, favorable to be steadfast; favorable to have somewhere to go."
+    "sentence_en": "Success, no blame. It is favorable to be steadfast. It is favorable to have somewhere to go."
   },
   {
     "currentGua": "恒",
@@ -2055,7 +2055,7 @@ let remarkTable = [
     "sentence": "亨，小利贞。象曰：天下有山，遁。君子以远小人，不恶而严。",
     "annotation": "彖象",
     "futureGua": "遁",
-    "sentence_en": "Success, with small gains through perseverance."
+    "sentence_en": "Success. There is small advantage in perseverance."
   },
   {
     "currentGua": "遁",
@@ -2119,7 +2119,7 @@ let remarkTable = [
     "sentence": "利贞。象曰：雷在天上，大壮。君子以非礼弗履。",
     "annotation": "彖象",
     "futureGua": "大壮",
-    "sentence_en": "It is beneficial to be steadfast."
+    "sentence_en": "This is favorable for divination.  \nIt is beneficial to remain steadfast."
   },
   {
     "currentGua": "大壮",
@@ -2183,7 +2183,7 @@ let remarkTable = [
     "sentence": "康侯用锡马蕃庶，昼日三接。象曰：明出地上，晋。君子以自昭明德。",
     "annotation": "彖象",
     "futureGua": "晋",
-    "sentence_en": "The Marquis of Kang used the bestowed horses to breed many more, and three times in a single day he was granted audience."
+    "sentence_en": "The noble prince receives horses as a tribute, and they multiply abundantly; in a single day, he is granted audience three times."
   },
   {
     "currentGua": "晋",
@@ -2247,7 +2247,7 @@ let remarkTable = [
     "sentence": "利艰贞。象曰：明入地中，明夷。君子以莅众用晦而明。",
     "annotation": "彖象",
     "futureGua": "明夷",
-    "sentence_en": "It is beneficial to persevere through hardship."
+    "sentence_en": "It is beneficial to remain steadfast through hardship.  \nHold firm in adversity."
   },
   {
     "currentGua": "明夷",
@@ -2311,7 +2311,7 @@ let remarkTable = [
     "sentence": "利女贞。象曰：风自火出，家人。君子以言有物而行有恒。",
     "annotation": "彖象",
     "futureGua": "家人",
-    "sentence_en": "It is beneficial for a woman to be steadfast."
+    "sentence_en": "This is favorable for a woman's constancy.  \nIt is advantageous to maintain steadfastness in feminine matters."
   },
   {
     "currentGua": "家人",
@@ -2375,7 +2375,7 @@ let remarkTable = [
     "sentence": "小事吉。象曰：上火下泽，睽。君子以同而异。",
     "annotation": "彖象",
     "futureGua": "睽",
-    "sentence_en": "For small matters, it is auspicious."
+    "sentence_en": "In small matters, there will be good fortune."
   },
   {
     "currentGua": "睽",
@@ -2439,7 +2439,7 @@ let remarkTable = [
     "sentence": "利西南，不利东北。利见大人，贞吉。象曰：山上有水，蹇。君子以反身修德。",
     "annotation": "彖象",
     "futureGua": "蹇",
-    "sentence_en": "It is advantageous to go southwest and not northeast; it is beneficial to see the great man, and perseverance brings good fortune."
+    "sentence_en": "It is favorable to go southwest and unfavorable to go northeast. It is favorable to see the great man; perseverance brings good fortune."
   },
   {
     "currentGua": "蹇",
@@ -2503,7 +2503,7 @@ let remarkTable = [
     "sentence": "利西南。无所往，其来复吉。有攸往，夙吉。象曰：雷雨作，解。君子以赦过宥罪。",
     "annotation": "彖象",
     "futureGua": "解",
-    "sentence_en": "It is advantageous to go southwest; if there is no place to go, returning will bring good fortune, and if there is a place to go, acting early will bring good fortune."
+    "sentence_en": "It is favorable to go southwest. If there is nowhere to go, returning will bring good fortune; if there is somewhere to go, acting early will bring good fortune."
   },
   {
     "currentGua": "解",
@@ -2567,7 +2567,7 @@ let remarkTable = [
     "sentence": "有孚，元吉，无咎，可贞。利有攸往。曷之用？二簋可用享。象曰：山下有泽，损。君子以惩忿窒欲。",
     "annotation": "彖象",
     "futureGua": "损",
-    "sentence_en": "With sincerity, there is great good fortune and no blame; one may persevere, and it is beneficial to have somewhere to go—even simple offerings of two baskets suffice for the sacrifice."
+    "sentence_en": "With sincerity, there is supreme good fortune and no blame. One may persevere. It is beneficial to have somewhere to go. How is this expressed? Even two simple bowls of offering may be used in sacrifice."
   },
   {
     "currentGua": "损",
@@ -2631,7 +2631,7 @@ let remarkTable = [
     "sentence": "利有攸往，利涉大川。象曰：风雷，益。君子以见善则迁，有过则改。",
     "annotation": "彖象",
     "futureGua": "益",
-    "sentence_en": "It is beneficial to go forward and to cross great rivers."
+    "sentence_en": "It is favorable to go forth and to cross the great river."
   },
   {
     "currentGua": "益",
@@ -2695,7 +2695,7 @@ let remarkTable = [
     "sentence": "扬于王庭，孚号有厉。告自邑，不利即戎，利有攸往。象曰：泽上于天，夬。君子以施禄及下，居德则忌。",
     "annotation": "彖象",
     "futureGua": "夬",
-    "sentence_en": "Proclaiming in the royal court with sincere warning, it is advised from one's own town that taking up arms is unfavorable, but acting with purpose is beneficial."
+    "sentence_en": "Proclaim it in the king's court, and sincerely warn of danger. Announce it from your own town: do not rush to arms; it is favorable to have a direction to go."
   },
   {
     "currentGua": "夬",
@@ -2759,7 +2759,7 @@ let remarkTable = [
     "sentence": "女壮，勿用取女。象曰：天下有风，姤。后以施命诰四方。",
     "annotation": "彖象",
     "futureGua": "姤",
-    "sentence_en": "The woman is too strong; do not marry such a woman."
+    "sentence_en": "The woman is too strong; do not take such a woman as a wife."
   },
   {
     "currentGua": "姤",
@@ -2823,7 +2823,7 @@ let remarkTable = [
     "sentence": "亨。王假有庙。利见大人，亨，利贞。用大牲吉，利有攸往。象曰：泽上于地，萃。君子以除戎器，戒不虞。",
     "annotation": "彖象",
     "futureGua": "萃",
-    "sentence_en": "Success: the king approaches the temple; it is beneficial to see the great man, and perseverance brings success; using great sacrifices is auspicious, and it is beneficial to have somewhere to go."
+    "sentence_en": "Success. The king approaches the temple.  \nIt is favorable to see the great person; success is favorable for perseverance.  \nUsing a great sacrifice is auspicious, and it is favorable to have somewhere to go."
   },
   {
     "currentGua": "萃",
@@ -2887,7 +2887,7 @@ let remarkTable = [
     "sentence": "元亨，用见大人，勿恤，南征吉。象曰：地中生木，升。君子以顺德，积小以高大。",
     "annotation": "彖象",
     "futureGua": "升",
-    "sentence_en": "Great success, it is beneficial to see the great man; do not worry, advancing south brings good fortune."
+    "sentence_en": "Great success. It is favorable to see the great person; do not worry. To advance southward brings good fortune."
   },
   {
     "currentGua": "升",
@@ -2951,7 +2951,7 @@ let remarkTable = [
     "sentence": "亨，贞，大人吉，无咎，有言不信。象曰：泽无水，困。君子以致命遂志。",
     "annotation": "彖象",
     "futureGua": "困",
-    "sentence_en": "Success, perseverance: great good fortune for the great man, no blame, but words are not believed."
+    "sentence_en": "Success through perseverance. For the great person, there is good fortune and no blame, but speaking will not be believed."
   },
   {
     "currentGua": "困",
@@ -3015,7 +3015,7 @@ let remarkTable = [
     "sentence": "改邑不改井，无丧无得。往来井井。汔至亦未繘井，羸其瓶，凶。象曰：木上有水，井。君子以劳民劝相。",
     "annotation": "彖象",
     "futureGua": "井",
-    "sentence_en": "The well serves all without change, but danger arises if the vessel is broken."
+    "sentence_en": "A town may change, but the well does not change; there is no loss and no gain. People come and go, drawing from the well. But if the rope is too short, or the pitcher breaks, that is misfortune."
   },
   {
     "currentGua": "井",
@@ -3079,7 +3079,7 @@ let remarkTable = [
     "sentence": "己日乃孚。元亨利贞。悔亡。象曰：泽中有火，革。君子以治历明时。",
     "annotation": "彖象",
     "futureGua": "革",
-    "sentence_en": "On the Ji day, there is sincerity; supreme success, furthering through perseverance; remorse vanishes."
+    "sentence_en": "On the day of Ji, there is sincerity. Supreme success, with perseverance favorable. Regret vanishes."
   },
   {
     "currentGua": "革",
@@ -3143,7 +3143,7 @@ let remarkTable = [
     "sentence": "元吉，亨。象曰：木上有火，鼎。君子以正位凝命。",
     "annotation": "彖象",
     "futureGua": "鼎",
-    "sentence_en": "Supremely auspicious, smooth progress."
+    "sentence_en": "Supreme good fortune, success."
   },
   {
     "currentGua": "鼎",
@@ -3207,7 +3207,7 @@ let remarkTable = [
     "sentence": "亨。震来虩虩，笑言哑哑。震惊百里，不丧匕鬯。象曰：洊雷，震。君子以恐惧修省。",
     "annotation": "彖象",
     "futureGua": "震",
-    "sentence_en": "Success: Thunder comes shockingly, yet laughter and talk are calm; though it startles a hundred leagues, the sacrificial ladle and libation are not dropped."
+    "sentence_en": "Success. The thunder comes, startling and alarming, yet one can still laugh and talk calmly. Though it shakes the land for a hundred miles, one does not lose the sacrificial ladle and wine."
   },
   {
     "currentGua": "震",
@@ -3271,7 +3271,7 @@ let remarkTable = [
     "sentence": "艮其背，不获其身。行其庭，不见其人，无咎。象曰：兼山，艮。君子以思不出其位。",
     "annotation": "彖象",
     "futureGua": "艮",
-    "sentence_en": "Restraining oneself at the back so one does not obtain the body, and moving in the courtyard without seeing others, brings no blame."
+    "sentence_en": "Restraining his back, he does not grasp his self. Walking in his courtyard, he does not see its people. There is no blame."
   },
   {
     "currentGua": "艮",
@@ -3335,7 +3335,7 @@ let remarkTable = [
     "sentence": "女归吉，利贞。象曰：山上有木，渐。君子以居贤德善俗。",
     "annotation": "彖象",
     "futureGua": "渐",
-    "sentence_en": "The maiden's marriage brings good fortune; it is beneficial to be steadfast."
+    "sentence_en": "The maiden marries, which is auspicious. It is beneficial to remain steadfast."
   },
   {
     "currentGua": "渐",
@@ -3399,7 +3399,7 @@ let remarkTable = [
     "sentence": "征凶，无攸利。象曰：泽上有雷，是归妹。君子以永终知敝。",
     "annotation": "彖象",
     "futureGua": "归妹",
-    "sentence_en": "Advancing brings misfortune and nothing is beneficial."
+    "sentence_en": "An advance brings misfortune. Nothing is gained."
   },
   {
     "currentGua": "归妹",
@@ -3463,7 +3463,7 @@ let remarkTable = [
     "sentence": "亨。王假之，勿忧，宜日中。象曰：雷电皆至，丰。君子以折狱致刑。",
     "annotation": "彖象",
     "futureGua": "丰",
-    "sentence_en": "Prosperous success; the king approaches, have no anxiety, it is beneficial to be like the midday sun."
+    "sentence_en": "Success. The king approaches it; do not worry, for it is fitting to act at midday."
   },
   {
     "currentGua": "丰",
@@ -3527,7 +3527,7 @@ let remarkTable = [
     "sentence": "小亨。旅贞吉。象曰：山上有火，旅。君子以明慎用刑而不留狱。",
     "annotation": "彖象",
     "futureGua": "旅",
-    "sentence_en": "A small journey brings success; perseverance while traveling brings good fortune."
+    "sentence_en": "There will be modest progress. For a traveler, perseverance brings good fortune."
   },
   {
     "currentGua": "旅",
@@ -3591,7 +3591,7 @@ let remarkTable = [
     "sentence": "小亨。利有攸往，利见大人。象曰：随风，巽。君子以申命行事。",
     "annotation": "彖象",
     "futureGua": "巽",
-    "sentence_en": "Small progress; it is beneficial to have a direction to go and to meet with the great person."
+    "sentence_en": "There will be slight progress. It is advantageous to have a direction to go in, and it is advantageous to meet with the great person."
   },
   {
     "currentGua": "巽",
@@ -3655,7 +3655,7 @@ let remarkTable = [
     "sentence": "亨，利，贞。象曰：丽泽兑。君子以朋友讲习。",
     "annotation": "彖象",
     "futureGua": "兑",
-    "sentence_en": "Prosperous, beneficial, steadfast."
+    "sentence_en": "Success, benefit, and constancy.  \nThese are the favorable qualities for a righteous path."
   },
   {
     "currentGua": "兑",
@@ -3719,7 +3719,7 @@ let remarkTable = [
     "sentence": "亨。王假有庙，利涉大川，利贞。象曰：风行水上，涣。先王以享于帝，立庙。",
     "annotation": "彖象",
     "futureGua": "涣",
-    "sentence_en": "Success: the king approaches the temple; it is beneficial to cross the great river, and beneficial to be steadfast."
+    "sentence_en": "Success. The king approaches the temple; it is favorable to cross the great river and favorable to be steadfast."
   },
   {
     "currentGua": "涣",
@@ -3783,7 +3783,7 @@ let remarkTable = [
     "sentence": "亨。苦节不可贞。象曰：泽上有水，节。君子以制数度，议德行。",
     "annotation": "彖象",
     "futureGua": "节",
-    "sentence_en": "Success, but excessive austerity cannot be maintained."
+    "sentence_en": "Success.  \nBut excessive austerity cannot be sustained."
   },
   {
     "currentGua": "节",
@@ -3847,7 +3847,7 @@ let remarkTable = [
     "sentence": "豚鱼，吉，利涉大川，利贞。象曰：泽上有风，中孚。君子以议狱缓死。",
     "annotation": "彖象",
     "futureGua": "中孚",
-    "sentence_en": "The offering of pigs and fish brings good fortune, favorable for crossing great rivers and for perseverance."
+    "sentence_en": "The offering of pigs and fish brings good fortune. It is favorable to cross great rivers and to be steadfast and upright."
   },
   {
     "currentGua": "中孚",
@@ -3911,7 +3911,7 @@ let remarkTable = [
     "sentence": "亨，利贞，可小事，不可大事。飞鸟遗之音，不宜上，宜下，大吉。象曰：山上有雷，小过。君子以行过乎恭，丧过乎哀，用过乎俭。",
     "annotation": "彖象",
     "futureGua": "小过",
-    "sentence_en": "Success, favorable to be steadfast: small matters may be undertaken, but not great affairs; like the flying bird leaving its song, it is not fitting to ascend, but fitting to descend, greatly auspicious."
+    "sentence_en": "Success. It is favorable to be steadfast.  \nSmall matters may be undertaken, but not great affairs.  \nThe flying bird leaves its song: it is not fitting to ascend, but to descend. Great good fortune."
   },
   {
     "currentGua": "小过",
@@ -3975,7 +3975,7 @@ let remarkTable = [
     "sentence": "亨小，利贞。初吉，终乱。象曰：水在火上，既济。君子以思患而豫防之。",
     "annotation": "彖象",
     "futureGua": "既济",
-    "sentence_en": "Success in small matters, perseverance is beneficial; there is good fortune at the beginning, disorder at the end."
+    "sentence_en": "Success in small matters; perseverance is favorable.  \nThe beginning is auspicious, but the end falls into disorder."
   },
   {
     "currentGua": "既济",
@@ -4039,7 +4039,7 @@ let remarkTable = [
     "sentence": "亨。小狐汔济，濡其尾，无攸利。象曰：火在水上，未济。君子以慎辨物居方。",
     "annotation": "彖象",
     "futureGua": "未济",
-    "sentence_en": "Success, but if a small fox almost crosses a stream and wets its tail, there is nothing advantageous."
+    "sentence_en": "Success. A small fox nearly crosses the stream, but its tail gets wet, so nothing is gained."
   },
   {
     "currentGua": "未济",
@@ -4113,6 +4113,6 @@ let remarkTable = [
     "sentence": "利永贞。象曰：用六永贞，以大终也。",
     "annotation": "彖象",
     "futureGua": "",
-    "sentence_en": "It is beneficial to be steadfast and upright forever."
+    "sentence_en": "It is beneficial to be steadfast and upright."
   }
 ];

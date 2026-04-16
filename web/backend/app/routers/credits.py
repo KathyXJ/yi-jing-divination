@@ -349,3 +349,31 @@ async def get_order(request: Request, order_id: int):
             raise HTTPException(status_code=403, detail="无权访问此订单")
 
         return order
+
+
+# 临时修复端点：修复产品表中的英文翻译
+@router.post("/fix-product-translations")
+async def fix_product_translations(request: Request):
+    """修复产品表中的 name_en 和 description_en 字段"""
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    async with get_db() as db:
+        translations = {
+            "注册赠送": {"name_en": "Welcome Bonus", "description_en": "New users get 3 free credits, valid for 7 days"},
+            "标准积分包": {"name_en": "Standard Pack", "description_en": "50 credits, forever valid"},
+            "月度订阅": {"name_en": "Monthly Subscription", "description_en": "200 credits/month, auto-renewal"},
+        }
+        for name, trans in translations.items():
+            await db.execute(
+                "UPDATE products SET name_en = ?, description_en = ? WHERE name = ?",
+                (trans["name_en"], trans["description_en"], name)
+            )
+        await db.commit()
+        
+        products = await get_all_active_products(db)
+        return {"updated": len(translations), "products": [
+            {"name": p["name"], "name_en": p.get("name_en"), "description_en": p.get("description_en")}
+            for p in products
+        ]}
