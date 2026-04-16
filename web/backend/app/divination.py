@@ -124,6 +124,7 @@ def compute_hexagram_from_throws(face_indices: List[int]) -> Dict:
             "type": yao["type"],
             "is_change": yao.get("change", False),
             "sentence": yao_s["sentence"] if yao_s else "",
+            "sentence_en": yao_s.get("sentence_en", "") if yao_s else "",
             "future_gua": yao_s["futureGuaName"] if yao_s else "",
         }
 
@@ -298,7 +299,9 @@ def perform_divination() -> Dict:
     ben_gua_remark = get_remark(ben_gua["guaName"], 0)
     zhi_gua_remark = get_remark(zhi_gua["guaName"], 0)
     ben_sentence = ben_gua_remark["sentence"] if ben_gua_remark else ""
+    ben_sentence_en = ben_gua_remark.get("sentence_en", "") if ben_gua_remark else ""
     zhi_sentence = zhi_gua_remark["sentence"] if zhi_gua_remark else ""
+    zhi_sentence_en = zhi_gua_remark.get("sentence_en", "") if zhi_gua_remark else ""
 
     # 7. 互卦（仅3爻动时使用）
     hua_gua = generate_hua_gua(yao_list)
