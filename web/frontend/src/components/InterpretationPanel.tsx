@@ -22,100 +22,60 @@ const BAGUA_NAMES: Record<string, string> = {
   "699": "巽", "696": "坎", "669": "艮", "666": "坤",
 };
 
-// 绘制六爻符号（从下到上显示：yaos[0]=初爻在下，yaos[5]=上爻在上）
-function GuaYaoLines({ yaos, showChange }: { yaos: { value: number; is_change: boolean }[]; showChange: boolean }) {
+// 绘制单根爻线
+function YaoLine({ value, isChange }: { value: number; isChange: boolean }) {
+  const isYang = value === 9 || value === 7;
   return (
-    <div className="flex flex-col gap-[2px] items-center">
-      {[...yaos].reverse().map((yao, idx) => {
-        const isYang = yao.value === 9 || yao.value === 7;
-        const isChange = showChange && yao.is_change;
-        return (
-          <div key={idx} className="relative w-full h-4 flex items-center">
-            {isYang ? (
-              <div
-                className="w-full rounded-sm"
-                style={{
-                  height: "3px",
-                  background: "linear-gradient(90deg, #8b6914, #d4a843, #8b6914)",
-                  boxShadow: "0 0 4px rgba(212,168,67,0.4)",
-                }}
-              />
-            ) : (
-              <div className="w-full flex items-center h-3">
-                <div className="w-[48%] border-t-2 border-[#8a8070]" style={{ borderStyle: "solid" }} />
-                <div className="w-[4%]" />
-                <div className="w-[48%] border-t-2 border-[#8a8070]" style={{ borderStyle: "solid" }} />
-              </div>
-            )}
-            {isChange && (
-              <span className="absolute -right-5 text-xs" style={{ color: "#d4a843" }}>⚡</span>
-            )}
-          </div>
-        );
-      })}
+    <div className="relative w-full h-4 flex items-center">
+      {isYang ? (
+        <div
+          className="w-full rounded-sm"
+          style={{
+            height: "3px",
+            background: "linear-gradient(90deg, #8b6914, #d4a843, #8b6914)",
+            boxShadow: "0 0 4px rgba(212,168,67,0.4)",
+          }}
+        />
+      ) : (
+        <div className="w-full flex items-center h-3">
+          <div className="w-[48%] border-t-2 border-[#8a8070]" style={{ borderStyle: "solid" }} />
+          <div className="w-[4%]" />
+          <div className="w-[48%] border-t-2 border-[#8a8070]" style={{ borderStyle: "solid" }} />
+        </div>
+      )}
+      {isChange && (
+        <span className="absolute -right-5 text-xs" style={{ color: "#d4a843" }}>⚡</span>
+      )}
     </div>
   );
 }
 
-// 单卦完整面板
-function GuaPanel({
-  gua,
-  yaos,
-  isZhi,
-  guaTypeName,
+// 爻行（用于对齐布局）
+function YaoRow({
+  yaoName,
+  value,
+  isChange,
+  sentence,
   lang = "zh",
 }: {
-  gua: { name: string; pinyin?: string; lower_code: string; upper_code: string; sentence?: string; sentence_en?: string };
-  yaos: { yao_name: string; value: number; is_change: boolean; sentence: string; sentence_en?: string }[];
-  isZhi: boolean;
-  guaTypeName: string;
+  yaoName: string;
+  value: number;
+  isChange: boolean;
+  sentence: string;
   lang?: "zh" | "en";
 }) {
-  const upperName = BAGUA_NAMES[gua.upper_code] || "";
-  const lowerName = BAGUA_NAMES[gua.lower_code] || "";
-
   return (
-    <div className="flex flex-col items-center gap-2 min-h-[300px] w-[200px]">
-      {/* 标签 */}
-      <p className="text-xs text-[var(--color-text-muted)]">{guaTypeName}</p>
-
-      {/* 卦名大字 */}
-      <p className="text-2xl font-bold text-gold">
-        {gua.name}
-        {gua.pinyin && <span className="text-lg text-gold/70 ml-1">{gua.pinyin}</span>}
-      </p>
-
-      {/* 六爻符号 */}
-      <div className="w-16">
-        <GuaYaoLines yaos={yaos} showChange={!isZhi} />
+    <div className="flex items-center gap-2 py-1 min-h-[24px]">
+      <span className="text-xs text-[var(--color-text-muted)] w-8 shrink-0 flex items-center gap-0.5">
+        {yaoName}
+        {isChange && <span style={{ color: "#d4a843" }}>⚡</span>}
+      </span>
+      <div className="w-12 shrink-0">
+        <YaoLine value={value} isChange={isChange} />
       </div>
-
-      {/* 上下卦组合 */}
-      <p className="text-sm text-[var(--color-text-muted)]">
-        {upperName}{lowerName} · {BAGUA_SYMBOLS[gua.upper_code]}{BAGUA_SYMBOLS[gua.lower_code]}
-      </p>
-
-      {/* 卦辞 */}
-      {(lang === "en" ? gua.sentence_en : gua.sentence) && (
-        <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36">
-          《{gua.name}》：{lang === "en" ? gua.sentence_en : gua.sentence}
-        </p>
-      )}
-
-      {/* 爻辞（从下到上） */}
-      <div className="w-full mt-1">
-        {[...yaos].map((yao) => (
-          <div key={yao.yao_name} className="flex items-start gap-2 py-1.5 border-b border-[var(--color-border)] last:border-0">
-            <span className="text-xs text-[var(--color-text-muted)] w-8 shrink-0 flex items-center gap-0.5">
-              {yao.yao_name}
-              {!isZhi && yao.is_change && <span style={{ color: "#d4a843" }}>⚡</span>}
-            </span>
-            <span className="text-xs text-[var(--color-text)] leading-snug">
-              {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-            </span>
-          </div>
-        ))}
-      </div>
+      <span className="text-xs text-[var(--color-text)] leading-snug">
+        {sentence}
+      </span>
     </div>
   );
 }
@@ -179,20 +139,57 @@ export default function InterpretationPanel({
     .map((p) => p.split(/\n/).filter((l) => l.trim()))
     .filter((lines) => lines.length > 0);
 
+  // 从下到上排列爻（yaos[0]=初爻在下）
+  const benYaosReversed = [...yaos].reverse(); // 上爻在前
+  const zhiYaosReversed = [...zhi_yaos].reverse();
+
   return (
     <div className="animate-fade-in space-y-5">
 
       {/* ===== 左右对称卦象面板 ===== */}
       <div className="glass rounded-2xl p-6">
-        <div className="flex items-stretch justify-center gap-12">
+        <div className="flex items-stretch justify-center gap-8">
           {/* 本卦 */}
-          <GuaPanel
-            gua={ben_gua}
-            yaos={yaos}
-            isZhi={false}
-            guaTypeName={t.benGua}
-            lang={lang}
-          />
+          <div className="flex flex-col items-center w-[200px]">
+            {/* 标签 */}
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">{t.benGua}</p>
+            {/* 卦名大字 */}
+            <p className="text-2xl font-bold text-gold">
+              {ben_gua.name}
+              {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
+            </p>
+            {/* 六爻符号（简化） */}
+            <div className="w-12 mt-1">
+              <div className="flex flex-col gap-[2px] items-center">
+                {benYaosReversed.map((yao, idx) => (
+                  <YaoLine key={idx} value={yao.value} isChange={yao.is_change} />
+                ))}
+              </div>
+            </div>
+            {/* 上下卦组合 */}
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">
+              {benUpperName}{benLowerName} · {BAGUA_SYMBOLS[ben_gua.upper_code]}{BAGUA_SYMBOLS[ben_gua.lower_code]}
+            </p>
+            {/* 卦辞 */}
+            {(lang === "en" ? ben_gua.sentence_en : ben_gua.sentence) && (
+              <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36 mt-1">
+                《{ben_gua.name}》：{lang === "en" ? ben_gua.sentence_en : ben_gua.sentence}
+              </p>
+            )}
+            {/* 爻辞（从下到上，上爻显示在上） */}
+            <div className="w-full mt-2">
+              {[...yaos].map((yao) => (
+                <YaoRow
+                  key={yao.yao_name}
+                  yaoName={yao.yao_name}
+                  value={yao.value}
+                  isChange={yao.is_change}
+                  sentence={lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                  lang={lang}
+                />
+              ))}
+            </div>
+          </div>
 
           {/* 箭头 */}
           <div className="flex items-center">
@@ -200,13 +197,46 @@ export default function InterpretationPanel({
           </div>
 
           {/* 之卦 */}
-          <GuaPanel
-            gua={zhi_gua}
-            yaos={zhi_yaos}
-            isZhi={true}
-            guaTypeName={t.zhiGua}
-            lang={lang}
-          />
+          <div className="flex flex-col items-center w-[200px]">
+            {/* 标签 */}
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">{t.zhiGua}</p>
+            {/* 卦名大字 */}
+            <p className="text-2xl font-bold text-gold">
+              {zhi_gua.name}
+              {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
+            </p>
+            {/* 六爻符号（简化） */}
+            <div className="w-12 mt-1">
+              <div className="flex flex-col gap-[2px] items-center">
+                {zhiYaosReversed.map((yao, idx) => (
+                  <YaoLine key={idx} value={yao.value} isChange={false} />
+                ))}
+              </div>
+            </div>
+            {/* 上下卦组合 */}
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">
+              {zhiUpperName}{zhiLowerName} · {BAGUA_SYMBOLS[zhi_gua.upper_code]}{BAGUA_SYMBOLS[zhi_gua.lower_code]}
+            </p>
+            {/* 卦辞 */}
+            {(lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence) && (
+              <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36 mt-1">
+                《{zhi_gua.name}》：{lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence}
+              </p>
+            )}
+            {/* 爻辞（从下到上） */}
+            <div className="w-full mt-2">
+              {[...zhi_yaos].map((yao) => (
+                <YaoRow
+                  key={yao.yao_name}
+                  yaoName={yao.yao_name}
+                  value={yao.value}
+                  isChange={false}
+                  sentence={lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                  lang={lang}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
