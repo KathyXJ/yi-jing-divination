@@ -215,8 +215,12 @@ def find_double_gua_by_code(code: str) -> Dict | None:
 def get_remark(gua_name: str, yao_index: int) -> Dict | None:
     """获取特定卦的特定爻的注释"""
     for r in get_remark_table():
-        if r["currentGua"] == gua_name and int(r["yaoIndex"]) == yao_index:
-            return r
+        try:
+            if r["currentGua"] == gua_name and int(r["yaoIndex"]) == yao_index:
+                return r
+        except ValueError:
+            # yaoIndex is "ALL" or other non-numeric value, skip
+            continue
     return None
 
 
