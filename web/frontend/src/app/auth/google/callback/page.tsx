@@ -2,11 +2,13 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLang } from "@/lib/i18n";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export default function GoogleCallbackPage() {
   const router = useRouter();
+  const { lang } = useLang();
 
   useEffect(() => {
     // Google redirects here with query params: ?code=xxx&state=xxx&...
@@ -29,7 +31,9 @@ export default function GoogleCallbackPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <p className="text-[var(--color-text)]">正在处理登录...</p>
+        <p className="text-[var(--color-text)]">
+          {lang === "zh" ? "正在处理登录..." : "Processing login..."}
+        </p>
       </div>
     </div>
   );
