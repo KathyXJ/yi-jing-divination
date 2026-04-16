@@ -143,7 +143,15 @@ export default function MePage() {
                     <span className={`${styles.txAmount} ${tx.amount > 0 ? styles.positive : styles.negative}`}>
                       {tx.amount > 0 ? "+" : ""}{tx.amount}
                     </span>
-                    <span className={styles.txDesc}>{tx.description || tx.type}</span>
+                    <span className={styles.txDesc}>
+                      {lang === "zh" ? (tx.description || tx.type) :
+                        (tx.description?.replace("AI解读消耗", "AI Interpretation")
+                          .replace("注册赠送3积分（7天有效）", "Welcome Bonus (3 credits, 7 days)")
+                          .replace("AI解读消耗积分（订阅额度）", "AI Interpretation (subscription)")
+                          .replace("购买积分包", "Purchased credits")
+                          .replace("月度订阅", "Monthly subscription")
+                          || tx.type)}
+                    </span>
                   </div>
                   <span className={styles.txDate}>
                     {new Date(tx.created_at).toLocaleDateString()}

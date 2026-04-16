@@ -246,7 +246,7 @@ async def update_user(db: aiosqlite.Connection, user_id: int, name: str = None, 
 
 
 async def update_user_credits(db: aiosqlite.Connection, user_id: int, new_credits: int) -> None:
-    """更新用户积分余额"""
+    """更新用户积分余额（替换为新值）"""
     now = datetime.utcnow().isoformat()
     await db.execute(
         "UPDATE users SET credits = ?, updated_at = ? WHERE id = ?",
