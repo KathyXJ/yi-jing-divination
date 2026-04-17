@@ -156,73 +156,54 @@ export default function InterpretationPanel({
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
             {/* 爻线示意图（变爻标注⚡） */}
-            <div className="flex items-center gap-2 mt-1">
-              {/* 爻线示意图（从上爻到初爻） */}
-              <div className="flex flex-col gap-[1px]">
-                {[...yaos].reverse().map((yao, revIdx) => {
-                  const actualIdx = 5 - revIdx;
-                  const isYang = yao.value === 9 || yao.value === 7;
-                  const isChange = changed_indices.includes(actualIdx);
-                  return (
-                    <div key={revIdx} className="relative w-10 h-3 flex items-center">
-                      {isYang ? (
+            <div className="flex flex-col gap-[1px] mt-1">
+              {[...yaos].reverse().map((yao, revIdx) => {
+                const actualIdx = 5 - revIdx;
+                const isYang = yao.value === 9 || yao.value === 7;
+                const isChange = changed_indices.includes(actualIdx);
+                return (
+                  <div key={revIdx} className="relative w-10 h-3 flex items-center">
+                    {isYang ? (
+                      <div
+                        className="w-full rounded-sm"
+                        style={{
+                          height: "2px",
+                          background: isChange
+                            ? "linear-gradient(90deg, #8b6914, #d4a843, #8b6914)"
+                            : "#8b6914",
+                          boxShadow: isChange ? "0 0 3px rgba(212,168,67,0.5)" : "none",
+                        }}
+                      />
+                    ) : (
+                      <div className="relative w-full h-2">
                         <div
-                          className="w-full rounded-sm"
+                          className="absolute left-0"
                           style={{
-                            height: "2px",
-                            background: isChange
-                              ? "linear-gradient(90deg, #8b6914, #d4a843, #8b6914)"
-                              : "#8b6914",
-                            boxShadow: isChange ? "0 0 3px rgba(212,168,67,0.5)" : "none",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "44%",
+                            borderTop: "2px solid #8a8070",
                           }}
                         />
-                      ) : (
-                        <div className="relative w-full h-2">
-                          <div
-                            className="absolute left-0"
-                            style={{
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              width: "44%",
-                              borderTop: "2px solid #8a8070",
-                            }}
-                          />
-                          <div
-                            className="absolute right-0"
-                            style={{
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              width: "44%",
-                              borderTop: "2px solid #8a8070",
-                            }}
-                          />
-                        </div>
-                      )}
-                      {isChange && (
-                        <span
-                          className="absolute -right-4 text-amber-400 text-xs"
-                          style={{ animation: "pulse-gold 2s ease-in-out infinite" }}
-                        >
-                          ⚡
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            {/* 爻辞（倒序显示：Line 6在上，Line 1在下） */}
-            <div className="w-full mt-2 space-y-1">
-              {[...yaos].reverse().map((yao, idx) => {
-                const isYang = yao.value === 9 || yao.value === 7;
-                return (
-                  <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
-                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>
-                      {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
-                    </span>
-                    <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
-                      {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                    </span>
+                        <div
+                          className="absolute right-0"
+                          style={{
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "44%",
+                            borderTop: "2px solid #8a8070",
+                          }}
+                        />
+                      </div>
+                    )}
+                    {isChange && (
+                      <span
+                        className="absolute -right-4 text-amber-400 text-xs"
+                        style={{ animation: "pulse-gold 2s ease-in-out infinite" }}
+                      >
+                        ⚡
+                      </span>
+                    )}
                   </div>
                 );
               })}
@@ -231,7 +212,7 @@ export default function InterpretationPanel({
 
           {/* 箭头 */}
           <div className="flex items-center">
-            <span className="text-2xl text-[var(--color-gold-dark)]">→</span>
+            <span className="text-2xl text-[var(--color-gold-dark)] pt-6">→</span>
           </div>
 
           {/* 之卦 */}
@@ -244,62 +225,88 @@ export default function InterpretationPanel({
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
             {/* 爻线示意图（之卦无变爻，不标注⚡） */}
-            <div className="flex items-center gap-2 mt-1">
-              <div className="flex flex-col gap-[1px]">
-                {[...zhi_yaos].reverse().map((yao, revIdx) => {
-                  const isYang = yao.value === 9 || yao.value === 7;
-                  return (
-                    <div key={revIdx} className="relative w-10 h-3 flex items-center">
-                      {isYang ? (
+            <div className="flex flex-col gap-[1px] mt-1">
+              {[...zhi_yaos].reverse().map((yao, revIdx) => {
+                const isYang = yao.value === 9 || yao.value === 7;
+                return (
+                  <div key={revIdx} className="relative w-10 h-3 flex items-center">
+                    {isYang ? (
+                      <div
+                        className="w-full rounded-sm"
+                        style={{
+                          height: "2px",
+                          background: "#8b6914",
+                        }}
+                      />
+                    ) : (
+                      <div className="relative w-full h-2">
                         <div
-                          className="w-full rounded-sm"
+                          className="absolute left-0"
                           style={{
-                            height: "2px",
-                            background: "#8b6914",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "44%",
+                            borderTop: "2px solid #8a8070",
                           }}
                         />
-                      ) : (
-                        <div className="relative w-full h-2">
-                          <div
-                            className="absolute left-0"
-                            style={{
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              width: "44%",
-                              borderTop: "2px solid #8a8070",
-                            }}
-                          />
-                          <div
-                            className="absolute right-0"
-                            style={{
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              width: "44%",
-                              borderTop: "2px solid #8a8070",
-                            }}
-                          />
-                        </div>
-                      )}
+                        <div
+                          className="absolute right-0"
+                          style={{
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "44%",
+                            borderTop: "2px solid #8a8070",
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ===== 爻辞对齐表格 ===== */}
+        <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+          <div className="grid grid-cols-2 gap-4">
+            {/* 本卦爻辞 */}
+            <div>
+              <p className="text-xs text-[var(--color-text-muted)] mb-2 text-center">{t.benGua} - {ben_gua.name}</p>
+              <div className="space-y-1">
+                {[...yaos].reverse().map((yao, idx) => {
+                  const isYang = yao.value === 9 || yao.value === 7;
+                  return (
+                    <div key={yao.yao_name} className="flex items-start gap-2">
+                      <span className={`text-xs font-medium w-8 shrink-0 ${isYang ? "text-amber-400" : "text-slate-400"}`}>
+                        {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
+                      </span>
+                      <span className={`text-xs leading-snug ${isYang ? "text-amber-200/80" : "text-slate-300/80"}`}>
+                        {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                      </span>
                     </div>
                   );
                 })}
               </div>
             </div>
-            {/* 爻辞（倒序显示：Line 6在上，Line 1在下） */}
-            <div className="w-full mt-2 space-y-1">
-              {[...zhi_yaos].reverse().map((yao, idx) => {
-                const isYang = yao.value === 9 || yao.value === 7;
-                return (
-                  <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
-                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>
-                      {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
-                    </span>
-                    <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
-                      {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                    </span>
-                  </div>
-                );
-              })}
+            {/* 之卦爻辞 */}
+            <div>
+              <p className="text-xs text-[var(--color-text-muted)] mb-2 text-center">{t.zhiGua} - {zhi_gua.name}</p>
+              <div className="space-y-1">
+                {[...zhi_yaos].reverse().map((yao, idx) => {
+                  const isYang = yao.value === 9 || yao.value === 7;
+                  return (
+                    <div key={yao.yao_name} className="flex items-start gap-2">
+                      <span className={`text-xs font-medium w-8 shrink-0 ${isYang ? "text-amber-400" : "text-slate-400"}`}>
+                        {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
+                      </span>
+                      <span className={`text-xs leading-snug ${isYang ? "text-amber-200/80" : "text-slate-300/80"}`}>
+                        {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
