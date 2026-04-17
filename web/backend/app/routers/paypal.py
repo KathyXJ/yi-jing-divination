@@ -187,10 +187,13 @@ async def capture_order(req: CaptureOrderRequest):
         product_id = parts[1]
         
         # 给用户加积分
-        from ..database import update_user_credits, add_credits_transaction, update_user_subscription, activate_permanent_credits, get_db, get_user_by_id
+        from ..database import (
+            add_standard_pack_credits, add_monthly_subscription_credits,
+            add_credits_transaction, get_db, get_user_by_id
+        )
         
         credits_amount = 50 if product_id == "50_credits" else 200
-        is_subscription = product_id == "monthly_200"
+        is_monthly = product_id == "monthly_200"
         is_permanent = product_id == "50_credits"
         
         async with get_db() as db:
@@ -198,22 +201,26 @@ async def capture_order(req: CaptureOrderRequest):
             if not user:
                 raise HTTPException(status_code=404, detail="用户不存在")
             
-            new_balance = user["credits"] + credits_amount
-            await update_user_credits(db, user_id, new_balance)
+            # 如果是月度订阅，检查是否已有有效的月度订阅
+            if is_monthly and user.get("monthly_subscription_credits", 0) > 0:
+                monthly_expires = user.get("monthly_subscription_expires_at")
+                if monthly_expires and datetime.fromisoformat(monthly_expires) > datetime.utcnow():
+                    raise HTTPException(status_code=400, detail="已有有效的月度订阅，无法重复购买")
             
-            # 如果是订阅产品，更新订阅到期时间
-            if is_subscription:
+            # 根据产品类型添加积分
+            if is_permanent:
+                # Standard Pack: 添加到标准包（可累计）
+                new_balance = await add_standard_pack_credits(db, user_id, credits_amount)
+                desc_en = f"PayPal purchase Standard Pack +{credits_amount} credits"
+                desc_zh = f"PayPal购买标准积分包 +{credits_amount}积分"
+            elif is_monthly:
+                # Monthly Subscription: 设置月度订阅（不累计，覆盖）
                 from datetime import timedelta
                 expires_at = (datetime.utcnow() + timedelta(days=30)).isoformat()
-                await update_user_subscription(db, user_id, "monthly", expires_at)
+                new_balance = await add_monthly_subscription_credits(db, user_id, credits_amount, expires_at)
+                desc_en = f"PayPal purchase Monthly Subscription +{credits_amount} credits"
+                desc_zh = f"PayPal购买月度订阅 +{credits_amount}积分"
             
-            # 如果是永久积分包，激活永久积分标志
-            if is_permanent:
-                await activate_permanent_credits(db, user_id)
-            
-            # 根据语言生成描述
-            desc_en = f"PayPal purchase {credits_amount} credits"
-            desc_zh = f"PayPal购买{credits_amount}积分"
             description = desc_en if req.lang == "en" else desc_zh
             
             await add_credits_transaction(

@@ -37,14 +37,22 @@ def get_current_user_id(request: Request) -> Optional[int]:
 
 
 class BalanceResponse(BaseModel):
-    credits: int
-    subscription_type: Optional[str]
-    subscription_expires_at: Optional[str]
-    is_subscription_active: bool
-    has_permanent_credits: bool = False
-    subscription_name: Optional[str] = None  # 中文订阅名称
-    subscription_name_en: Optional[str] = None  # 英文订阅名称
-    subscription_remaining_days: Optional[int] = None  # 剩余天数（月卡）
+    credits: int  # 总积分
+    welcome_bonus_credits: int = 0  # Welcome Bonus 剩余
+    welcome_bonus_expires_at: Optional[str] = None  # Welcome Bonus 到期时间
+    monthly_subscription_credits: int = 0  # 月卡剩余
+    monthly_subscription_expires_at: Optional[str] = None  # 月卡到期时间
+    standard_pack_credits: int = 0  # 标准包剩余
+    has_permanent_credits: bool = False  # 是否有永久积分
+    # 显示用字段
+    welcome_bonus_name: str = "Welcome Bonus"
+    welcome_bonus_name_zh: str = "注册赠送"
+    monthly_name: str = "Monthly Subscription"
+    monthly_name_zh: str = "月度订阅"
+    standard_name: str = "Standard Pack"
+    standard_name_zh: str = "标准积分包"
+    welcome_remaining_days: Optional[int] = None  # Welcome Bonus 剩余天数
+    monthly_remaining_days: Optional[int] = None  # 月卡剩余天数
 
 
 class DeductRequest(BaseModel):
@@ -114,38 +122,30 @@ async def get_balance(request: Request):
         if not user:
             raise HTTPException(status_code=404, detail="用户不存在")
 
-        is_active = check_subscription_active(user.get("subscription_expires_at"))
-
-        # 计算剩余天数
-        remaining_days = None
-        if user.get("subscription_expires_at"):
-            expires = datetime.fromisoformat(user["subscription_expires_at"])
+        # 计算 Welcome Bonus 剩余天数
+        welcome_remaining_days = None
+        if user.get("welcome_bonus_expires_at"):
+            expires = datetime.fromisoformat(user["welcome_bonus_expires_at"])
             remaining = (expires - datetime.utcnow()).days
-            remaining_days = max(0, remaining)
+            welcome_remaining_days = max(0, remaining)
         
-        # 订阅名称映射
-        sub_names = {
-            "monthly": {"zh": "月度订阅", "en": "Monthly Subscription"},
-            "permanent": {"zh": "标准积分包", "en": "Standard Pack"},
-        }
-        sub_name = None
-        sub_name_en = None
-        if user.get("subscription_type") in sub_names:
-            sub_name = sub_names[user.get("subscription_type")]["zh"]
-            sub_name_en = sub_names[user.get("subscription_type")]["en"]
-        elif user.get("has_permanent_credits"):
-            sub_name = "标准积分包"
-            sub_name_en = "Standard Pack"
+        # 计算 Monthly Subscription 剩余天数
+        monthly_remaining_days = None
+        if user.get("monthly_subscription_expires_at"):
+            expires = datetime.fromisoformat(user["monthly_subscription_expires_at"])
+            remaining = (expires - datetime.utcnow()).days
+            monthly_remaining_days = max(0, remaining)
         
         return BalanceResponse(
             credits=user["credits"],
-            subscription_type=user.get("subscription_type"),
-            subscription_expires_at=user.get("subscription_expires_at"),
-            is_subscription_active=is_active,
+            welcome_bonus_credits=user.get("welcome_bonus_credits", 0),
+            welcome_bonus_expires_at=user.get("welcome_bonus_expires_at"),
+            monthly_subscription_credits=user.get("monthly_subscription_credits", 0),
+            monthly_subscription_expires_at=user.get("monthly_subscription_expires_at"),
+            standard_pack_credits=user.get("standard_pack_credits", 0),
             has_permanent_credits=bool(user.get("has_permanent_credits")),
-            subscription_name=sub_name,
-            subscription_name_en=sub_name_en,
-            subscription_remaining_days=remaining_days
+            welcome_remaining_days=welcome_remaining_days,
+            monthly_remaining_days=monthly_remaining_days,
         )
 
 
@@ -165,49 +165,31 @@ async def deduct_credits(request: Request, body: DeductRequest):
         if not user:
             raise HTTPException(status_code=404, detail="用户不存在")
 
-        current_credits = user["credits"]
-        is_subscription_active = check_subscription_active(user.get("subscription_expires_at"))
-
-        # 计算可用积分（余额 + 订阅月额度）
-        monthly_credits = 0
-        if is_subscription_active:
-            monthly_credits = 200  # 月度订阅每月200积分
-
-        # 简单处理：优先扣订阅额度，再扣余额
-        # TODO: 需要更精确的月度额度追踪（每月1日重置）
-
-        available = current_credits + monthly_credits
-        if available < amount:
+        # 检查总积分是否足够
+        if user["credits"] < amount:
             raise HTTPException(
                 status_code=402,
-                detail=f"积分不足，需要{amount}积分，当前剩余{current_credits}积分（订阅额度{monthly_credits}）"
+                detail=f"积分不足，需要{amount}积分，当前剩余{user['credits']}积分"
             )
 
-        # 扣减逻辑：先扣余额，余额不够再扣订阅额度
-        if current_credits >= amount:
-            new_credits = current_credits - amount
-            await update_user_credits(db, user_id, new_credits)
-            await add_credits_transaction(
-                db, user_id, "deduct", -amount, new_credits,
-                f"AI解读消耗{amount}积分"
-            )
-            remaining = new_credits
-        else:
-            # 扣订阅额度
-            from_sub = amount - current_credits
-            new_credits = 0
-            await update_user_credits(db, user_id, new_credits)
-            await add_credits_transaction(
-                db, user_id, "deduct", -current_credits, new_credits,
-                f"AI解读消耗{from_sub}积分（订阅额度）"
-            )
-            remaining = 0
+        # 使用优先级扣除函数
+        from ..database import deduct_credits_by_priority
+        result = await deduct_credits_by_priority(db, user_id, amount)
+        
+        if not result["success"]:
+            raise HTTPException(status_code=402, detail="积分不足")
+        
+        # 记录流水
+        await add_credits_transaction(
+            db, user_id, "deduct", -amount, result["total_remaining"],
+            f"AI解读消耗{amount}积分"
+        )
 
         return DeductResponse(
             success=True,
             credits_used=amount,
-            remaining_credits=remaining,
-            message=f"消耗{amount}积分，剩余{remaining}积分"
+            remaining_credits=result["total_remaining"],
+            message=f"消耗{amount}积分，剩余{result['total_remaining']}积分"
         )
 
 

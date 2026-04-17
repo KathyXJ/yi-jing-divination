@@ -162,14 +162,20 @@
 .subExpiry {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.5);
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .subPermanent {
   font-size: 0.85rem;
   color: #4caf50;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   font-weight: 600;
+}
+
+.subCredits {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 0.15rem;
 }
 
 .subDetails {
@@ -182,7 +188,6 @@
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.85);
   font-weight: 600;
-  margin-bottom: 0.25rem;
 }
 
 /* Account Info */

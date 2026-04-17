@@ -24,8 +24,11 @@ async def init_db():
                 name TEXT,
                 avatar_url TEXT,
                 credits INTEGER DEFAULT 0,
-                subscription_type TEXT DEFAULT NULL,
-                subscription_expires_at TIMESTAMP DEFAULT NULL,
+                welcome_bonus_credits INTEGER DEFAULT 0,
+                welcome_bonus_expires_at TIMESTAMP DEFAULT NULL,
+                monthly_subscription_credits INTEGER DEFAULT 0,
+                monthly_subscription_expires_at TIMESTAMP DEFAULT NULL,
+                standard_pack_credits INTEGER DEFAULT 0,
                 has_permanent_credits INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -35,8 +38,11 @@ async def init_db():
         # 确保新增字段存在（旧数据库可能没有）
         for col, col_type in [
             ("credits", "INTEGER DEFAULT 0"),
-            ("subscription_type", "TEXT DEFAULT NULL"),
-            ("subscription_expires_at", "TIMESTAMP DEFAULT NULL"),
+            ("welcome_bonus_credits", "INTEGER DEFAULT 0"),
+            ("welcome_bonus_expires_at", "TIMESTAMP DEFAULT NULL"),
+            ("monthly_subscription_credits", "INTEGER DEFAULT 0"),
+            ("monthly_subscription_expires_at", "TIMESTAMP DEFAULT NULL"),
+            ("standard_pack_credits", "INTEGER DEFAULT 0"),
             ("has_permanent_credits", "INTEGER DEFAULT 0"),
         ]:
             try:
@@ -198,12 +204,19 @@ async def get_user_by_id(db: aiosqlite.Connection, user_id: int) -> Optional[dic
 
 
 async def create_user(db: aiosqlite.Connection, google_id: str, email: str, name: str = None, avatar_url: str = None) -> dict:
-    """创建新用户"""
+    """创建新用户（带注册赠送3积分，7天有效）"""
+    from datetime import timedelta
     now = datetime.utcnow().isoformat()
+    welcome_bonus_expires = (datetime.utcnow() + timedelta(days=7)).isoformat()
+    
     cursor = await db.execute(
-        """INSERT INTO users (google_id, email, name, avatar_url, credits, subscription_type, subscription_expires_at, created_at, updated_at)
-           VALUES (?, ?, ?, ?, 0, NULL, NULL, ?, ?)""",
-        (google_id, email, name, avatar_url, now, now)
+        """INSERT INTO users (google_id, email, name, avatar_url, credits, 
+           welcome_bonus_credits, welcome_bonus_expires_at, 
+           monthly_subscription_credits, monthly_subscription_expires_at,
+           standard_pack_credits, has_permanent_credits,
+           created_at, updated_at)
+           VALUES (?, ?, ?, ?, 3, 3, ?, 0, NULL, 0, 0, ?, ?)""",
+        (google_id, email, name, avatar_url, welcome_bonus_expires, now, now)
     )
     await db.commit()
     user_id = cursor.lastrowid
@@ -213,9 +226,13 @@ async def create_user(db: aiosqlite.Connection, google_id: str, email: str, name
         "email": email,
         "name": name,
         "avatar_url": avatar_url,
-        "credits": 0,
-        "subscription_type": None,
-        "subscription_expires_at": None,
+        "credits": 3,
+        "welcome_bonus_credits": 3,
+        "welcome_bonus_expires_at": welcome_bonus_expires,
+        "monthly_subscription_credits": 0,
+        "monthly_subscription_expires_at": None,
+        "standard_pack_credits": 0,
+        "has_permanent_credits": 0,
         "created_at": now,
         "updated_at": now
     }
@@ -280,6 +297,118 @@ async def activate_permanent_credits(db: aiosqlite.Connection, user_id: int) -> 
         (now, user_id)
     )
     await db.commit()
+
+
+async def add_standard_pack_credits(db: aiosqlite.Connection, user_id: int, amount: int) -> int:
+    """添加标准积分包积分（永久有效）"""
+    now = datetime.utcnow().isoformat()
+    await db.execute(
+        "UPDATE users SET standard_pack_credits = standard_pack_credits + ?, has_permanent_credits = 1, updated_at = ? WHERE id = ?",
+        (amount, now, user_id)
+    )
+    await db.commit()
+    # 重新计算总积分
+    cursor = await db.execute("SELECT welcome_bonus_credits + monthly_subscription_credits + standard_pack_credits as total FROM users WHERE id = ?", (user_id,))
+    row = await cursor.fetchone()
+    total = row["total"] if row else amount
+    await db.execute("UPDATE users SET credits = ? WHERE id = ?", (total, user_id))
+    await db.commit()
+    return total
+
+
+async def add_monthly_subscription_credits(db: aiosqlite.Connection, user_id: int, amount: int, expires_at: str) -> int:
+    """添加月度订阅积分"""
+    now = datetime.utcnow().isoformat()
+    await db.execute(
+        "UPDATE users SET monthly_subscription_credits = ?, monthly_subscription_expires_at = ?, updated_at = ? WHERE id = ?",
+        (amount, expires_at, now, user_id)
+    )
+    await db.commit()
+    # 重新计算总积分
+    cursor = await db.execute("SELECT welcome_bonus_credits + monthly_subscription_credits + standard_pack_credits as total FROM users WHERE id = ?", (user_id,))
+    row = await cursor.fetchone()
+    total = row["total"] if row else amount
+    await db.execute("UPDATE users SET credits = ? WHERE id = ?", (total, user_id))
+    await db.commit()
+    return total
+
+
+async def deduct_credits_by_priority(db: aiosqlite.Connection, user_id: int, amount: int) -> dict:
+    """
+    按优先级扣除积分：Welcome Bonus -> Monthly Subscription -> Standard Pack
+    返回扣除结果和剩余各类型积分
+    """
+    now = datetime.utcnow().isoformat()
+    
+    # 获取用户当前积分状态
+    cursor = await db.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+    user = dict(await cursor.fetchone())
+    
+    welcome = user.get("welcome_bonus_credits", 0)
+    monthly = user.get("monthly_subscription_credits", 0)
+    standard = user.get("standard_pack_credits", 0)
+    
+    # 检查并处理 welcome bonus 过期
+    welcome_expires = user.get("welcome_bonus_expires_at")
+    if welcome_expires and datetime.fromisoformat(welcome_expires) < datetime.utcnow():
+        # welcome bonus 过期，余额转入 standard pack
+        if welcome > 0:
+            standard += welcome
+            await db.execute(
+                "UPDATE users SET standard_pack_credits = ?, welcome_bonus_credits = 0, welcome_bonus_expires_at = NULL WHERE id = ?",
+                (standard, user_id)
+            )
+            welcome = 0
+    
+    remaining = amount
+    deducted_from = []
+    
+    # 1. 先扣 Welcome Bonus
+    if remaining > 0 and welcome > 0:
+        deduct = min(welcome, remaining)
+        welcome -= deduct
+        remaining -= deduct
+        deducted_from.append(("welcome_bonus", deduct))
+        await db.execute(
+            "UPDATE users SET welcome_bonus_credits = ? WHERE id = ?",
+            (welcome, user_id)
+        )
+    
+    # 2. 再扣 Monthly Subscription
+    if remaining > 0 and monthly > 0:
+        deduct = min(monthly, remaining)
+        monthly -= deduct
+        remaining -= deduct
+        deducted_from.append(("monthly_subscription", deduct))
+        await db.execute(
+            "UPDATE users SET monthly_subscription_credits = ? WHERE id = ?",
+            (monthly, user_id)
+        )
+    
+    # 3. 最后扣 Standard Pack
+    if remaining > 0 and standard > 0:
+        deduct = min(standard, remaining)
+        standard -= deduct
+        remaining -= deduct
+        deducted_from.append(("standard_pack", deduct))
+        await db.execute(
+            "UPDATE users SET standard_pack_credits = ? WHERE id = ?",
+            (standard, user_id)
+        )
+    
+    # 更新总积分
+    total = welcome + monthly + standard
+    await db.execute("UPDATE users SET credits = ?, updated_at = ? WHERE id = ?", (total, now, user_id))
+    await db.commit()
+    
+    return {
+        "success": remaining == 0,  # 如果还有剩余说明积分不足
+        "total_remaining": total,
+        "welcome_remaining": welcome,
+        "monthly_remaining": monthly,
+        "standard_remaining": standard,
+        "deducted_from": deducted_from
+    }
 
 
 async def add_credits_transaction(

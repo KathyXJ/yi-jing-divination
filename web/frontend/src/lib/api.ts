@@ -68,13 +68,20 @@ async function fetchWithTimeout(url: string, init?: RequestInit): Promise<Respon
 
 export interface BalanceInfo {
   credits: number;
-  subscription_type: string | null;
-  subscription_expires_at: string | null;
-  is_subscription_active: boolean;
+  welcome_bonus_credits: number;
+  welcome_bonus_expires_at: string | null;
+  monthly_subscription_credits: number;
+  monthly_subscription_expires_at: string | null;
+  standard_pack_credits: number;
   has_permanent_credits: boolean;
-  subscription_name: string | null;
-  subscription_name_en: string | null;
-  subscription_remaining_days: number | null;
+  welcome_bonus_name: string;
+  welcome_bonus_name_zh: string;
+  monthly_name: string;
+  monthly_name_zh: string;
+  standard_name: string;
+  standard_name_zh: string;
+  welcome_remaining_days: number | null;
+  monthly_remaining_days: number | null;
 }
 
 export interface Transaction {

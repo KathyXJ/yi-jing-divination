@@ -60,6 +60,10 @@ export default function MePage() {
     expiresAt: lang === "zh" ? "到期时间" : "Expires at",
     permanent: lang === "zh" ? "永久有效" : "Permanent",
     remainingDays: lang === "zh" ? "剩余天数" : "days left",
+    creditsUnit: lang === "zh" ? "积分" : "credits",
+    welcomeBonus: lang === "zh" ? "注册赠送" : "Welcome Bonus",
+    monthlySub: lang === "zh" ? "月度订阅" : "Monthly Subscription",
+    standardPack: lang === "zh" ? "标准积分包" : "Standard Pack",
     transactionHistory: lang === "zh" ? "积分记录" : "Transaction History",
     noTransactions: lang === "zh" ? "暂无记录" : "No transactions yet",
     recharge: lang === "zh" ? "充值积分" : "Buy Credits",
@@ -97,40 +101,65 @@ export default function MePage() {
         <div className={styles.card}>
           <div className={styles.subscriptionSection}>
             <div className={styles.subLabel}>{t.subscription}</div>
-            {(balance?.is_subscription_active || balance?.has_permanent_credits) && (
+            {(balance?.welcome_bonus_credits || balance?.monthly_subscription_credits || balance?.standard_pack_credits) ? (
               <div className={`${styles.subBadge} ${styles.active}`}>
                 {t.active}
               </div>
-            )}
-            {!balance?.is_subscription_active && !balance?.has_permanent_credits && (
+            ) : (
               <div className={`${styles.subBadge} ${styles.inactive}`}>
                 {t.inactive}
               </div>
             )}
           </div>
           
-          {/* 订阅详情 */}
-          {balance?.is_subscription_active && (
+          {/* Welcome Bonus */}
+          {balance?.welcome_bonus_credits !== undefined && balance.welcome_bonus_credits > 0 && (
             <div className={styles.subDetails}>
               <div className={styles.subName}>
-                {lang === "zh" ? balance.subscription_name : balance.subscription_name_en}
+                {lang === "zh" ? balance.welcome_bonus_name_zh : balance.welcome_bonus_name}
               </div>
-              <div className={styles.subExpiry}>
-                {balance.subscription_remaining_days !== null 
-                  ? `${balance.subscription_remaining_days} ${t.remainingDays}`
-                  : balance.subscription_expires_at 
-                    ? `${t.expiresAt}: ${new Date(balance.subscription_expires_at).toLocaleDateString()}`
-                    : ""
-                }
+              <div className={styles.subCredits}>
+                +{balance.welcome_bonus_credits} {t.creditsUnit}
               </div>
+              {balance.welcome_remaining_days !== null && (
+                <div className={styles.subExpiry}>
+                  {balance.welcome_remaining_days > 0 
+                    ? `${balance.welcome_remaining_days} ${t.remainingDays}`
+                    : (lang === "zh" ? "已到期" : "Expired")
+                  }
+                </div>
+              )}
             </div>
           )}
           
-          {/* 永久积分包 */}
-          {balance?.has_permanent_credits && (
+          {/* Monthly Subscription */}
+          {balance?.monthly_subscription_credits !== undefined && balance.monthly_subscription_credits > 0 && (
             <div className={styles.subDetails}>
               <div className={styles.subName}>
-                {lang === "zh" ? "标准积分包" : "Standard Pack"}
+                {lang === "zh" ? balance.monthly_name_zh : balance.monthly_name}
+              </div>
+              <div className={styles.subCredits}>
+                +{balance.monthly_subscription_credits} {t.creditsUnit}
+              </div>
+              {balance.monthly_remaining_days !== null && (
+                <div className={styles.subExpiry}>
+                  {balance.monthly_remaining_days > 0 
+                    ? `${balance.monthly_remaining_days} ${t.remainingDays}`
+                    : (lang === "zh" ? "已到期" : "Expired")
+                  }
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Standard Pack (Permanent) */}
+          {balance?.standard_pack_credits !== undefined && balance.standard_pack_credits > 0 && (
+            <div className={styles.subDetails}>
+              <div className={styles.subName}>
+                {lang === "zh" ? balance.standard_name_zh : balance.standard_name}
+              </div>
+              <div className={styles.subCredits}>
+                +{balance.standard_pack_credits} {t.creditsUnit}
               </div>
               <div className={styles.subPermanent}>
                 {t.permanent}
@@ -138,7 +167,8 @@ export default function MePage() {
             </div>
           )}
           
-          {!balance?.is_subscription_active && !balance?.has_permanent_credits && (
+          {/* 无订阅时显示订阅按钮 */}
+          {!balance?.welcome_bonus_credits && !balance?.monthly_subscription_credits && !balance?.standard_pack_credits && (
             <div className={styles.cardActions}>
               <Link href="/pricing" className={styles.secondaryBtn}>
                 {t.subscribe}
