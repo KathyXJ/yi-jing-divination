@@ -223,9 +223,9 @@ export default function PricingPage() {
                   </span>
                 ) : processing !== null ? (
                   <span className={styles.ctaBtn}>
-                    {processing === -1 
-                      ? (lang === "zh" ? "处理中..." : "Processing...")
-                      : (lang === "zh" ? "跳转中..." : "Redirecting...")}
+                    {processing === product.id
+                      ? (lang === "zh" ? "跳转中..." : "Redirecting...")
+                      : t.buy}
                   </span>
                 ) : (
                   <button
