@@ -155,12 +155,8 @@ export default function InterpretationPanel({
               {ben_gua.name}
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
-            {/* 卦象符号 + 爻线示意图（变爻标注⚡） */}
+            {/* 爻线示意图（变爻标注⚡） */}
             <div className="flex items-center gap-2 mt-1">
-              {/* Unicode卦符（大） */}
-              <span className="text-5xl font-serif leading-none">
-                {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
-              </span>
               {/* 爻线示意图（从上爻到初爻） */}
               <div className="flex flex-col gap-[1px]">
                 {[...yaos].reverse().map((yao, revIdx) => {
@@ -247,13 +243,8 @@ export default function InterpretationPanel({
               {zhi_gua.name}
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
-            {/* 卦象符号 */}
+            {/* 爻线示意图（之卦无变爻，不标注⚡） */}
             <div className="flex items-center gap-2 mt-1">
-              {/* Unicode卦符（大） */}
-              <span className="text-5xl font-serif leading-none">
-                {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
-              </span>
-              {/* 爻线示意图（之卦无变爻，不标注⚡） */}
               <div className="flex flex-col gap-[1px]">
                 {[...zhi_yaos].reverse().map((yao, revIdx) => {
                   const isYang = yao.value === 9 || yao.value === 7;
