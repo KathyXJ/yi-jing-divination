@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import divination, ai, auth, credits
+from .routers import divination, ai, auth, credits, paypal
 from .database import init_db
 
 
