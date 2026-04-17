@@ -178,7 +178,7 @@ async def capture_order(req: CaptureOrderRequest):
         capture_data = capture_response.json()
         
         # 解析 custom_id 获取 user_id 和 product_id
-        custom_id = capture_data["purchase_units"][0].payments["captures"][0]["custom_id"]
+        custom_id = capture_data["purchase_units"][0]["payments"]["captures"][0]["custom_id"]
         user_id, product_id = custom_id.rsplit("_", 1)
         user_id = int(user_id)
         
