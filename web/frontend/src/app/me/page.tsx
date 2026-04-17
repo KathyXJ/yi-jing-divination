@@ -55,10 +55,11 @@ export default function MePage() {
   const t = {
     credits: lang === "zh" ? "积分余额" : "Credits Balance",
     subscription: lang === "zh" ? "订阅状态" : "Subscription",
-    active: lang === "zh" ? "有效" : "Active",
+    active: lang === "zh" ? "激活中" : "Active",
     inactive: lang === "zh" ? "未订阅" : "Inactive",
     expiresAt: lang === "zh" ? "到期时间" : "Expires at",
     permanent: lang === "zh" ? "永久有效" : "Permanent",
+    remainingDays: lang === "zh" ? "剩余天数" : "days left",
     transactionHistory: lang === "zh" ? "积分记录" : "Transaction History",
     noTransactions: lang === "zh" ? "暂无记录" : "No transactions yet",
     recharge: lang === "zh" ? "充值积分" : "Buy Credits",
@@ -96,20 +97,47 @@ export default function MePage() {
         <div className={styles.card}>
           <div className={styles.subscriptionSection}>
             <div className={styles.subLabel}>{t.subscription}</div>
-            <div className={`${styles.subBadge} ${balance?.is_subscription_active ? styles.active : styles.inactive}`}>
-              {balance?.is_subscription_active ? t.active : t.inactive}
-            </div>
+            {(balance?.is_subscription_active || balance?.has_permanent_credits) && (
+              <div className={`${styles.subBadge} ${styles.active}`}>
+                {t.active}
+              </div>
+            )}
+            {!balance?.is_subscription_active && !balance?.has_permanent_credits && (
+              <div className={`${styles.subBadge} ${styles.inactive}`}>
+                {t.inactive}
+              </div>
+            )}
           </div>
-          {balance?.is_subscription_active && balance.subscription_expires_at && (
-            <div className={styles.subExpiry}>
-              {t.expiresAt}: {new Date(balance.subscription_expires_at).toLocaleDateString()}
+          
+          {/* 订阅详情 */}
+          {balance?.is_subscription_active && (
+            <div className={styles.subDetails}>
+              <div className={styles.subName}>
+                {lang === "zh" ? balance.subscription_name : balance.subscription_name_en}
+              </div>
+              <div className={styles.subExpiry}>
+                {balance.subscription_remaining_days !== null 
+                  ? `${balance.subscription_remaining_days} ${t.remainingDays}`
+                  : balance.subscription_expires_at 
+                    ? `${t.expiresAt}: ${new Date(balance.subscription_expires_at).toLocaleDateString()}`
+                    : ""
+                }
+              </div>
             </div>
           )}
+          
+          {/* 永久积分包 */}
           {balance?.has_permanent_credits && (
-            <div className={styles.subPermanent}>
-              {t.permanent}
+            <div className={styles.subDetails}>
+              <div className={styles.subName}>
+                {lang === "zh" ? "标准积分包" : "Standard Pack"}
+              </div>
+              <div className={styles.subPermanent}>
+                {t.permanent}
+              </div>
             </div>
           )}
+          
           {!balance?.is_subscription_active && !balance?.has_permanent_credits && (
             <div className={styles.cardActions}>
               <Link href="/pricing" className={styles.secondaryBtn}>

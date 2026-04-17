@@ -72,6 +72,9 @@ export interface BalanceInfo {
   subscription_expires_at: string | null;
   is_subscription_active: boolean;
   has_permanent_credits: boolean;
+  subscription_name: string | null;
+  subscription_name_en: string | null;
+  subscription_remaining_days: number | null;
 }
 
 export interface Transaction {

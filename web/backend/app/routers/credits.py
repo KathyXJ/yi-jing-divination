@@ -42,6 +42,9 @@ class BalanceResponse(BaseModel):
     subscription_expires_at: Optional[str]
     is_subscription_active: bool
     has_permanent_credits: bool = False
+    subscription_name: Optional[str] = None  # 中文订阅名称
+    subscription_name_en: Optional[str] = None  # 英文订阅名称
+    subscription_remaining_days: Optional[int] = None  # 剩余天数（月卡）
 
 
 class DeductRequest(BaseModel):
@@ -113,12 +116,36 @@ async def get_balance(request: Request):
 
         is_active = check_subscription_active(user.get("subscription_expires_at"))
 
+        # 计算剩余天数
+        remaining_days = None
+        if user.get("subscription_expires_at"):
+            expires = datetime.fromisoformat(user["subscription_expires_at"])
+            remaining = (expires - datetime.utcnow()).days
+            remaining_days = max(0, remaining)
+        
+        # 订阅名称映射
+        sub_names = {
+            "monthly": {"zh": "月度订阅", "en": "Monthly Subscription"},
+            "permanent": {"zh": "标准积分包", "en": "Standard Pack"},
+        }
+        sub_name = None
+        sub_name_en = None
+        if user.get("subscription_type") in sub_names:
+            sub_name = sub_names[user.get("subscription_type")]["zh"]
+            sub_name_en = sub_names[user.get("subscription_type")]["en"]
+        elif user.get("has_permanent_credits"):
+            sub_name = "标准积分包"
+            sub_name_en = "Standard Pack"
+        
         return BalanceResponse(
             credits=user["credits"],
             subscription_type=user.get("subscription_type"),
             subscription_expires_at=user.get("subscription_expires_at"),
             is_subscription_active=is_active,
-            has_permanent_credits=bool(user.get("has_permanent_credits"))
+            has_permanent_credits=bool(user.get("has_permanent_credits")),
+            subscription_name=sub_name,
+            subscription_name_en=sub_name_en,
+            subscription_remaining_days=remaining_days
         )
 
 

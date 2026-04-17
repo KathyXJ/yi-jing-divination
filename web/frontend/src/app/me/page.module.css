@@ -172,6 +172,19 @@
   font-weight: 600;
 }
 
+.subDetails {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.subName {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
 /* Account Info */
 .accountInfo {
   display: flex;
