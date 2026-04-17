@@ -155,14 +155,65 @@ export default function InterpretationPanel({
               {ben_gua.name}
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
-            {/* 卦象符号（大）+ 变爻⚡） */}
-            <div className="flex items-center mt-1">
-              <span className="text-5xl text-[var(--color-text)] font-serif leading-none">
+            {/* 卦象符号 + 爻线示意图（变爻标注⚡） */}
+            <div className="flex items-center gap-2 mt-1">
+              {/* Unicode卦符（大） */}
+              <span className="text-5xl font-serif leading-none">
                 {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
               </span>
-              {changed_indices.map((idx) => (
-                <span key={idx} className="text-amber-400 text-lg ml-1">⚡</span>
-              ))}
+              {/* 爻线示意图（从上爻到初爻） */}
+              <div className="flex flex-col gap-[1px]">
+                {[...yaos].reverse().map((yao, revIdx) => {
+                  const actualIdx = 5 - revIdx;
+                  const isYang = yao.value === 9 || yao.value === 7;
+                  const isChange = changed_indices.includes(actualIdx);
+                  return (
+                    <div key={revIdx} className="relative w-10 h-3 flex items-center">
+                      {isYang ? (
+                        <div
+                          className="w-full rounded-sm"
+                          style={{
+                            height: "2px",
+                            background: isChange
+                              ? "linear-gradient(90deg, #8b6914, #d4a843, #8b6914)"
+                              : "#8b6914",
+                            boxShadow: isChange ? "0 0 3px rgba(212,168,67,0.5)" : "none",
+                          }}
+                        />
+                      ) : (
+                        <div className="relative w-full h-2">
+                          <div
+                            className="absolute left-0"
+                            style={{
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              width: "44%",
+                              borderTop: "2px solid #8a8070",
+                            }}
+                          />
+                          <div
+                            className="absolute right-0"
+                            style={{
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              width: "44%",
+                              borderTop: "2px solid #8a8070",
+                            }}
+                          />
+                        </div>
+                      )}
+                      {isChange && (
+                        <span
+                          className="absolute -right-4 text-amber-400 text-xs"
+                          style={{ animation: "pulse-gold 2s ease-in-out infinite" }}
+                        >
+                          ⚡
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             {/* 卦辞 */}
             {(lang === "en" ? ben_gua.sentence_en : ben_gua.sentence) && (
@@ -202,14 +253,52 @@ export default function InterpretationPanel({
               {zhi_gua.name}
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
-            {/* 卦象符号（大）+ 变爻⚡） */}
-            <div className="flex items-center mt-1">
-              <span className="text-5xl text-[var(--color-text)] font-serif leading-none">
+            {/* 卦象符号 */}
+            <div className="flex items-center gap-2 mt-1">
+              {/* Unicode卦符（大） */}
+              <span className="text-5xl font-serif leading-none">
                 {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
               </span>
-              {changed_indices.map((idx) => (
-                <span key={idx} className="text-amber-400 text-lg ml-1">⚡</span>
-              ))}
+              {/* 爻线示意图（之卦无变爻，不标注⚡） */}
+              <div className="flex flex-col gap-[1px]">
+                {[...zhi_yaos].reverse().map((yao, revIdx) => {
+                  const isYang = yao.value === 9 || yao.value === 7;
+                  return (
+                    <div key={revIdx} className="relative w-10 h-3 flex items-center">
+                      {isYang ? (
+                        <div
+                          className="w-full rounded-sm"
+                          style={{
+                            height: "2px",
+                            background: "#8b6914",
+                          }}
+                        />
+                      ) : (
+                        <div className="relative w-full h-2">
+                          <div
+                            className="absolute left-0"
+                            style={{
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              width: "44%",
+                              borderTop: "2px solid #8a8070",
+                            }}
+                          />
+                          <div
+                            className="absolute right-0"
+                            style={{
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              width: "44%",
+                              borderTop: "2px solid #8a8070",
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             {/* 卦辞 */}
             {(lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence) && (
