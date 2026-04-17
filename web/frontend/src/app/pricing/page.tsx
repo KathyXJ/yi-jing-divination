@@ -79,10 +79,25 @@ export default function PricingPage() {
     setPaymentMessage(message);
   }
 
-  async function handleBuy(productId: number) {
+  async function handleBuy(product: Product) {
     if (!token || !user) return;
-    setProcessing(productId);
+    setProcessing(product.id);
     setError("");
+    
+    // 根据产品积分确定 PayPal product_id
+    // product.id: 1=免费(3积分), 2=$9.9(50积分), 3=$19.9(200积分/月)
+    // PayPal: 50_credits=$9.9, monthly_200=$19.9
+    let paypalProductId: string;
+    if (product.credits === 50) {
+      paypalProductId = "50_credits";
+    } else if (product.credits === 200) {
+      paypalProductId = "monthly_200";
+    } else {
+      setError(lang === "zh" ? "不支持的产品" : "Unsupported product");
+      setProcessing(null);
+      return;
+    }
+    
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/paypal/create-order`, {
         method: "POST",
@@ -91,7 +106,7 @@ export default function PricingPage() {
           "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
-          product_id: productId === 1 ? "50_credits" : "monthly_200",
+          product_id: paypalProductId,
           user_id: user.id,
           lang: lang,
         }),
@@ -214,7 +229,7 @@ export default function PricingPage() {
                   </span>
                 ) : (
                   <button
-                    onClick={() => handleBuy(product.id)}
+                    onClick={() => handleBuy(product)}
                     className={styles.ctaBtn}
                   >
                     {t.buy}
