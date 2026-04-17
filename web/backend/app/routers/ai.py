@@ -836,6 +836,17 @@ async def interpret_divination(req: InterpretationRequest, request: Request):
     try:
         interpretation = await asyncio.to_thread(_call_api)
 
+        # 如果是英文，将 AI 解读中的中文爻名替换为 Line X 格式
+        if req.lang == "en":
+            yao_name_map = {
+                "初九": "Line 1", "九二": "Line 2", "九三": "Line 3",
+                "九四": "Line 4", "九五": "Line 5", "上九": "Line 6",
+                "初六": "Line 1", "六二": "Line 2", "六三": "Line 3",
+                "六四": "Line 4", "六五": "Line 5", "上六": "Line 6",
+            }
+            for cn, en in yao_name_map.items():
+                interpretation = interpretation.replace(cn, en)
+
         # ===== AI 成功，扣除积分 =====
         from ..database import update_user_credits, add_credits_transaction
         async with get_db() as db:
