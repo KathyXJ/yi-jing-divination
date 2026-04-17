@@ -218,7 +218,9 @@ export default function InterpretationPanel({
                 const isChange = changed_indices.includes(idx);
                 return (
                   <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
-                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>{yao.yao_name}</span>
+                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>
+                      {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
+                    </span>
                     {isChange && <span className="text-amber-400">⚡</span>}
                     <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
                       {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
@@ -292,7 +294,9 @@ export default function InterpretationPanel({
                 const isChange = changed_indices.includes(idx);
                 return (
                   <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
-                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>{yao.yao_name}</span>
+                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>
+                      {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
+                    </span>
                     {isChange && <span className="text-amber-400">⚡</span>}
                     <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
                       {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
