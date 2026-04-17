@@ -211,17 +211,15 @@ export default function InterpretationPanel({
                 })}
               </div>
             </div>
-            {/* 爻辞（从下到上） */}
+            {/* 爻辞（倒序显示：Line 6在上，Line 1在下） */}
             <div className="w-full mt-2 space-y-1">
-              {[...yaos].map((yao, idx) => {
+              {[...yaos].reverse().map((yao, idx) => {
                 const isYang = yao.value === 9 || yao.value === 7;
-                const isChange = changed_indices.includes(idx);
                 return (
                   <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
                     <span className={isYang ? "text-amber-400" : "text-slate-400"}>
                       {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
                     </span>
-                    {isChange && <span className="text-amber-400">⚡</span>}
                     <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
                       {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
                     </span>
@@ -287,17 +285,15 @@ export default function InterpretationPanel({
                 })}
               </div>
             </div>
-            {/* 爻辞（从下到上） */}
+            {/* 爻辞（倒序显示：Line 6在上，Line 1在下） */}
             <div className="w-full mt-2 space-y-1">
-              {[...zhi_yaos].map((yao, idx) => {
+              {[...zhi_yaos].reverse().map((yao, idx) => {
                 const isYang = yao.value === 9 || yao.value === 7;
-                const isChange = changed_indices.includes(idx);
                 return (
                   <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
                     <span className={isYang ? "text-amber-400" : "text-slate-400"}>
                       {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
                     </span>
-                    {isChange && <span className="text-amber-400">⚡</span>}
                     <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
                       {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
                     </span>
