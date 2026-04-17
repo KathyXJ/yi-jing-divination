@@ -178,9 +178,11 @@ async def capture_order(req: CaptureOrderRequest):
         capture_data = capture_response.json()
         
         # 解析 custom_id 获取 user_id 和 product_id
-        custom_id = capture_data["purchase_units"][0]["payments"]["captures"][0]["custom_id"]
-        user_id, product_id = custom_id.rsplit("_", 1)
-        user_id = int(user_id)
+        # custom_id 格式: "user_id_productid" 例如 "12_50_credits"
+        # 使用第一个下划线分割: user_id=12, product_id="50_credits"
+        parts = custom_id.split("_", 1)
+        user_id = int(parts[0])
+        product_id = parts[1]
         
         # 给用户加积分
         from ..database import update_user_credits, add_credits_transaction, get_db, get_user_by_id
