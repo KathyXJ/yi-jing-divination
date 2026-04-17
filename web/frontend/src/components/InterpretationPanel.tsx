@@ -156,7 +156,7 @@ export default function InterpretationPanel({
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
             {/* 卦象符号 */}
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">
+            <p className="text-3xl text-[var(--color-text)] mt-1">
               {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
             </p>
             {/* 卦辞 */}
@@ -193,7 +193,7 @@ export default function InterpretationPanel({
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
             {/* 卦象符号 */}
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">
+            <p className="text-3xl text-[var(--color-text)] mt-1">
               {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
             </p>
             {/* 卦辞 */}
