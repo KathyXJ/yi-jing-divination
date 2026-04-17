@@ -180,6 +180,7 @@ async def capture_order(req: CaptureOrderRequest):
         # 解析 custom_id 获取 user_id 和 product_id
         # custom_id 格式: "user_id_productid" 例如 "12_50_credits"
         # 使用第一个下划线分割: user_id=12, product_id="50_credits"
+        custom_id = capture_data["purchase_units"][0]["payments"]["captures"][0]["custom_id"]
         parts = custom_id.split("_", 1)
         user_id = int(parts[0])
         product_id = parts[1]
