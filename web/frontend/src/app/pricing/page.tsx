@@ -35,6 +35,7 @@ function PaymentHandler({ onStatus }: { onStatus: (status: "success" | "cancelle
         body: JSON.stringify({
           order_id: orderId,
           user_id: user?.id,
+          lang: lang,
         }),
       });
 

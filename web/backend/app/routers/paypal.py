@@ -33,6 +33,7 @@ class CreateOrderRequest(BaseModel):
 class CaptureOrderRequest(BaseModel):
     order_id: str
     user_id: int
+    lang: str = "en"
 
 
 async def get_access_token() -> str:
@@ -197,9 +198,14 @@ async def capture_order(req: CaptureOrderRequest):
             
             new_balance = user["credits"] + credits_amount
             await update_user_credits(db, user_id, new_balance)
+            # 根据语言生成描述
+            desc_en = f"PayPal purchase {credits_amount} credits"
+            desc_zh = f"PayPal购买{credits_amount}积分"
+            description = desc_en if req.lang == "en" else desc_zh
+            
             await add_credits_transaction(
                 db, user_id, "purchase", credits_amount, new_balance,
-                f"PayPal购买{credits_amount}积分"
+                description
             )
         
         return {
