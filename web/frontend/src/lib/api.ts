@@ -71,6 +71,7 @@ export interface BalanceInfo {
   subscription_type: string | null;
   subscription_expires_at: string | null;
   is_subscription_active: boolean;
+  has_permanent_credits: boolean;
 }
 
 export interface Transaction {

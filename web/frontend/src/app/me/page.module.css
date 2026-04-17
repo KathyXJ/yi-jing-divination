@@ -165,6 +165,13 @@
   margin-top: 0.5rem;
 }
 
+.subPermanent {
+  font-size: 0.85rem;
+  color: #4caf50;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
 /* Account Info */
 .accountInfo {
   display: flex;

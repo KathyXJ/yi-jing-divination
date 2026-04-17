@@ -187,10 +187,11 @@ async def capture_order(req: CaptureOrderRequest):
         product_id = parts[1]
         
         # 给用户加积分
-        from ..database import update_user_credits, add_credits_transaction, update_user_subscription, get_db, get_user_by_id
+        from ..database import update_user_credits, add_credits_transaction, update_user_subscription, activate_permanent_credits, get_db, get_user_by_id
         
         credits_amount = 50 if product_id == "50_credits" else 200
         is_subscription = product_id == "monthly_200"
+        is_permanent = product_id == "50_credits"
         
         async with get_db() as db:
             user = await get_user_by_id(db, user_id)
@@ -205,6 +206,10 @@ async def capture_order(req: CaptureOrderRequest):
                 from datetime import timedelta
                 expires_at = (datetime.utcnow() + timedelta(days=30)).isoformat()
                 await update_user_subscription(db, user_id, "monthly", expires_at)
+            
+            # 如果是永久积分包，激活永久积分标志
+            if is_permanent:
+                await activate_permanent_credits(db, user_id)
             
             # 根据语言生成描述
             desc_en = f"PayPal purchase {credits_amount} credits"

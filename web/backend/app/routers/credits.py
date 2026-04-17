@@ -41,6 +41,7 @@ class BalanceResponse(BaseModel):
     subscription_type: Optional[str]
     subscription_expires_at: Optional[str]
     is_subscription_active: bool
+    has_permanent_credits: bool = False
 
 
 class DeductRequest(BaseModel):
@@ -116,7 +117,8 @@ async def get_balance(request: Request):
             credits=user["credits"],
             subscription_type=user.get("subscription_type"),
             subscription_expires_at=user.get("subscription_expires_at"),
-            is_subscription_active=is_active
+            is_subscription_active=is_active,
+            has_permanent_credits=bool(user.get("has_permanent_credits"))
         )
 
 

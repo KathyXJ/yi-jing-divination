@@ -26,6 +26,7 @@ async def init_db():
                 credits INTEGER DEFAULT 0,
                 subscription_type TEXT DEFAULT NULL,
                 subscription_expires_at TIMESTAMP DEFAULT NULL,
+                has_permanent_credits INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
@@ -36,6 +37,7 @@ async def init_db():
             ("credits", "INTEGER DEFAULT 0"),
             ("subscription_type", "TEXT DEFAULT NULL"),
             ("subscription_expires_at", "TIMESTAMP DEFAULT NULL"),
+            ("has_permanent_credits", "INTEGER DEFAULT 0"),
         ]:
             try:
                 await db.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type}")
@@ -266,6 +268,16 @@ async def update_user_subscription(
     await db.execute(
         "UPDATE users SET subscription_type = ?, subscription_expires_at = ?, updated_at = ? WHERE id = ?",
         (subscription_type, expires_at, now, user_id)
+    )
+    await db.commit()
+
+
+async def activate_permanent_credits(db: aiosqlite.Connection, user_id: int) -> None:
+    """激活永久积分标志"""
+    now = datetime.utcnow().isoformat()
+    await db.execute(
+        "UPDATE users SET has_permanent_credits = 1, updated_at = ? WHERE id = ?",
+        (now, user_id)
     )
     await db.commit()
 

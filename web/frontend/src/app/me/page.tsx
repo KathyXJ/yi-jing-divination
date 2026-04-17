@@ -58,6 +58,7 @@ export default function MePage() {
     active: lang === "zh" ? "有效" : "Active",
     inactive: lang === "zh" ? "未订阅" : "Inactive",
     expiresAt: lang === "zh" ? "到期时间" : "Expires at",
+    permanent: lang === "zh" ? "永久有效" : "Permanent",
     transactionHistory: lang === "zh" ? "积分记录" : "Transaction History",
     noTransactions: lang === "zh" ? "暂无记录" : "No transactions yet",
     recharge: lang === "zh" ? "充值积分" : "Buy Credits",
@@ -104,7 +105,12 @@ export default function MePage() {
               {t.expiresAt}: {new Date(balance.subscription_expires_at).toLocaleDateString()}
             </div>
           )}
-          {!balance?.is_subscription_active && (
+          {balance?.has_permanent_credits && (
+            <div className={styles.subPermanent}>
+              {t.permanent}
+            </div>
+          )}
+          {!balance?.is_subscription_active && !balance?.has_permanent_credits && (
             <div className={styles.cardActions}>
               <Link href="/pricing" className={styles.secondaryBtn}>
                 {t.subscribe}
