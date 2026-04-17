@@ -215,12 +215,6 @@ export default function InterpretationPanel({
                 })}
               </div>
             </div>
-            {/* 卦辞 */}
-            {(lang === "en" ? ben_gua.sentence_en : ben_gua.sentence) && (
-              <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36 mt-1">
-                《{ben_gua.name}》：{lang === "en" ? ben_gua.sentence_en : ben_gua.sentence}
-              </p>
-            )}
             {/* 爻辞（从下到上） */}
             <div className="w-full mt-2 space-y-1">
               {[...yaos].map((yao, idx) => {
@@ -300,12 +294,6 @@ export default function InterpretationPanel({
                 })}
               </div>
             </div>
-            {/* 卦辞 */}
-            {(lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence) && (
-              <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36 mt-1">
-                《{zhi_gua.name}》：{lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence}
-              </p>
-            )}
             {/* 爻辞（从下到上） */}
             <div className="w-full mt-2 space-y-1">
               {[...zhi_yaos].map((yao, idx) => {
