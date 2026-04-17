@@ -41,6 +41,32 @@
   text-align: center;
 }
 
+.paymentMessage {
+  background: rgba(76, 175, 80, 0.12);
+  border: 1px solid rgba(76, 175, 80, 0.25);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.paymentMessage.success {
+  color: #81c784;
+}
+
+.paymentMessage.failed {
+  background: rgba(220, 50, 50, 0.12);
+  border-color: rgba(220, 50, 50, 0.25);
+  color: #e57373;
+}
+
+.paymentMessage.cancelled {
+  background: rgba(255, 193, 7, 0.12);
+  border-color: rgba(255, 193, 7, 0.25);
+  color: #ffd54f;
+}
+
 .pricingGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

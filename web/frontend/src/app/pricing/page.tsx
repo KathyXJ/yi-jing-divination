@@ -1,11 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useLang } from "@/lib/i18n";
 import { getProducts, type Product } from "@/lib/api";
-import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./page.module.css";
+
+function PaymentHandler({ onStatus }: { onStatus: (status: "success" | "cancelled" | "failed" | null, message: string) => void }) {
+  const { user, token } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { lang } = useLang();
+
+  useEffect(() => {
+    const status = searchParams.get("payment");
+    const tokenId = searchParams.get("token");
+    
+    if (status === "success" && tokenId && user && token) {
+      handleCapture(tokenId);
+    } else if (status === "cancelled") {
+      onStatus("cancelled", lang === "zh" ? "支付已取消" : "Payment cancelled");
+    }
+  }, [searchParams, user, token]);
+
+  async function handleCapture(orderId: string) {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/paypal/capture-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          user_id: user?.id,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: "Capture failed" }));
+        throw new Error(err.detail || "Failed to capture order");
+      }
+
+      const result = await res.json();
+      onStatus("success", lang === "zh" 
+        ? `支付成功！已获得 ${result.credits_added} 积分`
+        : `Payment successful! ${result.credits_added} credits added`
+      );
+      router.replace("/pricing");
+    } catch (e: unknown) {
+      onStatus("failed", e instanceof Error ? e.message : (lang === "zh" ? "支付失败" : "Payment failed"));
+    }
+  }
+
+  return null;
+}
 
 export default function PricingPage() {
   const { user, token, isLoading } = useAuth();
@@ -14,6 +64,8 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [processing, setProcessing] = useState<number | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<"success" | "cancelled" | "failed" | null>(null);
+  const [paymentMessage, setPaymentMessage] = useState("");
 
   useEffect(() => {
     getProducts()
@@ -22,11 +74,16 @@ export default function PricingPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  function handlePaymentStatus(status: "success" | "cancelled" | "failed" | null, message: string) {
+    setPaymentStatus(status);
+    setPaymentMessage(message);
+  }
+
   async function handleBuy(productId: number) {
     if (!token || !user) return;
     setProcessing(productId);
+    setError("");
     try {
-      // 调用后端 PayPal API 创建订单
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/paypal/create-order`, {
         method: "POST",
         headers: {
@@ -47,14 +104,13 @@ export default function PricingPage() {
       
       const order = await res.json();
       
-      // 跳转到 PayPal 支付页面
       if (order.approval_url) {
         window.location.href = order.approval_url;
       } else {
         throw new Error("No approval URL received");
       }
     } catch (e: unknown) {
-      alert(e instanceof Error ? e.message : "Purchase failed");
+      setError(e instanceof Error ? e.message : "Purchase failed");
     } finally {
       setProcessing(null);
     }
@@ -65,21 +121,12 @@ export default function PricingPage() {
     subtitle: lang === "zh"
       ? "注册即送3免费积分，体验AI解卦的魅力"
       : "Sign up and get 3 free credits to experience AI-powered divination",
-    permanent: lang === "zh" ? "永久有效" : "Forever valid",
     perMonth: lang === "zh" ? "/月" : "/month",
     buy: lang === "zh" ? "立即购买" : "Buy Now",
-    currentBalance: lang === "zh" ? "当前余额" : "Current balance",
     credits: lang === "zh" ? "积分" : "credits",
-    features: {
-      aiInterpretation: lang === "zh" ? "AI智能解卦" : "AI Interpretation",
-      forever: lang === "zh" ? "永久有效" : "Forever valid",
-      monthly: lang === "zh" ? "每月补充" : "Monthly renewal",
-      support: lang === "zh" ? "邮件支持" : "Email Support",
-    },
     popular: lang === "zh" ? "最受欢迎" : "Most Popular",
     bestValue: lang === "zh" ? "最佳选择" : "Best Value",
     getStarted: lang === "zh" ? "开始体验" : "Get Started",
-    loginToBuy: lang === "zh" ? "登录后购买" : "Login to buy",
     needMore: lang === "zh" ? "需要更多？" : "Need more?",
     contactUs: lang === "zh" ? "联系我们" : "Contact us",
   };
@@ -90,10 +137,20 @@ export default function PricingPage() {
 
   return (
     <div className={styles.container}>
+      <Suspense fallback={null}>
+        <PaymentHandler onStatus={handlePaymentStatus} />
+      </Suspense>
+
       <div className={styles.header}>
         <h1 className={styles.title}>{t.title}</h1>
         <p className={styles.subtitle}>{t.subtitle}</p>
       </div>
+
+      {paymentStatus && (
+        <div className={`${styles.paymentMessage} ${styles[paymentStatus]}`}>
+          {paymentMessage}
+        </div>
+      )}
 
       {error && <div className={styles.error}>{error}</div>}
 
@@ -133,14 +190,6 @@ export default function PricingPage() {
                 <div className={styles.creditsInfo}>
                   <span className={styles.creditsNum}>{product.credits}</span>
                   <span className={styles.creditsUnit}> {t.credits}</span>
-                  <span className={styles.validity}>
-                    {!isSubscription && (
-                      product.valid_days
-                        ? (lang === "zh" ? ` · ${product.valid_days}天内有效` : ` · Valid for ${product.valid_days} days`)
-                        : ` · ${t.permanent}`
-                    )}
-                    {isSubscription && ` · ${t.features.monthly}`}
-                  </span>
                 </div>
               </div>
 
@@ -152,22 +201,23 @@ export default function PricingPage() {
 
               <div className={styles.cardFooter}>
                 {!user ? (
-                  <Link href="/" className={styles.ctaBtn}>
-                    {t.getStarted}
-                  </Link>
+                  <span className={styles.ctaBtn}>{t.getStarted}</span>
                 ) : product.price_cents === 0 ? (
                   <span className={styles.freeNote}>
                     {lang === "zh" ? "注册时已获得" : "Granted on registration"}
                   </span>
+                ) : processing !== null ? (
+                  <span className={styles.ctaBtn}>
+                    {processing === -1 
+                      ? (lang === "zh" ? "处理中..." : "Processing...")
+                      : (lang === "zh" ? "跳转中..." : "Redirecting...")}
+                  </span>
                 ) : (
                   <button
                     onClick={() => handleBuy(product.id)}
-                    disabled={processing === product.id}
                     className={styles.ctaBtn}
                   >
-                    {processing === product.id
-                      ? (lang === "zh" ? "处理中..." : "Processing...")
-                      : t.buy}
+                    {t.buy}
                   </button>
                 )}
               </div>
