@@ -156,7 +156,7 @@ export default function InterpretationPanel({
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
             {/* 卦象符号 */}
-            <p className="text-3xl text-[var(--color-text)] mt-1">
+            <p className="text-4xl text-[var(--color-text)] mt-1">
               {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
             </p>
             {/* 卦辞 */}
@@ -167,14 +167,19 @@ export default function InterpretationPanel({
             )}
             {/* 爻辞（从下到上） */}
             <div className="w-full mt-2 space-y-1">
-              {[...yaos].map((yao) => (
-                <div key={yao.yao_name} className="text-xs text-left">
-                  <span className="text-[var(--color-text-muted)] mr-1">{yao.yao_name}</span>
-                  <span className="text-[var(--color-text)]">
-                    {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                  </span>
-                </div>
-              ))}
+              {[...yaos].map((yao, idx) => {
+                const isYang = yao.value === 9 || yao.value === 7;
+                const isChange = changed_indices.includes(idx);
+                return (
+                  <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
+                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>{yao.yao_name}</span>
+                    {isChange && <span className="text-amber-400">⚡</span>}
+                    <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
+                      {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -193,7 +198,7 @@ export default function InterpretationPanel({
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
             {/* 卦象符号 */}
-            <p className="text-3xl text-[var(--color-text)] mt-1">
+            <p className="text-4xl text-[var(--color-text)] mt-1">
               {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
             </p>
             {/* 卦辞 */}
@@ -204,14 +209,19 @@ export default function InterpretationPanel({
             )}
             {/* 爻辞（从下到上） */}
             <div className="w-full mt-2 space-y-1">
-              {[...zhi_yaos].map((yao) => (
-                <div key={yao.yao_name} className="text-xs text-left">
-                  <span className="text-[var(--color-text-muted)] mr-1">{yao.yao_name}</span>
-                  <span className="text-[var(--color-text)]">
-                    {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                  </span>
-                </div>
-              ))}
+              {[...zhi_yaos].map((yao, idx) => {
+                const isYang = yao.value === 9 || yao.value === 7;
+                const isChange = changed_indices.includes(idx);
+                return (
+                  <div key={yao.yao_name} className="text-xs text-left flex items-start gap-1">
+                    <span className={isYang ? "text-amber-400" : "text-slate-400"}>{yao.yao_name}</span>
+                    {isChange && <span className="text-amber-400">⚡</span>}
+                    <span className={isYang ? "text-amber-200/80" : "text-slate-300/80"}>
+                      {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
