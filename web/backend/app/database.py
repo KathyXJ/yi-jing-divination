@@ -255,6 +255,21 @@ async def update_user_credits(db: aiosqlite.Connection, user_id: int, new_credit
     await db.commit()
 
 
+async def update_user_subscription(
+    db: aiosqlite.Connection,
+    user_id: int,
+    subscription_type: str,
+    expires_at: str
+) -> None:
+    """更新用户订阅状态"""
+    now = datetime.utcnow().isoformat()
+    await db.execute(
+        "UPDATE users SET subscription_type = ?, subscription_expires_at = ?, updated_at = ? WHERE id = ?",
+        (subscription_type, expires_at, now, user_id)
+    )
+    await db.commit()
+
+
 async def add_credits_transaction(
     db: aiosqlite.Connection,
     user_id: int,
