@@ -274,10 +274,14 @@ export default function InterpretationPanel({
               <thead>
                 <tr className="text-center">
                   <th className="w-12 pb-1 text-[var(--color-text-muted)]">{t.benGua}</th>
-                  <th className="pb-1 text-[var(--color-text-muted)]">{ben_gua.name}</th>
+                  <th className="pb-1 text-[var(--color-text-muted)]">
+                    {ben_gua.name}{lang === "en" && ben_gua.pinyin ? ` ${ben_gua.pinyin}` : ""}
+                  </th>
                   <th className="w-8 pb-1"></th>
                   <th className="w-12 pb-1 text-[var(--color-text-muted)]">{t.zhiGua}</th>
-                  <th className="pb-1 text-[var(--color-text-muted)]">{zhi_gua.name}</th>
+                  <th className="pb-1 text-[var(--color-text-muted)]">
+                    {zhi_gua.name}{lang === "en" && zhi_gua.pinyin ? ` ${zhi_gua.pinyin}` : ""}
+                  </th>
                 </tr>
               </thead>
               <tbody>
