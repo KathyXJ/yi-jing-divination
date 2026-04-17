@@ -2,6 +2,7 @@
 
 import type { DivinationResult } from "@/lib/api";
 import { getGuaPinyin, getYaoNameEn } from "@/lib/pinyin";
+import { HEXAGRAM_BY_NAME } from "@/lib/hexagrams";
 
 interface Props {
   result: DivinationResult;
@@ -154,9 +155,9 @@ export default function InterpretationPanel({
               {ben_gua.name}
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
-            {/* 上下卦组合 */}
+            {/* 卦象符号 */}
             <p className="text-sm text-[var(--color-text-muted)] mt-1">
-              {benUpperName}{benLowerName} · {BAGUA_SYMBOLS[ben_gua.upper_code]}{BAGUA_SYMBOLS[ben_gua.lower_code]}
+              {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
             </p>
             {/* 卦辞 */}
             {(lang === "en" ? ben_gua.sentence_en : ben_gua.sentence) && (
@@ -191,9 +192,9 @@ export default function InterpretationPanel({
               {zhi_gua.name}
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
-            {/* 上下卦组合 */}
+            {/* 卦象符号 */}
             <p className="text-sm text-[var(--color-text-muted)] mt-1">
-              {zhiUpperName}{zhiLowerName} · {BAGUA_SYMBOLS[zhi_gua.upper_code]}{BAGUA_SYMBOLS[zhi_gua.lower_code]}
+              {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
             </p>
             {/* 卦辞 */}
             {(lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence) && (
