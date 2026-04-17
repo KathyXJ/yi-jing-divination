@@ -269,45 +269,48 @@ export default function InterpretationPanel({
 
         {/* ===== 爻辞对齐表格 ===== */}
         <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
-          <div className="grid grid-cols-2 gap-4">
-            {/* 本卦爻辞 */}
-            <div>
-              <p className="text-xs text-[var(--color-text-muted)] mb-2 text-center">{t.benGua} - {ben_gua.name}</p>
-              <div className="space-y-1">
-                {[...yaos].reverse().map((yao, idx) => {
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-center">
+                  <th className="w-12 pb-1 text-[var(--color-text-muted)]">{t.benGua}</th>
+                  <th className="pb-1 text-[var(--color-text-muted)]">{ben_gua.name}</th>
+                  <th className="w-8 pb-1"></th>
+                  <th className="w-12 pb-1 text-[var(--color-text-muted)]">{t.zhiGua}</th>
+                  <th className="pb-1 text-[var(--color-text-muted)]">{zhi_gua.name}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...yaos].reverse().map((yao, revIdx) => {
+                  const actualIdx = 5 - revIdx;
                   const isYang = yao.value === 9 || yao.value === 7;
+                  const zhiYao = zhi_yaos[actualIdx];
+                  const isZhiYang = zhiYao && (zhiYao.value === 9 || zhiYao.value === 7);
                   return (
-                    <div key={yao.yao_name} className="flex items-start gap-2">
-                      <span className={`text-xs font-medium w-8 shrink-0 ${isYang ? "text-amber-400" : "text-slate-400"}`}>
+                    <tr key={yao.yao_name} className="align-top">
+                      {/* 本卦爻号 */}
+                      <td className={`text-center py-1 font-medium ${isYang ? "text-amber-400" : "text-slate-400"}`}>
                         {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
-                      </span>
-                      <span className={`text-xs leading-snug ${isYang ? "text-amber-200/80" : "text-slate-300/80"}`}>
+                      </td>
+                      {/* 本卦爻辞 */}
+                      <td className={`py-1 pr-2 leading-relaxed ${isYang ? "text-amber-200/80" : "text-slate-300/80"}`}>
                         {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                      </span>
-                    </div>
+                      </td>
+                      {/* 分隔 */}
+                      <td className="py-1 text-center text-[var(--color-gold-dark)]">→</td>
+                      {/* 之卦爻号 */}
+                      <td className={`text-center py-1 font-medium ${isZhiYang ? "text-amber-400" : "text-slate-400"}`}>
+                        {zhiYao && (lang === "en" ? getYaoNameEn(zhiYao.yao_name) : zhiYao.yao_name)}
+                      </td>
+                      {/* 之卦爻辞 */}
+                      <td className={`py-1 pl-2 leading-relaxed ${isZhiYang ? "text-amber-200/80" : "text-slate-300/80"}`}>
+                        {zhiYao && (lang === "en" && zhiYao.sentence_en ? zhiYao.sentence_en : zhiYao.sentence)}
+                      </td>
+                    </tr>
                   );
                 })}
-              </div>
-            </div>
-            {/* 之卦爻辞 */}
-            <div>
-              <p className="text-xs text-[var(--color-text-muted)] mb-2 text-center">{t.zhiGua} - {zhi_gua.name}</p>
-              <div className="space-y-1">
-                {[...zhi_yaos].reverse().map((yao, idx) => {
-                  const isYang = yao.value === 9 || yao.value === 7;
-                  return (
-                    <div key={yao.yao_name} className="flex items-start gap-2">
-                      <span className={`text-xs font-medium w-8 shrink-0 ${isYang ? "text-amber-400" : "text-slate-400"}`}>
-                        {lang === "en" ? getYaoNameEn(yao.yao_name) : yao.yao_name}
-                      </span>
-                      <span className={`text-xs leading-snug ${isYang ? "text-amber-200/80" : "text-slate-300/80"}`}>
-                        {lang === "en" && yao.sentence_en ? yao.sentence_en : yao.sentence}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
