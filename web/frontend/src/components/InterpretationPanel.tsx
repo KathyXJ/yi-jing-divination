@@ -155,10 +155,15 @@ export default function InterpretationPanel({
               {ben_gua.name}
               {ben_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{ben_gua.pinyin}</span>}
             </p>
-            {/* 卦象符号 */}
-            <p className="text-4xl text-[var(--color-text)] mt-1">
-              {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
-            </p>
+            {/* 卦象符号（大）+ 变爻⚡） */}
+            <div className="flex items-center mt-1">
+              <span className="text-5xl text-[var(--color-text)] font-serif leading-none">
+                {HEXAGRAM_BY_NAME[ben_gua.name] || ben_gua.name}
+              </span>
+              {changed_indices.map((idx) => (
+                <span key={idx} className="text-amber-400 text-lg ml-1">⚡</span>
+              ))}
+            </div>
             {/* 卦辞 */}
             {(lang === "en" ? ben_gua.sentence_en : ben_gua.sentence) && (
               <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36 mt-1">
@@ -197,10 +202,15 @@ export default function InterpretationPanel({
               {zhi_gua.name}
               {zhi_gua.pinyin && <span className="text-lg text-gold/70 ml-1">{zhi_gua.pinyin}</span>}
             </p>
-            {/* 卦象符号 */}
-            <p className="text-4xl text-[var(--color-text)] mt-1">
-              {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
-            </p>
+            {/* 卦象符号（大）+ 变爻⚡） */}
+            <div className="flex items-center mt-1">
+              <span className="text-5xl text-[var(--color-text)] font-serif leading-none">
+                {HEXAGRAM_BY_NAME[zhi_gua.name] || zhi_gua.name}
+              </span>
+              {changed_indices.map((idx) => (
+                <span key={idx} className="text-amber-400 text-lg ml-1">⚡</span>
+              ))}
+            </div>
             {/* 卦辞 */}
             {(lang === "en" ? zhi_gua.sentence_en : zhi_gua.sentence) && (
               <p className="text-xs text-[var(--color-text)] text-center leading-relaxed max-w-36 mt-1">
