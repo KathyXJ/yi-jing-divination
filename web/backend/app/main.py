@@ -39,6 +39,7 @@ app.include_router(divination.router)
 app.include_router(ai.router)
 app.include_router(auth.router)
 app.include_router(credits.router)
+app.include_router(paypal.router)
 
 
 @app.get("/")

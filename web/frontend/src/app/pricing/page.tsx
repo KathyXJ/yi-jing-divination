@@ -23,12 +23,36 @@ export default function PricingPage() {
   }, []);
 
   async function handleBuy(productId: number) {
-    if (!token) return;
+    if (!token || !user) return;
     setProcessing(productId);
     try {
-      // TODO: 后续接入 PayPal SDK，这里先创建订单获取信息
-      const order = await createOrder(token, productId);
-      alert(`Order #${order.order_id} created! Amount: $${(order.amount_cents / 100).toFixed(2)} — PayPal integration coming soon!`);
+      // 调用后端 PayPal API 创建订单
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/paypal/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product_id: productId === 1 ? "50_credits" : "monthly_200",
+          user_id: user.id,
+          lang: lang,
+        }),
+      });
+      
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: "Create order failed" }));
+        throw new Error(err.detail || "Failed to create order");
+      }
+      
+      const order = await res.json();
+      
+      // 跳转到 PayPal 支付页面
+      if (order.approval_url) {
+        window.location.href = order.approval_url;
+      } else {
+        throw new Error("No approval URL received");
+      }
     } catch (e: unknown) {
       alert(e instanceof Error ? e.message : "Purchase failed");
     } finally {
@@ -158,6 +182,3 @@ export default function PricingPage() {
     </div>
   );
 }
-
-// Import createOrder here - it's from api.ts
-import { createOrder } from "@/lib/api";
