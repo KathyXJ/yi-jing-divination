@@ -119,7 +119,7 @@ export default function MePage() {
                 {lang === "zh" ? balance.welcome_bonus_name_zh : balance.welcome_bonus_name}
               </div>
               <div className={styles.subCredits}>
-                +{balance.welcome_bonus_credits} {t.creditsUnit}
+                {balance.welcome_bonus_credits} {t.creditsUnit}
               </div>
               {balance.welcome_remaining_days !== null && (
                 <div className={styles.subExpiry}>
@@ -139,7 +139,7 @@ export default function MePage() {
                 {lang === "zh" ? balance.monthly_name_zh : balance.monthly_name}
               </div>
               <div className={styles.subCredits}>
-                +{balance.monthly_subscription_credits} {t.creditsUnit}
+                {balance.monthly_subscription_credits} {t.creditsUnit}
               </div>
               {balance.monthly_remaining_days !== null && (
                 <div className={styles.subExpiry}>
@@ -159,7 +159,7 @@ export default function MePage() {
                 {lang === "zh" ? balance.standard_name_zh : balance.standard_name}
               </div>
               <div className={styles.subCredits}>
-                +{balance.standard_pack_credits} {t.creditsUnit}
+                {balance.standard_pack_credits} {t.creditsUnit}
               </div>
               <div className={styles.subPermanent}>
                 {t.permanent}
