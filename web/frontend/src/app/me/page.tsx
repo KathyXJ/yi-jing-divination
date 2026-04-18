@@ -112,7 +112,7 @@ export default function MePage() {
             )}
           </div>
           
-          {/* Welcome Bonus */}
+          {/* Welcome Bonus - 只在有剩余积分时显示 */}
           {balance?.welcome_bonus_credits !== undefined && balance.welcome_bonus_credits > 0 && (
             <div className={styles.subDetails}>
               <div className={styles.subName}>
@@ -132,7 +132,7 @@ export default function MePage() {
             </div>
           )}
           
-          {/* Monthly Subscription */}
+          {/* Monthly Subscription - 只在有剩余积分时显示 */}
           {balance?.monthly_subscription_credits !== undefined && balance.monthly_subscription_credits > 0 && (
             <div className={styles.subDetails}>
               <div className={styles.subName}>
@@ -152,7 +152,7 @@ export default function MePage() {
             </div>
           )}
           
-          {/* Standard Pack (Permanent) */}
+          {/* Standard Pack (Permanent) - 只在有剩余积分时显示 */}
           {balance?.standard_pack_credits !== undefined && balance.standard_pack_credits > 0 && (
             <div className={styles.subDetails}>
               <div className={styles.subName}>

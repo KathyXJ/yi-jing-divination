@@ -16,7 +16,11 @@ os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
 async def init_db():
     """初始化数据库表"""
     async with aiosqlite.connect(DATABASE_PATH) as db:
+        # 启用 WAL 模式确保写入持久化
+        await db.execute("PRAGMA journal_mode=WAL")
+        await db.execute("PRAGMA synchronous=NORMAL")
         await db.execute("""
+
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 google_id TEXT UNIQUE NOT NULL,
@@ -170,6 +174,9 @@ async def get_db():
     """获取数据库连接（异步上下文管理器）"""
     db = await aiosqlite.connect(DATABASE_PATH)
     db.row_factory = aiosqlite.Row
+    # 启用 WAL 模式确保写入持久化
+    await db.execute("PRAGMA journal_mode=WAL")
+    await db.execute("PRAGMA synchronous=NORMAL")
     try:
         yield db
     finally:
