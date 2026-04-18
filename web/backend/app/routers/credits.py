@@ -261,6 +261,60 @@ async def list_products_debug(request: Request):
         }
 
 
+@router.get("/fix-subscription-debug")
+async def fix_subscription_debug(request: Request, user_id: int = 0):
+    """临时调试接口：修正用户各订阅包积分（用于修复 Render SQLite 写入未持久化问题）"""
+    # 如果不指定 user_id，则从 token 中获取
+    if user_id == 0:
+        uid = get_current_user_id(request)
+        if not uid:
+            return {"error": "user_id required or valid token"}
+    else:
+        uid = user_id
+    
+    async with get_db() as db:
+        user = await get_user_by_id(db, uid)
+        if not user:
+            return {"error": "user not found", "user_id": uid}
+        
+        # 根据当前数据库状态，计算正确的各订阅包积分
+        total = user["credits"]
+        welcome = user.get("welcome_bonus_credits", 0)
+        monthly = user.get("monthly_subscription_credits", 0)
+        standard = user.get("standard_pack_credits", 0)
+        
+        # 正确的优先级扣除逻辑：Welcome -> Monthly -> Standard
+        # Welcome Bonus 优先扣除，用完才用 Monthly
+        welcome_remaining = min(welcome, 3)  # 假设扣了 3 积分
+        monthly_deducted = 0
+        
+        if welcome >= 3:
+            welcome_remaining = welcome - 3
+            monthly_deducted = 0
+        else:
+            # Welcome 不够，用 Monthly 补
+            remaining_from_monthly = 3 - welcome
+            welcome_remaining = 0
+            monthly_deducted = remaining_from_monthly
+        
+        new_welcome = max(0, welcome - 3)
+        new_monthly = max(0, monthly - monthly_deducted)
+        
+        # 更新数据库
+        await db.execute(
+            "UPDATE users SET welcome_bonus_credits = ?, monthly_subscription_credits = ? WHERE id = ?",
+            (new_welcome, new_monthly, uid)
+        )
+        await db.commit()
+        
+        return {
+            "success": True,
+            "user_id": uid,
+            "before": {"welcome": welcome, "monthly": monthly, "standard": standard, "total": total},
+            "after": {"welcome": new_welcome, "monthly": new_monthly, "standard": standard, "total": total}
+        }
+
+
 @router.get("/grant-debug")
 async def grant_debug(request: Request, email: str = "", amount: int = 100):
     """临时调试接口：按email给用户加积分（无需认证）"""
