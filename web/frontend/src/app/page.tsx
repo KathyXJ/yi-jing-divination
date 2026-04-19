@@ -99,6 +99,7 @@ export default function HomePage() {
             onInterpret={handleInterpret}
             onReset={handleReset}
             error={error}
+            isLoadingAI={isLoadingAI}
             lang={lang}
           />
         )}
@@ -178,6 +179,7 @@ function ResultPanel({
   onInterpret,
   onReset,
   error,
+  isLoadingAI,
   lang,
 }: {
   result: DivinationResult;
@@ -186,6 +188,7 @@ function ResultPanel({
   onInterpret: () => void;
   onReset: () => void;
   error: string;
+  isLoadingAI: boolean;
   lang: "zh" | "en";
 }) {
   const t = TXT[lang];
