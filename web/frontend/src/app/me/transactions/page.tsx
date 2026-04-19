@@ -15,7 +15,10 @@ export default function TransactionsPage() {
   const t = TXT[lang];
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
     
     async function fetchTransactions() {
       try {
