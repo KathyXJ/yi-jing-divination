@@ -28,6 +28,13 @@ class DatabaseConnection:
         self.conn = conn
         self.is_postgres = isinstance(conn, asyncpg.Connection)
     
+    def transaction(self):
+        """返回事务上下文管理器"""
+        if self.is_postgres:
+            return self.conn.transaction()
+        else:
+            return self.conn
+    
     async def execute(self, sql: str, *params) -> Any:
         """执行 SQL，自动处理参数占位符"""
         if self.is_postgres:
@@ -66,8 +73,8 @@ class DatabaseConnection:
     async def commit(self):
         """提交事务"""
         if self.is_postgres:
-            # PostgreSQL: 使用 explicit transaction，需要显式 commit
-            await self.conn.execute("COMMIT")
+            # PostgreSQL: 每个语句自动提交，不需要显式 commit
+            pass
         else:
             await self.conn.commit()
     
@@ -488,8 +495,12 @@ async def deduct_credits_by_priority(db: DatabaseConnection, user_id: int, amoun
     
     # 更新总积分
     total = welcome + monthly + standard
-    await db.execute("UPDATE users SET credits = ?, updated_at = ? WHERE id = ?", (total, now, user_id))
-    await db.commit()
+    
+    # 使用一条 UPDATE 语句更新所有字段
+    await db.execute(
+        "UPDATE users SET welcome_bonus_credits = ?, monthly_subscription_credits = ?, standard_pack_credits = ?, credits = ?, updated_at = ? WHERE id = ?",
+        welcome, monthly, standard, total, now, user_id
+    )
     
     return {
         "success": remaining == 0,  # 如果还有剩余说明积分不足
