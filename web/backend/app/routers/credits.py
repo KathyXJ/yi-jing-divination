@@ -404,6 +404,29 @@ async def cleanup_debug(request: Request, email: str = "", delete_zero: bool = F
         return {"error": "请添加 delete_zero=1 参数确认删除"}
 
 
+@router.get("/balance-debug")
+async def balance_debug(request: Request, email: str = ""):
+    """临时调试接口：查看用户详细积分状态"""
+    if not email:
+        return {"error": "email required"}
+    async with get_db() as db:
+        user = await get_user_by_email(db, email)
+        if not user:
+            return {"error": "user not found", "email": email}
+        
+        return {
+            "user_id": user["id"],
+            "email": user["email"],
+            "total_credits": user["credits"],
+            "welcome_bonus_credits": user.get("welcome_bonus_credits"),
+            "welcome_bonus_expires_at": user.get("welcome_bonus_expires_at"),
+            "monthly_subscription_credits": user.get("monthly_subscription_credits"),
+            "monthly_subscription_expires_at": user.get("monthly_subscription_expires_at"),
+            "standard_pack_credits": user.get("standard_pack_credits"),
+            "has_permanent_credits": user.get("has_permanent_credits"),
+        }
+
+
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""
