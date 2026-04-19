@@ -386,15 +386,24 @@ async def deduct_credits_by_priority(db: DatabaseConnection, user_id: int, amoun
     
     # 检查并处理 welcome bonus 过期
     welcome_expires = user.get("welcome_bonus_expires_at")
-    if welcome_expires and datetime.fromisoformat(welcome_expires) < datetime.utcnow():
-        # welcome bonus 过期，余额转入 standard pack
-        if welcome > 0:
-            standard += welcome
-            await db.execute(
-                "UPDATE users SET standard_pack_credits = ?, welcome_bonus_credits = 0, welcome_bonus_expires_at = NULL WHERE id = ?",
-                standard, user_id
-            )
-            welcome = 0
+    if welcome_expires:
+        # 支持 datetime 对象或字符串
+        if isinstance(welcome_expires, str):
+            expires_dt = datetime.fromisoformat(welcome_expires)
+        elif isinstance(welcome_expires, datetime):
+            expires_dt = welcome_expires
+        else:
+            expires_dt = None
+        
+        if expires_dt and expires_dt < datetime.utcnow():
+            # welcome bonus 过期，余额转入 standard pack
+            if welcome > 0:
+                standard += welcome
+                await db.execute(
+                    "UPDATE users SET standard_pack_credits = ?, welcome_bonus_credits = 0, welcome_bonus_expires_at = NULL WHERE id = ?",
+                    standard, user_id
+                )
+                welcome = 0
     
     remaining = amount
     deducted_from = []

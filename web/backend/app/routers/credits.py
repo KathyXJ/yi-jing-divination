@@ -99,12 +99,25 @@ class ProductResponse(BaseModel):
     description_en: Optional[str]
 
 
-def check_subscription_active(expires_at: Optional[str]) -> bool:
+def parse_datetime(value) -> Optional[datetime]:
+    """解析日期时间，支持字符串或 datetime 对象"""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    return None
+
+
+def check_subscription_active(expires_at) -> bool:
     """检查订阅是否有效"""
     if not expires_at:
         return False
     try:
-        exp_date = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+        exp_date = parse_datetime(expires_at)
+        if exp_date is None:
+            return False
         return datetime.utcnow() < exp_date
     except Exception:
         return False
@@ -125,16 +138,18 @@ async def get_balance(request: Request):
         # 计算 Welcome Bonus 剩余天数
         welcome_remaining_days = None
         if user.get("welcome_bonus_expires_at"):
-            expires = datetime.fromisoformat(user["welcome_bonus_expires_at"])
-            remaining = (expires - datetime.utcnow()).days
-            welcome_remaining_days = max(0, remaining)
+            expires = parse_datetime(user["welcome_bonus_expires_at"])
+            if expires:
+                remaining = (expires - datetime.utcnow()).days
+                welcome_remaining_days = max(0, remaining)
         
         # 计算 Monthly Subscription 剩余天数
         monthly_remaining_days = None
         if user.get("monthly_subscription_expires_at"):
-            expires = datetime.fromisoformat(user["monthly_subscription_expires_at"])
-            remaining = (expires - datetime.utcnow()).days
-            monthly_remaining_days = max(0, remaining)
+            expires = parse_datetime(user["monthly_subscription_expires_at"])
+            if expires:
+                remaining = (expires - datetime.utcnow()).days
+                monthly_remaining_days = max(0, remaining)
         
         return BalanceResponse(
             credits=user["credits"],
