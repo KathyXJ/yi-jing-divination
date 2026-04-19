@@ -204,8 +204,14 @@ async def capture_order(req: CaptureOrderRequest):
             # 如果是月度订阅，检查是否已有有效的月度订阅
             if is_monthly and user.get("monthly_subscription_credits", 0) > 0:
                 monthly_expires = user.get("monthly_subscription_expires_at")
-                if monthly_expires and datetime.fromisoformat(monthly_expires) > datetime.utcnow():
-                    raise HTTPException(status_code=400, detail="已有有效的月度订阅，无法重复购买")
+                if monthly_expires:
+                    # 支持 datetime 对象或字符串
+                    if isinstance(monthly_expires, str):
+                        exp_dt = datetime.fromisoformat(monthly_expires.replace("Z", "+00:00"))
+                    else:
+                        exp_dt = monthly_expires
+                    if exp_dt > datetime.utcnow():
+                        raise HTTPException(status_code=400, detail="已有有效的月度订阅，无法重复购买")
             
             # 根据产品类型添加积分
             if is_permanent:
@@ -216,7 +222,7 @@ async def capture_order(req: CaptureOrderRequest):
             elif is_monthly:
                 # Monthly Subscription: 设置月度订阅（不累计，覆盖）
                 from datetime import timedelta
-                expires_at = (datetime.utcnow() + timedelta(days=30)).isoformat()
+                expires_at = datetime.utcnow() + timedelta(days=30)
                 new_balance = await add_monthly_subscription_credits(db, user_id, credits_amount, expires_at)
                 desc_en = f"PayPal purchase Monthly Subscription +{credits_amount} credits"
                 desc_zh = f"PayPal购买月度订阅 +{credits_amount}积分"

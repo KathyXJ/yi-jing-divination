@@ -371,6 +371,46 @@ async def get_user_credits(db: DatabaseConnection, user_id: int) -> int:
     return row["credits"] if row else 0
 
 
+async def add_standard_pack_credits(db: DatabaseConnection, user_id: int, credits: int) -> int:
+    """添加标准积分包积分（永久）"""
+    now = datetime.utcnow()
+    # 获取当前用户
+    user = await get_user_by_id(db, user_id)
+    if not user:
+        raise ValueError(f"User {user_id} not found")
+    
+    # 更新标准包积分和永久积分标志
+    new_standard = user.get("standard_pack_credits", 0) + credits
+    new_total = user["credits"] + credits
+    
+    await db.execute(
+        "UPDATE users SET standard_pack_credits = ?, has_permanent_credits = 1, credits = ?, updated_at = ? WHERE id = ?",
+        new_standard, new_total, now, user_id
+    )
+    await db.commit()
+    return new_total
+
+
+async def add_monthly_subscription_credits(db: DatabaseConnection, user_id: int, credits: int, expires_at) -> int:
+    """添加月度订阅积分"""
+    now = datetime.utcnow()
+    # 获取当前用户
+    user = await get_user_by_id(db, user_id)
+    if not user:
+        raise ValueError(f"User {user_id} not found")
+    
+    # 更新月度订阅积分和总积分
+    new_monthly = credits
+    new_total = user["credits"] + credits
+    
+    await db.execute(
+        "UPDATE users SET monthly_subscription_credits = ?, monthly_subscription_expires_at = ?, credits = ?, updated_at = ? WHERE id = ?",
+        new_monthly, expires_at, new_total, now, user_id
+    )
+    await db.commit()
+    return new_total
+
+
 async def deduct_credits_by_priority(db: DatabaseConnection, user_id: int, amount: int) -> dict:
     """
     按优先级扣除积分：Welcome Bonus -> Monthly Subscription -> Standard Pack
