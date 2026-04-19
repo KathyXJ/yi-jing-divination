@@ -382,6 +382,28 @@ async def grant_debug(request: Request, email: str = "", amount: int = 100):
         }
 
 
+@router.get("/cleanup-debug")
+async def cleanup_debug(request: Request, email: str = "", delete_zero: bool = False):
+    """临时调试接口：清理测试数据"""
+    if not email:
+        return {"error": "email required"}
+    async with get_db() as db:
+        user = await get_user_by_email(db, email)
+        if not user:
+            return {"error": "user not found", "email": email}
+        
+        if delete_zero:
+            # 删除 amount=0 的测试记录
+            await db.execute(
+                "DELETE FROM credits_transactions WHERE user_id = ? AND amount = 0",
+                user["id"]
+            )
+            await db.commit()
+            return {"success": True, "message": f"已删除用户 {email} 的零积分测试记录"}
+        
+        return {"error": "请添加 delete_zero=1 参数确认删除"}
+
+
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""
