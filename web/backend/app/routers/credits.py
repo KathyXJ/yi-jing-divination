@@ -275,7 +275,7 @@ async def list_transactions(request: Request, limit: int = 20):
                 amount=tx["amount"],
                 balance_after=tx["balance_after"],
                 description=tx.get("description"),
-                created_at=tx["created_at"]
+                created_at=datetime_to_str(tx["created_at"])
             )
             for tx in txs
         ]
