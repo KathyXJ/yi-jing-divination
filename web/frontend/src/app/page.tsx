@@ -275,7 +275,8 @@ function ResultPanel({
 
         <button
           onClick={onInterpret}
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all"
+          disabled={isLoadingAI}
+          className={`w-full py-3 rounded-xl bg-gradient-to-r from-[var(--color-gold-dark)] to-[var(--color-gold)] text-[var(--color-bg)] font-bold hover:from-[var(--color-gold)] hover:to-[var(--color-gold-light)] transition-all ${isLoadingAI ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {t.aiInterpret}
         </button>
