@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from google.oauth2.credentials import Credentials
 from jose import JWTError, jwt
 
-from ..database import get_db, get_user_by_google_id, get_user_by_email, create_user, update_user, update_user_credits, add_credits_transaction
+from ..database import get_db, get_user_by_google_id, get_user_by_email, get_user_by_id, create_user, update_user, update_user_credits, add_credits_transaction
 from ..models import User, Token
 
 router = APIRouter(prefix="/auth", tags=["认证"])
@@ -196,11 +196,9 @@ async def google_callback(request: Request, code: Optional[str] = None, state: O
         if not google_id or not email:
             raise HTTPException(status_code=400, detail="无法获取用户信息")
         
-        # 异步获取数据库连接
-        import aiosqlite
-        db_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "users.db")
-        async with aiosqlite.connect(db_path) as db:
-            db.row_factory = aiosqlite.Row
+        # 使用统一的数据库连接
+        from ..database import get_db
+        async with get_db() as db:
             
             # 查找或创建用户
             user = await get_user_by_google_id(db, google_id)
@@ -266,17 +264,13 @@ async def get_current_user(request: Request):
     email = payload["email"]
     
     # 获取用户信息
-    import aiosqlite
-    db_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "users.db")
-    async with aiosqlite.connect(db_path) as db:
-        db.row_factory = aiosqlite.Row
-        cursor = await db.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-        row = await cursor.fetchone()
+    from ..database import get_db, get_user_by_id
+    async with get_db() as db:
+        user = await get_user_by_id(db, user_id)
         
-        if not row:
+        if not user:
             raise HTTPException(status_code=404, detail="用户不存在")
         
-        user = dict(row)
         return {
             "id": user["id"],
             "email": user["email"],
