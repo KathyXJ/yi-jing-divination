@@ -65,9 +65,11 @@ class DatabaseConnection:
     
     async def commit(self):
         """提交事务"""
-        if not self.is_postgres:
+        if self.is_postgres:
+            # PostgreSQL: 使用 explicit transaction，需要显式 commit
+            await self.conn.execute("COMMIT")
+        else:
             await self.conn.commit()
-        # PostgreSQL 的 asyncpg 是自动提交模式，不需要显式 commit
     
     def _convert_placeholders(self, sql: str) -> str:
         """将 SQLite 的 ? 转换为 PostgreSQL 的 $1, $2, ..."""
