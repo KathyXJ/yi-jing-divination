@@ -225,7 +225,7 @@ async def deduct_credits(request: Request, body: DeductRequest):
         # 记录流水
         await add_credits_transaction(
             db, user_id, "deduct", -amount, result["total_remaining"],
-            f"AI解读消耗{amount}积分"
+            "AI解读消耗"
         )
 
         return DeductResponse(
