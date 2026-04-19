@@ -201,7 +201,7 @@ async def capture_order(req: CaptureOrderRequest):
             if not user:
                 raise HTTPException(status_code=404, detail="用户不存在")
             
-            # 如果是月度订阅，检查是否已有有效的月度订阅
+        # 如果是月度订阅，检查是否已有有效的月度订阅
             if is_monthly and user.get("monthly_subscription_credits", 0) > 0:
                 monthly_expires = user.get("monthly_subscription_expires_at")
                 if monthly_expires:
@@ -211,7 +211,8 @@ async def capture_order(req: CaptureOrderRequest):
                     else:
                         exp_dt = monthly_expires
                     if exp_dt > datetime.utcnow():
-                        raise HTTPException(status_code=400, detail="已有有效的月度订阅，无法重复购买")
+                        detail = "You already have an active Monthly Subscription" if req.lang == "en" else "已有有效的月度订阅，无法重复购买"
+                        raise HTTPException(status_code=400, detail=detail)
             
             # 根据产品类型添加积分
             if is_permanent:
