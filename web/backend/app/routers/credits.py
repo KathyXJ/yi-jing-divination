@@ -427,6 +427,27 @@ async def balance_debug(request: Request, email: str = ""):
         }
 
 
+@router.get("/fix-welcome-debug")
+async def fix_welcome_debug(request: Request, email: str = "", set_zero: bool = False):
+    """临时调试接口：将Welcome Bonus设为0"""
+    if not email:
+        return {"error": "email required"}
+    if not set_zero:
+        return {"error": "请添加 set_zero=1 参数确认"}
+    async with get_db() as db:
+        user = await get_user_by_email(db, email)
+        if not user:
+            return {"error": "user not found", "email": email}
+        
+        await db.execute(
+            "UPDATE users SET welcome_bonus_credits = 0, welcome_bonus_expires_at = NULL WHERE id = ?",
+            user["id"]
+        )
+        await db.commit()
+        
+        return {"success": True, "message": f"已将用户 {email} 的 Welcome Bonus 设为 0"}
+
+
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""
