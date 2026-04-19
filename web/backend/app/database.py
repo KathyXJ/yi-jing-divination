@@ -182,13 +182,16 @@ async def init_db():
                 )
             """)
             
+            # 清理重复产品（保留 ID 1-3）
+            await db.execute("DELETE FROM products WHERE id > 3")
+            
             # 插入默认产品（如果不存在）
             await db.execute("""
-                INSERT INTO products (name, name_en, credits, price_cents, type, valid_days, description, description_en)
+                INSERT INTO products (id, name, name_en, credits, price_cents, type, valid_days, description, description_en)
                 VALUES 
-                    ('注册赠送', 'Welcome Bonus', 3, 0, 'welcome', 7, '新用户注册赠送3积分，7天有效', 'New users get 3 free credits, valid for 7 days'),
-                    ('标准积分包', 'Standard Pack', 50, 990, 'standard', NULL, '50积分，永久有效', '50 credits, forever valid'),
-                    ('月度订阅', 'Monthly Subscription', 200, 1990, 'monthly', 30, '200积分/月，30天有效', '200 credits/month, 30 days valid')
+                    (1, '注册赠送', 'Welcome Bonus', 3, 0, 'welcome', 7, '新用户注册赠送3积分，7天有效', 'New users get 3 free credits, valid for 7 days'),
+                    (2, '标准积分包', 'Standard Pack', 50, 990, 'standard', NULL, '50积分，永久有效', '50 credits, forever valid'),
+                    (3, '月度订阅', 'Monthly Subscription', 200, 1990, 'monthly', 30, '200积分/月，30天有效', '200 credits/month, 30 days valid')
                 ON CONFLICT (id) DO NOTHING
             """)
             
