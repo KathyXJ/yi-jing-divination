@@ -32,11 +32,12 @@ export default function HomePage() {
     setError("");
     setIsLoadingAI(true);
     try {
-      // 先扣积分
+      // 先调用 AI 解读
+      const text = await interpretWithAI(result, question, lang, token ?? undefined);
+      // AI 解读成功后再扣积分
       if (token) {
         await deductCredits(token, 3);
       }
-      const text = await interpretWithAI(result, question, lang, token ?? undefined);
       setInterpretation(text);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : t.aiFailed;
