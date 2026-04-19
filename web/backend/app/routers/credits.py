@@ -448,6 +448,25 @@ async def fix_welcome_debug(request: Request, email: str = "", set_zero: bool = 
         return {"success": True, "message": f"已将用户 {email} 的 Welcome Bonus 设为 0"}
 
 
+@router.get("/fix-monthly-debug")
+async def fix_monthly_debug(request: Request, email: str = "", value: int = 0):
+    """临时调试接口：直接设置Monthly Subscription的credits值"""
+    if not email:
+        return {"error": "email required"}
+    async with get_db() as db:
+        user = await get_user_by_email(db, email)
+        if not user:
+            return {"error": "user not found", "email": email}
+        
+        await db.execute(
+            "UPDATE users SET monthly_subscription_credits = ? WHERE id = ?",
+            value, user["id"]
+        )
+        await db.commit()
+        
+        return {"success": True, "message": f"已将用户 {email} 的 Monthly Subscription 设为 {value}"}
+
+
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""
