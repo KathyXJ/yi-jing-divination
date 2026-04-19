@@ -425,8 +425,7 @@ async def deduct_credits_by_priority(db: DatabaseConnection, user_id: int, amoun
     按优先级扣除积分：Welcome Bonus -> Monthly Subscription -> Standard Pack
     返回扣除结果和剩余各类型积分
     """
-    from datetime import timezone
-    now = datetime.now(timezone.utc)  # Use timezone-aware datetime for PostgreSQL
+    now = datetime.utcnow()  # Use naive datetime for database compatibility
     
     # 获取用户当前积分状态
     user = await get_user_by_id(db, user_id)
