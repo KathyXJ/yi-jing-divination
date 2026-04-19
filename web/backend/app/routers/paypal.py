@@ -158,8 +158,8 @@ async def capture_order(req: CaptureOrderRequest):
         
         order_data = response.json()
         
-        # 检查订单状态
-        if order_data["status"] != "APPROVED":
+        # 检查订单状态（COMPLETED 表示已自动捕获，APPROVED 表示待捕获）
+        if order_data["status"] not in ("APPROVED", "COMPLETED"):
             raise HTTPException(status_code=400, detail=f"订单未批准: {order_data['status']}")
         
         # 捕获订单
