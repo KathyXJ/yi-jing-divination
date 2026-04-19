@@ -302,15 +302,15 @@ async def get_user_by_id(db: DatabaseConnection, user_id: int) -> Optional[dict]
 
 async def create_user(db: DatabaseConnection, google_id: str, email: str, name: str, avatar_url: str = None) -> dict:
     """创建新用户，赠送 Welcome Bonus"""
-    now = datetime.utcnow().isoformat()
-    welcome_bonus_expires = (datetime.utcnow() + timedelta(days=7)).isoformat()
+    now = datetime.utcnow()
+    welcome_bonus_expires = datetime.utcnow() + timedelta(days=7)
     
     if USE_POSTGRES:
         # PostgreSQL: 使用 RETURNING
         row = await db.fetchone("""
             INSERT INTO users (google_id, email, name, avatar_url, credits, 
                 welcome_bonus_credits, welcome_bonus_expires_at, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             RETURNING *
         """, google_id, email, name, avatar_url, 3, 3, welcome_bonus_expires, now, now)
         return row
