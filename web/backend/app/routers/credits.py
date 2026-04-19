@@ -110,6 +110,29 @@ def parse_datetime(value) -> Optional[datetime]:
     return None
 
 
+def ensure_naive_datetime(dt: datetime) -> datetime:
+    """确保 datetime 是 naive（无时区信息），用于与 datetime.utcnow() 比较"""
+    if dt is None:
+        return None
+    # 如果有时区信息，转换为 UTC 再去掉时区
+    if dt.tzinfo is not None:
+        dt = dt.replace(tzinfo=None) - dt.utcoffset()
+    return dt
+
+
+def datetime_to_str(dt) -> Optional[str]:
+    """将 datetime 或字符串转换为 ISO 格式字符串"""
+    if dt is None:
+        return None
+    if isinstance(dt, str):
+        return dt
+    if isinstance(dt, datetime):
+        # 确保是 naive datetime 再转 ISO
+        dt = ensure_naive_datetime(dt)
+        return dt.isoformat()
+    return None
+
+
 def check_subscription_active(expires_at) -> bool:
     """检查订阅是否有效"""
     if not expires_at:
@@ -118,7 +141,10 @@ def check_subscription_active(expires_at) -> bool:
         exp_date = parse_datetime(expires_at)
         if exp_date is None:
             return False
-        return datetime.utcnow() < exp_date
+        # 确保比较时两边都是 naive datetime
+        exp_date = ensure_naive_datetime(exp_date)
+        now = datetime.utcnow()
+        return now < exp_date
     except Exception:
         return False
 
@@ -140,6 +166,7 @@ async def get_balance(request: Request):
         if user.get("welcome_bonus_expires_at"):
             expires = parse_datetime(user["welcome_bonus_expires_at"])
             if expires:
+                expires = ensure_naive_datetime(expires)
                 remaining = (expires - datetime.utcnow()).days
                 welcome_remaining_days = max(0, remaining)
         
@@ -148,15 +175,16 @@ async def get_balance(request: Request):
         if user.get("monthly_subscription_expires_at"):
             expires = parse_datetime(user["monthly_subscription_expires_at"])
             if expires:
+                expires = ensure_naive_datetime(expires)
                 remaining = (expires - datetime.utcnow()).days
                 monthly_remaining_days = max(0, remaining)
         
         return BalanceResponse(
             credits=user["credits"],
             welcome_bonus_credits=user.get("welcome_bonus_credits", 0),
-            welcome_bonus_expires_at=user.get("welcome_bonus_expires_at"),
+            welcome_bonus_expires_at=datetime_to_str(user.get("welcome_bonus_expires_at")),
             monthly_subscription_credits=user.get("monthly_subscription_credits", 0),
-            monthly_subscription_expires_at=user.get("monthly_subscription_expires_at"),
+            monthly_subscription_expires_at=datetime_to_str(user.get("monthly_subscription_expires_at")),
             standard_pack_credits=user.get("standard_pack_credits", 0),
             has_permanent_credits=bool(user.get("has_permanent_credits")),
             welcome_remaining_days=welcome_remaining_days,
