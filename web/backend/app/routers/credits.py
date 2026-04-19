@@ -467,6 +467,29 @@ async def fix_monthly_debug(request: Request, email: str = "", value: int = 0):
         return {"success": True, "message": f"已将用户 {email} 的 Monthly Subscription 设为 {value}"}
 
 
+@router.get("/fix-total-debug")
+async def fix_total_debug(request: Request, email: str = ""):
+    """临时调试接口：修正用户总积分等于三个订阅包之和"""
+    if not email:
+        return {"error": "email required"}
+    async with get_db() as db:
+        user = await get_user_by_email(db, email)
+        if not user:
+            return {"error": "user not found", "email": email}
+        
+        total = (user.get("welcome_bonus_credits", 0) or 0) + \
+                (user.get("monthly_subscription_credits", 0) or 0) + \
+                (user.get("standard_pack_credits", 0) or 0)
+        
+        await db.execute(
+            "UPDATE users SET credits = ? WHERE id = ?",
+            total, user["id"]
+        )
+        await db.commit()
+        
+        return {"success": True, "message": f"已将用户 {email} 的总积分修正为 {total}"}
+
+
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(request: Request):
     """获取所有有效产品列表"""

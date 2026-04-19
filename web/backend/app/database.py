@@ -432,9 +432,14 @@ async def deduct_credits_by_priority(db: DatabaseConnection, user_id: int, amoun
     if not user:
         return {"success": False, "error": "User not found"}
     
-    welcome = user.get("welcome_bonus_credits", 0)
-    monthly = user.get("monthly_subscription_credits", 0)
-    standard = user.get("standard_pack_credits", 0)
+    welcome = user.get("welcome_bonus_credits", 0) or 0
+    monthly = user.get("monthly_subscription_credits", 0) or 0
+    standard = user.get("standard_pack_credits", 0) or 0
+    
+    # 保存原始值用于比较
+    original_welcome = welcome
+    original_monthly = monthly
+    original_standard = standard
     
     # 检查并处理 welcome bonus 过期
     welcome_expires = user.get("welcome_bonus_expires_at")
@@ -493,14 +498,23 @@ async def deduct_credits_by_priority(db: DatabaseConnection, user_id: int, amoun
             standard, user_id
         )
     
-    # 更新总积分
+    # 计算总积分
     total = welcome + monthly + standard
     
-    # 使用一条 UPDATE 语句更新所有字段
-    await db.execute(
-        "UPDATE users SET welcome_bonus_credits = ?, monthly_subscription_credits = ?, standard_pack_credits = ?, credits = ?, updated_at = ? WHERE id = ?",
-        welcome, monthly, standard, total, now, user_id
-    )
+    # 如果有任何变化，更新用户积分
+    if welcome != original_welcome or monthly != original_monthly or standard != original_standard:
+        await db.execute(
+            "UPDATE users SET welcome_bonus_credits = ?, monthly_subscription_credits = ?, standard_pack_credits = ?, credits = ? WHERE id = ?",
+            welcome, monthly, standard, total, user_id
+        )
+    elif total != user.get("credits", 0):
+        # 只有总积分变化，单独更新 credits
+        await db.execute(
+            "UPDATE users SET credits = ? WHERE id = ?",
+            total, user_id
+        )
+    
+    await db.commit()
     
     return {
         "success": remaining == 0,  # 如果还有剩余说明积分不足
