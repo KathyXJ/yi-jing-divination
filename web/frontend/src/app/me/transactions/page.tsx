@@ -20,9 +20,11 @@ export default function TransactionsPage() {
       return;
     }
     
+    const userToken = token; // TypeScript now knows this is string
+    
     async function fetchTransactions() {
       try {
-        const data = await getCreditsTransactions(token, 100);
+        const data = await getCreditsTransactions(userToken, 100);
         setTransactions(data);
       } catch (e) {
         console.error("Failed to fetch transactions:", e);
