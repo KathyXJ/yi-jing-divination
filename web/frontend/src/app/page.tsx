@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { castDivination, interpretWithAI, type DivinationResult } from "@/lib/api";
+import { castDivination, interpretWithAI, deductCredits, type DivinationResult } from "@/lib/api";
 import GuaDisplay from "@/components/GuaDisplay";
 import CoinCaster from "@/components/CoinCaster";
 import InterpretationPanel from "@/components/InterpretationPanel";
@@ -32,6 +32,10 @@ export default function HomePage() {
     setError("");
     setIsLoadingAI(true);
     try {
+      // 先扣积分
+      if (token) {
+        await deductCredits(token, 3);
+      }
       const text = await interpretWithAI(result, question, lang, token ?? undefined);
       setInterpretation(text);
     } catch (e: unknown) {

@@ -166,6 +166,21 @@ export async function computeDivination(throws: number[]): Promise<DivinationRes
   return res.json();
 }
 
+export async function deductCredits(token: string, amount: number = 3): Promise<void> {
+  const res = await fetch(`${BASE_URL}/api/credits/deduct`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify({ amount }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: "Deduct failed" }));
+    throw new Error(err.detail || "Deduct failed");
+  }
+}
+
 export async function interpretWithAI(
   result: DivinationResult,
   question: string,
