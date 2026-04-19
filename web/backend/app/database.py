@@ -330,7 +330,7 @@ async def create_user(db: DatabaseConnection, google_id: str, email: str, name: 
 
 async def update_user(db: DatabaseConnection, user_id: int, name: str = None, avatar_url: str = None) -> Optional[dict]:
     """更新用户信息"""
-    now = datetime.utcnow().isoformat()
+    now = datetime.utcnow()
     updates = []
     params = []
     if name is not None:
@@ -354,7 +354,7 @@ async def update_user(db: DatabaseConnection, user_id: int, name: str = None, av
 
 async def update_user_credits(db: DatabaseConnection, user_id: int, credits: int):
     """更新用户总积分"""
-    now = datetime.utcnow().isoformat()
+    now = datetime.utcnow()
     await db.execute(
         "UPDATE users SET credits = ?, updated_at = ? WHERE id = ?",
         credits, now, user_id
@@ -456,7 +456,7 @@ async def add_credits_transaction(
     description: str = None
 ) -> int:
     """记录积分变动流水，返回事务ID"""
-    now = datetime.utcnow().isoformat()
+    now = datetime.utcnow()
     
     if USE_POSTGRES:
         # PostgreSQL
@@ -500,7 +500,7 @@ async def get_product_by_id(db: DatabaseConnection, product_id: int) -> Optional
 
 async def create_order(db: DatabaseConnection, user_id: int, product_id: int, amount_cents: int, currency: str) -> int:
     """创建订单，返回订单ID"""
-    now = datetime.utcnow().isoformat()
+    now = datetime.utcnow()
     
     if USE_POSTGRES:
         row = await db.fetchone("""
